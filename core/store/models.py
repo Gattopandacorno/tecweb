@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -8,7 +9,10 @@ class Category(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
 
     class Meta:
-        verbose_name = 'categorie'
+        verbose_name = 'categorie' 
+
+    def get_absolute_url(self):
+        reverse_lazy('store:category_list', args=[self.slug])
 
     def __str__(self):
         return self.name
@@ -30,6 +34,9 @@ class Product(models.Model):
 
     class Meta:
         ordering = ('-created',)
+
+    def get_absolute_url(self):
+        return reverse_lazy('store:product_detail', args=[self.slug])
 
     def __str__(self):
         return self.title

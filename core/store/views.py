@@ -16,3 +16,10 @@ def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, in_stock=True)
     ctx = { 'product': product }
     return render(request, 'store/products/detail.html', context=ctx)
+
+def category_list(request,slug):
+    category = get_object_or_404(Category, slug=slug)
+    products = Product.objects.filter(category=category)
+    ctx = { 'category': category, 
+            'products': products }
+    return render(request, 'store/products/category.html', context=ctx)
