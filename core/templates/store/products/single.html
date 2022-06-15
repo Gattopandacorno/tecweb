@@ -30,7 +30,9 @@
                                 <div class="col-6">
                                     <label for="select">Qty</label>
                                     <select id="select">
-                                        <option value="">1</option>
+                                        {% for i in product.get_qty %}
+                                            <option value="">{{ i|add:1 }}</option>
+                                        {% endfor %}  
                                     </select>
                                 </div>
                                 

@@ -25,6 +25,7 @@ class Product(models.Model):
     title       = models.CharField(max_length=255)
     author      = models.CharField(max_length=255, default='Not found')
     description = models.TextField(blank=True)
+    available   = models.IntegerField(default=1)
     image       = models.ImageField(upload_to='images/', default='images/default.png') # storing the link to the db
     slug        = models.SlugField(max_length=255)
     price       = models.DecimalField(max_digits=4, decimal_places=2, default=4.50)
@@ -35,6 +36,9 @@ class Product(models.Model):
 
     class Meta:
         ordering = ('-created',)
+
+    def get_qty(self):
+        return range(self.available)
 
     def get_absolute_url(self):
         return reverse_lazy('store:product_detail', args=[self.slug])
