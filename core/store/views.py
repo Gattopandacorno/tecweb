@@ -7,7 +7,7 @@ from .models import Category, Product
 def categories(request):
     return { 'categories': Category.objects.all() }
 
-def all_products(request): 
+def product_all(request): 
     products = Product.objects.all()
     ctx = { 'products': products }
     return render(request, template_name='store/home.html', context=ctx)
@@ -15,7 +15,7 @@ def all_products(request):
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, in_stock=True)
     ctx = { 'product': product }
-    return render(request, 'store/products/detail.html', context=ctx)
+    return render(request, 'store/products/single.html', context=ctx)
 
 def category_list(request,slug):
     category = get_object_or_404(Category, slug=slug)

@@ -2,12 +2,15 @@
 {% load static %}
 
 {% block title %}
+    {% if category %} {{category.name}}
+    {% else %} Products
+    {% endif %}
 {% endblock title %}
 
 
 {% block content %}
 <main>
-    <div class="album py-5 bg-light">
+    <div class="album py-5 bg-ligth">
         <div class="container">
         <div class="pb-3 h5">{{ category.name|title }}</div>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">

@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.http import HttpRequest
 
 from store.models import Category, Product
-from store.views import all_products
+from store.views import product_all
 
 
 class TestViewResponse(TestCase):
@@ -36,18 +36,18 @@ class TestViewResponse(TestCase):
 
     def test_home_html(self):
         req  = HttpRequest()
-        resp = all_products(req)
+        resp = product_all(req)
         html = resp.content.decode('utf8')
 
-        self.assertIn('<title>\n    Home\n</title>', html)
+        self.assertIn('<title>MangaStore</title>', html)
         self.assertTrue(html.startswith('\n<!DOCTYPE html>\n'))
         self.assertEqual(resp.status_code, 200)
 
     def test_view_fun(self):
         req = self.factory.get('/item/django-beginners')
-        resp = all_products(req)
+        resp = product_all(req)
         html = resp.content.decode('utf8')
 
-        self.assertIn('<title>\n    Home\n</title>', html)
+        self.assertIn('<title>MangaStore</title>', html)
         self.assertTrue(html.startswith('\n<!DOCTYPE html>\n'))
         self.assertEqual(resp.status_code, 200)
