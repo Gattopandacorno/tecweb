@@ -31,8 +31,8 @@
                                     <li><a class="dropdown-item" href="{% url "store:all_products" %}">All</a></li>
                                     {% for c in categories %}
                                     <li {% if c.slug == Category.slug %} class="selected" {% endif %}>
-                                        <!-- TODO: problem in url, if u go ../search/{{ c.slug }}/ is ok --></!-->
-                                        <a class="dropdown-item" href="search/{{ c.get_absolute_url }}">{{ c.name|title }}</a> 
+                                        <!-- TODO: problem in url,this shouldnt be used --></!-->
+                                        <a class="dropdown-item" href="http://127.0.0.1:8000/search/{{ c.slug }}/">{{ c.name|title }}</a> 
                                     </li>
                                     {% endfor %}
                             </li>
