@@ -17,13 +17,14 @@ class TestCategoriesModel(TestCase):
         self.assertEqual(str(data), 'django')
 
 
+
 class TestProductModel(TestCase):
 
     def setUp(self):
         Category.objects.create(name='django', slug='django')
         User.objects.create(username='admin')
         self.data = Product.objects.create(category_id=1, title='django beginners', created_by_id=1,
-                                           slug='django beginners', price=4.50, image='images' )
+                                           slug='django-beginners', price=4.50, image='images' )
     
     def test_product_model_entry(self):
         data = self.data

@@ -10,6 +10,7 @@ django-crispy-forms = "*"
 pillow = "*"
 coverage = "*"
 
+
 [dev-packages]
 
 [requires]
