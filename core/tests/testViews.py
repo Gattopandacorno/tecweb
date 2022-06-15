@@ -32,6 +32,12 @@ class TestViewResponse(TestCase):
         resp = self.c.get(reverse_lazy('store:category_list', args=['django']))
         self.assertEqual(resp.status_code, 200)
 
+    """  
+    def test_allowed_hosts(self):
+        resp = self.c.get('/', HTTP_HOST='noaddr.com')
+        self.assertEqual(resp.status_code, 400)
+    """
+
     # TEST on html
 
     def test_home_html(self):
@@ -44,7 +50,7 @@ class TestViewResponse(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_view_fun(self):
-        req = self.factory.get('/item/django-beginners')
+        req = self.factory.get('/django-beginners')
         resp = product_all(req)
         html = resp.content.decode('utf8')
 

@@ -13,11 +13,11 @@
     <div class="album py-5 bg-ligth">
         <div class="container">
         <div class="pb-3 h5">{{ category.name|title }}</div>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="row row-cols-1 row-cols-sm-5 row-cols-md-6 g-3">
                 {% for p in products %}
                     <div class="col">
                         <div class="card shadow-sm">
-                            <img class="img-fluid"alt="Responsive image" src="{{ p.image.url }}"></img>
+                            <img class="img-fluid" width="170px"  height="270px" alt="Responsive image" src="{{ p.image.url }}"></img>
         
                             <div class="card-body">
                                 <p class="card-text">
