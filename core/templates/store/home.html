@@ -28,8 +28,7 @@
                 {% for p in products %}
                     <div class="col">
                         <div class="card shadow-sm">
-                            <img class="img-fluid" width="170px"  height="270px" alt="Responsive image" src="{{ p.image.url }}"></img>
-        
+                            <img src="{{ p.image.url }}" class="featurette-image img-fluid mx-auto" alt="Responsive image" width="170px"  height="270px" preserveAspectRatio="xMidYMid slice" focusable="false"></img>
                             <div class="card-body">
                                 <p class="card-text">
                                     <a class="text-dark text-decoration-none" href="{{ p.get_absolute_url }}">{{ p.title }}</a>
