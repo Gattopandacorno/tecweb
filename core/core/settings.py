@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 
     # OWN
     'store',
-    'basket',
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 'store.views.categories',
+                'cart.views.cart',
             ],
         },
     },

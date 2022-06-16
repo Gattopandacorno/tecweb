@@ -2,47 +2,48 @@
 
 
 {% block content %}
-    <div class="container-fluid">
-        <main class="pt-5">
-            <div class="row g-3">
-                <div class="col-md-3 col-lg-5 order-md-first bg-white">
-                    <!-- TODO: la foto è messa male --></!-->
-                    <img class="img-fluid mx-auto d-block" width="170px"  height="270px" alt="Responsive image" src="{{ product.image.url }}"></img>
-                </div>
-                
-                <div class="col-md-4 col-lg-7 ps-md-5 ps-lg-5">
-                    <h1 class="mb-0 h4">{{ product.title }}</h1>
-                    <p>
-                        <span class="lead">{{ product.author }}</span>
-                        Author
-                    </p>
-                    <p>{{ product.description|slice:"355" }}</p>
-                    <div class="border">
-                        <div class="col border-bottom">
-                            <div class="row p-3">
-                                <div class="col-6">Prezzo</div>
-                                <div class="col-6 text-end"><span class="h4 fw-bold">{{ product.price }}€</span></div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="row p-3">
-                                <div class="col-6">
-                                    <label for="select">Qty</label>
-                                    <select id="select">
-                                        {% for i in product.get_qty %}
-                                            <option value="">{{ i|add:1 }}</option>
-                                        {% endfor %}  
-                                    </select>
+        <div class="container-fluid">
+            <main class="pt-5">
+                <div class="row g-3">
+                    <div class="col-md-3 col-lg-5 order-md-first bg-white">
+                        <!-- TODO: photo not ok --></!-->
+                        <img class="img-fluid mx-auto d-block" width="170px"  height="270px" alt="Responsive image" src="{{ product.image.url }}"></img>
+                    </div>
+                    
+                    <div class="col-md-4 col-lg-7 ps-md-5 ps-lg-5">
+                        <h1 class="mb-0 h4">{{ product.title }}</h1>
+                        <p>
+                            <span class="lead">{{ product.author }}</span>
+                            Author
+                        </p>
+                        <p>{{ product.description|slice:"355" }}</p>
+                        <div class="border">
+                            <div class="col border-bottom">
+                                <div class="row p-3">
+                                    <div class="col-6">Prezzo</div>
+                                    <div class="col-6 text-end"><span class="h4 fw-bold">{{ product.price }}€</span></div>
                                 </div>
-                                
-                                <div class="col-6 text-end"><button type="button" class="btn btn-secondary btn-sm" >Add to cart</button>
+                            </div>
+
+                            <div class="col">
+                                <div class="row p-3">
+                                    <div class="col-6">
+                                        <label for="select">Qty</label>
+                                        <select id="select">
+                                            {% for i in product.get_qty %}
+                                                <option value="">{{ i|add:1 }}</option>
+                                            {% endfor %}  
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-6 text-end">
+                                        <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-secondary btn-sm" >Add to cart</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
-    </div>
+            </main>
+        </div>
 {% endblock content %}

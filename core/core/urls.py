@@ -22,7 +22,7 @@ from .settings import DEBUG
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('basket/', include('basket.urls', namespace='basket')),
+    path('cart/', include('cart.urls', namespace='cart')),
     path('', include('store.urls', namespace='store')),
 
 ]
