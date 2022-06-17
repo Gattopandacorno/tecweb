@@ -40,9 +40,10 @@
                 {% for p in products %}
                     <div class="col">
                         <div class="card shadow-sm">
-                            <img src="{{ p.image.url }}" class="featurette-image img-fluid mx-auto" alt="Responsive image" width="170px"  height="270px" preserveAspectRatio="xMidYMid slice" focusable="false"></img>
+                            <img href="{{ p.get_absolute_url }}" src="{{ p.image.url }}" class="featurette-image img-fluid mx-auto" alt="Responsive image" width="170px"  height="270px" preserveAspectRatio="xMidYMid slice" focusable="false"></img>
                             <div class="card-body">
                                 <p class="card-text">
+                                    <!-- TODO: in stock or not  --></!-->
                                     <a class="text-dark text-decoration-none" href="{{ p.get_absolute_url }}">{{ p.title }}</a>
                                 </p>
                             </div>

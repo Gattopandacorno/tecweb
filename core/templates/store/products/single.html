@@ -16,7 +16,7 @@
                             <span class="lead">{{ product.author }}</span>
                             Author
                         </p>
-                        <p>{{ product.description|slice:"355" }}</p>
+                        <p>{{ product.description }}</p>
                         <div class="border">
                             <div class="col border-bottom">
                                 <div class="row p-3">
@@ -51,13 +51,16 @@
             $(document).on('click', '#add-button', function (e)
             {
                 e.preventDefault();
-                $.ajax({type: 'POST',
+                $.ajax({
+                        type: 'POST',
                         url: '{% url "cart:cart_add" %}',
-                        data: { productsid: $('#add-button').val(),
-                                csfrmiddlewaretoken: "{{ csrf_token }}"
+                        data: { productid: $('#add-button').val(),
+                                productqty: $('#select option:selected').text(),
+                                csrfmiddlewaretoken: "{{ csrf_token }}",
                                 action: 'post' },
-                                success: function (json){},
-                                error: function (xhr, errmsg, err){},
+                        success: function (json){ 
+                                document.getElementById('cartqty').innerHTML = json.qty },
+                        error: function (xhr, errmsg, err){}
                         });
             })
         </script>

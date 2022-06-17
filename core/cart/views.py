@@ -10,15 +10,17 @@ def cart(request):
 
 def cart_summary(request):
     products = Product.objects.all() # TODO: not all the products
-    ctx = { 'products': products,
-            }
+    ctx = { 'products': products }
     return render(request, 'store/cart/summary.html', {})
 
 def cart_add(request):
     cart = Cart(request)
     if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('productid'))
+        product_qty = int(request.POST.get('productqty'))
         product = get_object_or_404(Product, id=product_id)
-        cart.add(product=product)
-        response = JsonResponse({'test': 'data'})
+        cart.add(product=product, qty=product_qty)
+        
+        tot_qty = cart.__len__()
+        response = JsonResponse({'qty': tot_qty})
         return response
