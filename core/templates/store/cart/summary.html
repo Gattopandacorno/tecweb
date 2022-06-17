@@ -20,9 +20,9 @@
                 <div class="col">
                     <div class="row p-5">
                         <div class="col-6">
-                            <label for="select">Qty</label> <!-- TODO: Not doin it properly --></!-->
+                            <label for="select">Qty</label> 
                             <select id="select">
-                                {% for i in product.get_qty %}
+                                {% for i in p.get_qty %}
                                     <option value="">{{ i|add:1 }}</option>
                                 {% endfor %}  
                             </select>
