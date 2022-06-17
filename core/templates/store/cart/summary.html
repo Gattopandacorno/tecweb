@@ -6,31 +6,59 @@
 
 
 {% block content %}
-    {% for p in products %}
-        <div class="col-md-7">
-            <div class="row g-0  rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col-auto d-none d-lg-block">
-                    <img src="{{ p.image.url }}" class="featurette-image img-fluid mx-auto" alt="Responsive image" width="170px"  height="270px" preserveAspectRatio="xMidYMid slice" focusable="false"></img>
-                </div>
-                <div class="col p-5 d-flex flex-column position-static">
-                    <h3 class="mb-0">{{ p.price }}€</h3>
-                    <p class="mb-auto">{{ p.title|title }}</p>
-                </div>
-                
-                <div class="col">
-                    <div class="row p-5">
-                        <div class="col-6">
-                            <label for="select">Qty</label> 
-                            <select id="select">
-                                {% for i in p.get_qty %}
-                                    <option value="">{{ i|add:1 }}</option>
-                                {% endfor %}  
-                            </select>
+    <main>
+        <div class="container">
+            <h1 class="h5">Shopping cart</h1>
+            {% for item in cart %}
+            
+                    <div class="row g-3">
+                        <div class="col-md-3 col-lg-5 order-md-first bg-white">
+                            <!-- TODO: photo not ok --></!-->
+                            <img class="img-fluid mx-auto d-block" width="170px"  height="270px" alt="Responsive image" src="{{ product.image.url }}"></img>
+                        </div>
+                        
+                        <div class="col-md-4 col-lg-7 ps-md-5 ps-lg-5">
+                            <h1 class="mb-0 h4">{{ product.title }}</h1>
+                            <p>
+                                <span class="lead">{{ product.author }}</span>
+                                Author
+                            </p>
+                            <p>{{ product.description }}</p>
+                            <div class="border">
+                                <div class="col border-bottom">
+                                    <div class="row p-3">
+                                        <div class="col-6">Prezzo</div>
+                                        <div class="col-6 text-end"><span class="h4 fw-bold">{{ product.price }}€</span></div>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="row p-3">
+                                        <div class="col-6">
+                                            <label for="select">Qty</label>
+                                            <select id="select">
+                                                {% for i in product.get_qty %}
+                                                    <option value="">{{ i|add:1 }}</option>
+                                                {% endfor %}  
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="col-6 text-end">
+                                            <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-secondary btn-sm" >Add to cart</button>
+                                            <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-secondary btn-sm" >Delete from cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+
+            {% endfor %}
+            
+            <div class="col-12 text-end">
+                <div class="h6 fw-bold">Total price: <span id="subtotal">{{ cart.get_tot_price }}</span></div>
             </div>
         </div>
-    {% endfor %}
+    </main>
 {% endblock content %}
 

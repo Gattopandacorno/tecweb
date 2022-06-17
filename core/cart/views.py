@@ -9,9 +9,9 @@ def cart(request):
     return {'cart': Cart(request)}
 
 def cart_summary(request):
-    products = Product.objects.all() # TODO: not all the products
-    ctx = { 'products': products }
-    return render(request, 'store/cart/summary.html', {})
+    cart = Cart(request)
+    ctx = { 'cart': cart }
+    return render(request, 'store/cart/summary.html', ctx)
 
 def cart_add(request):
     cart = Cart(request)
