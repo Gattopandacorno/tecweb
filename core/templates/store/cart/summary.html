@@ -6,53 +6,80 @@
 
 
 {% block content %}
-    <main>
+    <main class="my-5">
         <div class="container">
             <h1 class="h5">Shopping cart</h1>
 
             {% for item in cart %}
                 {% with product=item.product %}
-                    <div class="row mb-2">
-                        <div class="col-md-7">
-                            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                                <div class="col-auto d-none d-lg-block">
-                                    <img href="{{ product.get_absolute_url }}" src="{{ product.image.url }}" class="featurette-image img-fluid mx-auto" alt="Responsive image" width="170px"  height="270px" preserveAspectRatio="xMidYMid slice" focusable="false"></img>
-                                </div>
-                                <div class="col p-4 d-flex flex-column position-static">
-                                    <h3 class="mb-0">{{ product.title|title }}</h3>
-                                    <div class="mb-1 text-muted">{{ product.author|title }}</div>
-
-                                    <div class="border">
-                                        <div class="col border-bottom">
-                                            <div class="row p-3">
-                                                <div class="col-6">Prezzo</div>
-                                                <div class="col-6 text-end"><span class="h4 fw-bold">{{ product.price }}€</span></div>
-                                            </div>
-                                        </div>
-            
-                                        <div class="col">
-                                            <div class="row p-3">
-                                                <div class="col-6">
-                                                    <label for="select">Qty</label>
+                    <div data-index="{{ product.id }}" class="row mb-4 border product-item">
+                        <div class="row mb-1">
+                            <div class="col-md-9">
+                                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                    <div class="col-auto d-none d-lg-block">
+                                        <img href="{{ product.get_absolute_url }}" src="{{ product.image.url }}" class="featurette-image img-fluid mx-auto" alt="Responsive image" width="170px"  height="270px" preserveAspectRatio="xMidYMid slice" focusable="false"></img>
+                                    </div>
+                                    <div class="col p-4 d-flex flex-column position-static">
+                                        <h3 class="mb-0">{{ product.title|title }}</h3>
+                                        <div class="mb-1 text-muted">{{ product.author|title }}</div>
+    
+                                        <div class="border">
+                                            <div class="col border-bottom">
+                                                <div class="row p-3">
+                                                    <div class="col-6">Prezzo</div>
+                                                    <div class="col-6 text-end"><span class="h4 fw-bold">{{ product.price }}€</span></div>
                                                 </div>
                                             </div>
-                                            <div class="row-6 text-end">
-                                                <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-secondary btn-sm" >Add to cart</button>
-                                                <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-secondary btn-sm" >Delete from cart</button>
+                
+                                            <div class="col">
+                                                <div class="row p-3">
+                                                    <div class="col-6">
+                                                        <label for="select">Qty</label>
+                                                        <select id="select" >
+                                                            {% for i in product.get_qty %}
+                                                                {% if i|add:1 == item.qty %}
+                                                                    <option selected> {{ item.qty}} </option>
+                                                                {% else %}  <option value="">{{ i|add:1 }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}  
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row-6">
+                                                    <button type="button" id="update-button" data-index="{{ product.id }}" class="btn btn-secondary btn-sm update-button" >Update</button>
+                                                    <button type="button" id="delete-button" data-index="{{ product.id }}" class="btn btn-secondary btn-sm delete-button" >Delete</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>     
+                                    </div>     
+                                </div>
                             </div>
                         </div>
                     </div>
                 {% endwith %}
             {% endfor %}
             
-            <div class="col-12 text-end">
-                <div class="h6 fw-bold">Total price: <span id="subtotal">{{ cart.get_tot_price }}</span></div>
+            <div class="col-9 text-end">
+                <div class="h3 fw-bold">Total price: <span id="subtotal">{{ cart.get_tot_price }}€</span></div>
             </div>
         </div>
     </main>
+
+    <script>
+        $(document).on('click', '.delete-button', function (e)
+        {
+            e.preventDefault();
+            var prodid = $(this).data('index');
+            $.ajax({
+                    type: 'POST',
+                    url: '{% url "cart:cart_del" %}',
+                    data: { productid: $(this).data('index'),
+                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                            action: 'post' },
+                    success: function (json){ $('.product-item[data-index="' + prodid + '"]').remove(); },
+                    error: function (xhr, errmsg, err){}
+                    });
+        })
+    </script>
 {% endblock content %}
 

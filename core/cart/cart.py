@@ -18,6 +18,12 @@ class Cart():
         
         self.session.modified = True # Tells django that we changed the session
 
+    def delete(self, product):
+        product_id = str(product)
+        if product_id in self.cart:
+            del self.cart[product_id]
+            self.session.modified = True
+
     def __iter__(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
@@ -29,9 +35,11 @@ class Cart():
         for item in cart.values():
             item['price'] = Decimal(item['price'])
             item['tot_price'] = item['price'] * item['qty']
-        
-        yield item
+            yield item
 
     def __len__(self): # Counts the qty of the items in the cart
         return sum(item['qty'] for item in self.cart.values())
+
+    def get_tot_price(self):
+        return sum(item['tot_price'] for item in self.cart.values())
         
