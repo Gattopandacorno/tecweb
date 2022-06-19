@@ -21,7 +21,6 @@ class Category(models.Model):
 
 class Product(models.Model):
     category    = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE)
-    created_by  = models.ForeignKey(User, related_name='product_creator', on_delete=models.CASCADE,) # TODO: remove
     title       = models.CharField(max_length=255)
     author      = models.CharField(max_length=255, default='Not found')
     description = models.TextField(blank=True)
