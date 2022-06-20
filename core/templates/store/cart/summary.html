@@ -35,10 +35,9 @@
                                                 <div class="row p-3">
                                                     <div class="col-6">
                                                         <label for="select">Qty</label>
-                                                        <select id="select" >
+                                                        <select id="select{{product.id}}">
                                                             {% for i in product.get_qty %}
-                                                                {% if i|add:1 == item.qty %}
-                                                                    <option selected> {{ item.qty}} </option>
+                                                                {% if i|add:1 == item.qty %} <option selected> {{ item.qty}} </option>
                                                                 {% else %}  <option value="">{{ i|add:1 }}</option>
                                                                 {% endif %}
                                                             {% endfor %}  
@@ -60,7 +59,7 @@
             {% endfor %}
             
             <div class="col-9 text-end">
-                <div class="h3 fw-bold">Total price: <span id="subtotal">{{ cart.get_tot_price }}€</span></div>
+                <div class="h3 fw-bold">Total price: <div id="subtotal">{{ cart.get_tot_price }}€</div></div>
             </div>
         </div>
     </main>
@@ -77,6 +76,22 @@
                             csrfmiddlewaretoken: "{{ csrf_token }}",
                             action: 'post' },
                     success: function (json){ $('.product-item[data-index="' + prodid + '"]').remove(); },
+                    error: function (xhr, errmsg, err){}
+                    });
+        })
+
+        $(document).on('click', '.update-button', function (e)
+        {
+            e.preventDefault();
+            var prodid = $(this).data('index');
+            $.ajax({
+                    type: 'POST',
+                    url: '{% url "cart:cart_update" %}',
+                    data: { productid: $(this).data('index'),
+                            productqty: $('#select' + prodid + 'option:selected').text(),
+                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                            action: 'post' },
+                    success: function (json){ },
                     error: function (xhr, errmsg, err){}
                     });
         })

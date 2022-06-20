@@ -13,16 +13,29 @@ class Cart():
         self.cart = cart
         
     def add(self, product, qty):
-        if product.id not in self.cart:
-            self.cart[product.id] = {'price': str(product.price), 'qty': int(qty) }
+        product_id = str(product.id)
+
+        if product_id  in self.cart:
+            self.cart[product_id]['qty'] = qty
+        else:   
+            self.cart[product_id] = {'price': str(product.price), 'qty': qty }
         
         self.session.modified = True # Tells django that we changed the session
 
     def delete(self, product):
         product_id = str(product)
+
         if product_id in self.cart:
             del self.cart[product_id]
             self.session.modified = True
+
+    def update(self, product, qty):
+        product_id = str(product)
+
+        if product_id in self.cart:
+            self.cart[product_id]['qty'] = qty
+        
+        self.session.modified = True
 
     def __iter__(self):
         product_ids = self.cart.keys()

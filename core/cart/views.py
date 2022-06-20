@@ -31,5 +31,20 @@ def cart_del(request):
     if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('productid'))
         cart.delete(product=product_id)
-        response = JsonResponse({'Success': True})
+
+        cartqty = cart.__len__()
+        carttot = cart.get_tot_price()
+        response = JsonResponse({'qty': cartqty, 'subtotal': carttot})
+        return response
+
+def cart_update(request):
+    cart = Cart(request)
+    if request.POST.get('action') == 'post':
+        product_id = int(request.POST.get('productid'))
+        qty = int(request.POST.get('productqty'))
+        cart.update(product=product_id, qty=qty)
+
+        cartqty = cart.__len__()
+        carttot = cart.get_tot_price()
+        response = JsonResponse({'qty': cartqty, 'subtotal': carttot})
         return response
