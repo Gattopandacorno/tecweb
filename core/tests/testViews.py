@@ -13,10 +13,10 @@ class TestViewResponse(TestCase):
     def setUp(self):
         self.c = Client()
         self.factory = RequestFactory()
-        Category.objects.create(name='django', slug='django')
+        Category.objects.create(name='manga', slug='manga')
         User.objects.create(username='admin')
-        Product.objects.create(category_id=1, title='django beginners', created_by_id=1,
-                                           slug='django-beginners', price=4.50, image='images' )
+        Product.objects.create(category_id=1, title='Manga1', created_by_id=1,
+                                           slug='Manga1', price=4.50, image='images' )
 
     # TEST on url
 
@@ -25,11 +25,11 @@ class TestViewResponse(TestCase):
         self.assertEqual(resp.status_code, 200)
     
     def test_product_detail(self):
-        resp = self.c.get(reverse_lazy('store:product_detail', args=['django-beginners']))
+        resp = self.c.get(reverse_lazy('store:product_detail', args=['Manga1']))
         self.assertEqual(resp.status_code, 200)
 
     def test_category_detail(self):
-        resp = self.c.get(reverse_lazy('store:category_list', args=['django']))
+        resp = self.c.get(reverse_lazy('store:category_list', args=['manga']))
         self.assertEqual(resp.status_code, 200)
 
     """  
@@ -50,7 +50,7 @@ class TestViewResponse(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_view_fun(self):
-        req = self.factory.get('/django-beginners')
+        req = self.factory.get('/Manga1')
         resp = product_all(req)
         html = resp.content.decode('utf8')
 

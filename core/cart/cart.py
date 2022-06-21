@@ -54,5 +54,5 @@ class Cart():
         return sum(item['qty'] for item in self.cart.values())
 
     def get_tot_price(self):
-        return sum(item['tot_price'] for item in self.cart.values())
+        return sum(int(item['qty'])*Decimal(item['price']) for item in self.cart.values())
         
