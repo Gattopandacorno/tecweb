@@ -15,10 +15,10 @@ class Cart():
     def add(self, product, qty):
         product_id = str(product.id)
 
-        if product_id  in self.cart:
+        if product_id in self.cart:
             self.cart[product_id]['qty'] = qty
         else:   
-            self.cart[product_id] = {'price': str(product.price), 'qty': qty }
+            self.cart[product_id] = {'price': str(product.price), 'qty': int(qty) }
         
         self.session.modified = True # Tells django that we changed the session
 
@@ -54,5 +54,5 @@ class Cart():
         return sum(item['qty'] for item in self.cart.values())
 
     def get_tot_price(self):
-        return sum(int(item['qty'])*Decimal(item['price']) for item in self.cart.values())
+        return sum(item['qty']*Decimal(item['price']) for item in self.cart.values())
         

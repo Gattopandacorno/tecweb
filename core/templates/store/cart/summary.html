@@ -95,8 +95,8 @@
                             csrfmiddlewaretoken: "{{ csrf_token }}",
                             action: 'post' },
                     success: function (json){ 
-                        document.getElementById("cartqty").innerHTML = json.qty;
-                        document.getElementById("subtotal").innerHTML = json.subtotal; },
+                        document.getElementById("subtotal").innerHTML = json.subtotal;
+                        document.getElementById("cartqty").innerHTML = json.qty; },
                     error: function (xhr, errmsg, err){ }
                     });
         })

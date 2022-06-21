@@ -6,7 +6,7 @@ from store.models import Category, Product
 class TestCategoriesModel(TestCase):
     
     def setUp(self):
-        self.data = Category.objects.create(name='manga', slug='manga')
+        self.data = Category.objects.create(name='django', slug='django')
 
     def test_category_model_entry(self):
         data = self.data
@@ -14,17 +14,17 @@ class TestCategoriesModel(TestCase):
 
     def test_category_model_entry(self):
         data = self.data
-        self.assertEqual(str(data), 'manga')
+        self.assertEqual(str(data), 'django')
 
 
 
 class TestProductModel(TestCase):
 
     def setUp(self):
-        Category.objects.create(name='manga', slug='manga')
+        Category.objects.create(name='django', slug='django')
         User.objects.create(username='admin')
-        self.data = Product.objects.create(category_id=1, title='Manga1', created_by_id=1,
-                                           slug='Manga1', price=4.50, image='images' )
+        self.data = Product.objects.create(category_id=1, title='django beginners',
+                                           slug='django-beginners', price=4.50, image='images' )
     
     def test_product_model_entry(self):
         data = self.data
@@ -32,4 +32,4 @@ class TestProductModel(TestCase):
 
     def test_product_model_entry(self):
         data = self.data
-        self.assertEqual(str(data), 'Manga1')
+        self.assertEqual(str(data), 'django beginners')
