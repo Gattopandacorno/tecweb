@@ -11,7 +11,7 @@ def cart(request):
 def cart_summary(request):
     cart = Cart(request)
     ctx = { 'cart': cart }
-    return render(request, 'store/cart/summary.html', ctx)
+    return render(request, 'cart/summary.html', ctx)
 
 def cart_add(request):
     cart = Cart(request)
