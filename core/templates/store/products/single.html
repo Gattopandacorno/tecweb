@@ -2,7 +2,7 @@
 
 
 {% block content %}
-        <div class="container-fluid">
+        <div class="container" style="max-width: 1000px">
             <main class="pt-5 my-5 pb-5">
                 <div class="row g-3">
                     <div class="col-md-3 col-lg-5 order-md-first bg-white">
@@ -10,12 +10,11 @@
                     </div>
                     
                     <div class="col-md-4 col-lg-7 ps-md-5 ps-lg-5">
-                        <h1 class="mb-0 h4">{{ product.title }}</h1>
+                        <h1 class="mb-0 h4">{{ product.title|title }}</h1>
                         <p>
+                            Author:
                             <span class="lead">{{ product.author }}</span>
-                            Author
                         </p>
-                        <p>{{ product.description }}</p>
                         <div class="border">
                             <div class="col border-bottom">
                                 <div class="row p-3">
@@ -36,10 +35,17 @@
                                     </div>
                                     
                                     <div class="col-6 text-end">
-                                        <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-secondary btn-sm" >Add to cart</button>
+                                        <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-outline-success" >Add to cart</button>
+                                        <button type="button" id="add-button" value="{{product.id}}" class="btn btn-outline-danger">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                              </svg>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+                            <p>{{ product.description|capfirst }}</p>
                         </div>
                     </div>
                 </div>

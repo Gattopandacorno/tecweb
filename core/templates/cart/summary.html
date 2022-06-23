@@ -8,7 +8,23 @@
 {% block content %}
     <main class="py-5">
         <div class="container">
-            <div class="my-5 pb-5 h4">Shopping cart</div>
+            <div class="my-5 pb-3 h4">Shopping cart</div>
+
+
+            <div class="pb-4 row g-3">
+                <div class="col-12 bg-light p-3 d-flex justify-content-between">
+                    <div class="d-flex d-flex-inline">
+                        <a class="nav-link border-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shipping options</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li class="selected">
+                                <a class="dropdown-item" href="#">Standard delivery</a> 
+                                <a class="dropdown-item" href="#">Fast delivery</a> 
+                            </li>
+                        </ul>
+                    </div>
+                </div>   
+            </div>
+
 
             {% for item in cart %}
                 {% with product=item.product %}
@@ -59,7 +75,15 @@
             {% endfor %}
             
             <div class="col-9 text-end">
+                     
+                <div class="">Sub Total: <span class="fw-bold"></span><div id="sub" class="d-inline-flex fw-bold">{{cart.get_tot_price}}€</div></div>
+                <div id="">Shipping: <span class="fw-bold">0.00€</span></div>
+                
                 <div class="h3 fw-bold">Total price: <a id="subtotal">{{ cart.get_tot_price }}</a>€</div>
+
+                <a role="button" href="#" class="btn btn-outline-success fw-bold" type="button">Checkout</a>
+                <button class="btn btn-outline-primary" type="button">Save for later</button> 
+
             </div>
         </div>
     </main>

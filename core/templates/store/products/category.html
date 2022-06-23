@@ -12,18 +12,19 @@
 <main>
     <div class="album py-5 bg-ligth">
         <div class="container">
-        <div class="my-5 pb-5 h4">{{ category.name|title }}</div>
+            <div class="my-5 pb-5 h4">{{ category.name|title }}</div>
             <div class="row row-cols-1 row-cols-sm-5 row-cols-md-6 g-3">
                 {% for p in products %}
                     <div class="col">
-                        <div class="card shadow-sm">
-                            <img src="{{ p.image.url }}" class="img-fluid mx-auto" alt="Responsive image" width="170px"  height="270px" preserveAspectRatio="xMidYMid slice" focusable="false"></img>
-        
+                        <div class="card border-0">
+            
                             <div class="card-body">
                                 <p class="card-text">
-                                    <a class="text-dark text-decoration-none" href="{{ p.get_absolute_url }}">{{ p.title }}</a>
+                                    <a class="text-dark text-decoration-none" href="{{ p.get_absolute_url }}">{{ p.title|title }}</a>
                                 </p>
                             </div>
+                            <img class="img-fluid mx-auto" alt="Responsive image" src="{{ p.image.url }}"  width="170px"  height="270px"></img>
+
                         </div>
                     </div>
                 {% endfor %}
