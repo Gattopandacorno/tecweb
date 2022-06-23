@@ -69,7 +69,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 'store.views.categories',
-                'cart.views.cart',
+                'cart.views.cart',               
             ],
         },
     },
