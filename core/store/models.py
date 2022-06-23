@@ -2,6 +2,8 @@ from email.policy import default
 from django.db import models
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
+from django.conf import settings
+
 
 # Create your models here.
 
@@ -32,6 +34,7 @@ class Product(models.Model):
     is_active   = models.BooleanField(default=True)
     created     = models.DateTimeField(auto_now_add=True) # TODO: remove
     updated     = models.DateTimeField(auto_now=True) # TODO: remove
+    created_by  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('-created',)
