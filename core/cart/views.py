@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 from .cart import Cart
 from store.models import  Product
@@ -48,3 +49,11 @@ def cart_update(request):
         carttot = cart.get_tot_price()
         response = JsonResponse({'qty': cartqty, 'subtotal': carttot })
         return response
+
+@login_required
+def CartView(request):
+    cart = Cart(request)
+    tot  = str(cart.get_tot_price())
+    tot  = tot.replace('.', '')
+    tot  = int(tot)
+    return render(request, 'payment/home.html')
