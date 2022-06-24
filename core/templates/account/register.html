@@ -38,9 +38,14 @@
                                     {{ form.validation_pass }}
                                     
                                     <div class="text-center">
-                                        <button id="registration" class="btn btn-outline-success btn-block" type="submit">Register</button>                                    
-                                        <button class="btn btn-outline-success btn-block" href="#">Login</button>
+                                        <button class="btn btn-outline-success btn-block py-2 mb-1 mt-5 fw500 w-100" href="{% url 'account:registration' %}">Register</button>
+                                        <input type="hidden" name="next" value="{{ next }}"></input>
                                     </div>
+                                </form>
+
+                                <form class="text-center account-form p-4 rounded col-lg-10 mx-auto">
+                                    {% csrf_token %}
+                                    <a href="{% url 'account:login' %}">You already have one? Login here!</a>                                
                                 </form>
                             </div>
                         </div>

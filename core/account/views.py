@@ -45,7 +45,7 @@ def edit_details(request):
 @login_required
 def delete(request):
     user = UserBase.objects.get(username=request.user)
-    #user.is_active = False
+    #user.is_active = False  #TODO:ACTIVATE TO DELETE THE USER 
     user.save()
     logout(request)
     return redirect('account:confirmation')

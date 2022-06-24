@@ -1,7 +1,7 @@
 ADMIN CREDENTIALS
 
-    email: test@test.com
-    username: testone
+    email: admin@a.com
+    username: admin
     password: admin
 
 USER CREDENTIALS
