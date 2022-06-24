@@ -1,5 +1,6 @@
 from re import template
 from django.urls import path
+from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 
 
@@ -9,6 +10,7 @@ from . import views
 app_name = 'account'
 
 urlpatterns = [
+    path('profile/confirmation/', TemplateView.as_view(template_name='account/confirmation.html'), name='confirmation'),
     path('profile/delete/', views.delete, name='delete'),
     path('profile/edit/', views.edit_details, name='edit_details'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),

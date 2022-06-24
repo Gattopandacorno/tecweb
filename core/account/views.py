@@ -20,7 +20,7 @@ def registration(request):
             user.is_active = True
             user.save()
             login(request, user)
-            return redirect('account/profile')
+            return redirect('/')
     else:
         registerform = RegistrationForm()
   
@@ -45,7 +45,7 @@ def edit_details(request):
 @login_required
 def delete(request):
     user = UserBase.objects.get(username=request.user)
-    user.is_active = False
+    #user.is_active = False
     user.save()
     logout(request)
-    return redirect('account:confirm_delete')
+    return redirect('account:confirmation')

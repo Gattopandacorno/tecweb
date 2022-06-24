@@ -1,7 +1,5 @@
 {% extends '../store/base.html' %}
-
-{% block title %}Edit profile{% endblock title %}
-
+{% block title %}Delete account{% endblock title %}
 
 {% block content %}
     <div class="container-fluid">
@@ -11,17 +9,20 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-12 col-lg-7  mx-auto">
-                                <form class="account-form p-4 rounded col-lg-10 mx-auto" method="post" ecntype="multipart/form-data">
+                                <form class="account-form p-4 rounded col-lg-10 mx-auto" action="{% url 'account:login' %}" method="post">
                                     {% csrf_token %}
-                                    <h3 class="text-center py-5">Change your profile</h3>
+                                    <h3 class="alert alert-danger text-center py-5">Delete account. 
+                                        <br>
+                                        This account will be deleted:
+                                    </h3>
             
                                     
-
                                     {% if form.errors %}
                                         <div class="alert alert-danger" role="alert">Error: Try again</div>
                                     {% endif %}
 
                                     {% csrf_token %}
+
                                     
                                     <label class="small font-weight-bold">{{ userform.email.label}}</label>
                                     {{ userform.email }}
@@ -30,24 +31,16 @@
                                     {{ userform.username }}
                                     
                                     <div class="text-center">
-                                        <button class="btn btn-outline-success btn-block py-2 mb-4 mt-5" type="submit" value="Save changes">
-                                        Save
+                                        <button class="btn btn-outline-danger btn-block py-2 mb-4 mt-5" type="submit" value="Save changes">
+                                        Delete
                                         </button>
-                         
                                     </div>
 
                                     {% if userform.is_valid %}
                                         <div class="alert alert-success" role="alert">
-                                            Profile successfully updated!
-                                            <a href="{% url "account:profile" %}">Return to your profile</a>
+                                            Profile successfully deleted!
                                         </div>
                                     {% endif %}
-                                </form>
-                                
-                                <form class="text-center account-form px-4" action="{% url "account:delete" %}" method="post">
-                                    {% csrf_token %}
-                                    <p class="h2 pt-4 font-weight-bold">Want to delete your account?</p>
-                                    <button type="submit" role="button" class="btn btn-outline-danger btn-block">Delete</button>
                                 </form>
                             </div>
                         </div>
