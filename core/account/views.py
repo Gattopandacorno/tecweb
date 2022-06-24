@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 
-from .forms import RegistrationForm
+from .forms import RegistrationForm, UserEditForm
 from .models import UserBase
 
 def registration(request):
@@ -20,7 +20,7 @@ def registration(request):
             user.is_active = True
             user.save()
             login(request, user)
-            return redirect('account/dashboard')
+            return redirect('account/profile')
     else:
         registerform = RegistrationForm()
   
@@ -28,5 +28,24 @@ def registration(request):
 
 
 @login_required
-def dashboard(request):
-    return render(request, 'account/dashboard.html')
+def profile(request):
+    return render(request, 'account/profile.html')
+
+@login_required
+def edit_details(request):
+    if request.method == 'POST':
+        userform = UserEditForm(instance=request.user, data=request.POST)
+        if userform.is_valid():
+            userform.save()
+    else:
+        userform = UserEditForm(instance=request.user)
+    
+    return render(request, 'account/edit_details.html', {'userform': userform})
+    
+@login_required
+def delete(request):
+    user = UserBase.objects.get(username=request.user)
+    user.is_active = False
+    user.save()
+    logout(request)
+    return redirect('account:confirm_delete')
