@@ -1,4 +1,5 @@
 
+from logging import PlaceHolder
 from django import forms
 from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm, SetPasswordForm)
 
@@ -48,3 +49,12 @@ class RegistrationForm(forms.ModelForm):
         self.fields['email'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'E-Mail', 'name': 'email', 'id': 'id_email'})
         self.fields['password'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Password'})
         self.fields['validation_pass'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Repeat Password'})
+
+
+
+class UserLoginForm(AuthenticationForm):
+    username = forms.CharField(widget=forms.TextInput(
+                    attrs={'class': 'form-control mb-3', 'placeholder': 'Username', 'id':'login-username'}))
+    
+    password = forms.CharField(widget=forms.PasswordInput(
+                    attrs={'class': 'form-control mb-3', 'placeholder': 'Password', 'id': 'login-pwd'}))
