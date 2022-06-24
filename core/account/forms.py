@@ -1,15 +1,14 @@
-from dataclasses import field
-from logging import PlaceHolder
-from xml.dom import ValidationErr
+
 from django import forms
+from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm, SetPasswordForm)
 
 from .models import UserBase
 
 class RegistrationForm(forms.ModelForm):
     username        = forms.CharField(label='Enter username', min_length=4, max_length=50, help_text='Required')
     email           = forms.EmailField(max_length=100, help_text='Required', error_messages={'required': 'You must provide an email.'})
+    validation_pass = forms.CharField(label='Repeat Password', widget=forms.PasswordInput)
     password        = forms.CharField(label='Password', widget=forms.PasswordInput)
-    validation_pass = forms.CharField(label='repeat Password', widget=forms.PasswordInput)
 
     class Meta:
         model = UserBase
@@ -25,15 +24,6 @@ class RegistrationForm(forms.ModelForm):
         return username
 
 
-    def clean_password(self):
-        cd = self.cleaned_data
-
-        if cd['password'] != cd['validation_pass']:
-            raise forms.ValidationError('PassWords not matching')
-        
-        return cd['validation_pass']
-
-
     def clean_email(self):
         email = self.cleaned_data['email']
 
@@ -41,6 +31,15 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError("Email is already connected to an account")
         
         return email
+
+        
+    def clean_password(self):
+        cd = self.cleaned_data
+
+        if cd['password'] != cd['validation_pass']:
+            raise forms.ValidationError('Passwords not matching')
+        
+        return cd['validation_pass']
 
 
     def __init__(self, *args, **kwargs):

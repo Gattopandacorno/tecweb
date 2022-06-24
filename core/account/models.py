@@ -41,11 +41,12 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     address         = models.CharField(max_length=150, blank=True)
     city            = models.CharField(max_length=150, blank=True)
 
+    is_active       = models.BooleanField(default=False)
     is_staff        = models.BooleanField(default=False)
     created         = models.DateTimeField(auto_now_add=True)
     updated         = models.DateTimeField(auto_now=True)
 
-    obj             = CustomUserManager()
+    objects         = CustomUserManager()
     
     USERNAME_FIELD  = 'email'
     REQUIRED_FIELDS = ['username']

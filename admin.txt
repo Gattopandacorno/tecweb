@@ -1,3 +1,14 @@
-email: test@test.com
-username: testone
-password: admin
+ADMIN CREDENTIALS
+
+    email: test@test.com
+    username: testone
+    password: admin
+
+USER CREDENTIALS
+    email: a@a.com
+    username: user
+    password: user
+
+    email: user@u.com
+    username: user2
+    password: user2
