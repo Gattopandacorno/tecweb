@@ -49,7 +49,7 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     objects         = CustomUserManager()
     
     USERNAME_FIELD  = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'phone_num']
 
 
     class Meta:

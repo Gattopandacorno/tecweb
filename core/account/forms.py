@@ -1,8 +1,8 @@
 
-from logging import PlaceHolder
-from operator import attrgetter
 from django import forms
 from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm, SetPasswordForm)
+from django_countries.fields import CountryField
+
 
 from .models import UserBase
 
@@ -11,6 +11,13 @@ class RegistrationForm(forms.ModelForm):
     email           = forms.EmailField(max_length=100, help_text='Required', error_messages={'required': 'You must provide an email.'})
     validation_pass = forms.CharField(label='Repeat Password', widget=forms.PasswordInput)
     password        = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+    country         = forms.CharField(label='Country')
+    city            = forms.CharField(label='City name', max_length=150)
+    address         = forms.CharField(label='Address' ,max_length=150)
+    phone_num       = forms.CharField(label='Phone number', max_length=15)
+    cap_code        = forms.CharField(label='Postal code', max_length=12)
+    
 
     class Meta:
         model = UserBase
@@ -50,6 +57,12 @@ class RegistrationForm(forms.ModelForm):
         self.fields['email'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'E-Mail', 'name': 'email', 'id': 'id_email'})
         self.fields['password'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Password'})
         self.fields['validation_pass'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Repeat Password'})
+
+        self.fields['country'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Country'})
+        self.fields['city'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'City name'})
+        self.fields['address'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Address'})
+        self.fields['phone_num'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Phone number'})
+        self.fields['cap_code'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Postal code'})
 
 
 

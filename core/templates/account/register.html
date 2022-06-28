@@ -36,6 +36,21 @@
                                     
                                     <label>{{ form.validation_pass.label}}<span class="text-muted small"></span></label>
                                     {{ form.validation_pass }}
+
+                                    <label>{{ form.country.label }}<span class="text-muted small"></span></label>
+                                    {{ form.country }}
+                                    
+                                    <label>{{ form.city.label }}<span class="text-muted small"></span></label> 
+                                    {{ form.city }}
+
+                                    <label>{{ form.address.label }}<span class="text-muted small"></span></label> 
+                                    {{ form.address }}
+                                    
+                                    <label>{{ form.phone_num.label }}<span class="text-muted small"></span></label>
+                                    {{ form.phone_num }}
+                                    
+                                    <label>{{ form.cap_code.label }}<span class="text-muted small"></span></label> 
+                                    {{ form.cap_code }}           
                                     
                                     <div class="text-center">
                                         <button class="btn btn-outline-success btn-block py-2 mb-1 mt-5 fw500 w-100" href="{% url 'account:registration' %}">Register</button>

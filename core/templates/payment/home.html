@@ -9,13 +9,19 @@
                     <div class="container ">
                         <h3 class="text-center">Payment</h3>
                         <div class="row">
-                            <div  id="payment-form" class="col-12 col-lg-6 mx-auto">                        
-                                <form>
-                                    <label for="card-element">Credit or debit card</label>
-                                    <input type="text" class="form-control" id="postCode" placeholder="" required>
+                            <div class="col-12 col-lg-6 mx-auto" action="">                        
+                                <form  class="text-center" action="{% url "payment:confirm_pay" %}">
                                     
-                                    <!-- TODO: confirmation payment --></!-->
-                                    <button id="submit"  href="#" class="mt-5 btn btn-outline-primary w-100 fw-bold">Pay</button>
+                                    {% csrf_token %}
+
+                                    <label for="card-element">Credit or debit card</label>
+                                    <input type="text" class="form-control"  placeholder="" required>
+                                    <div>
+                                        <button class="btn btn-outline-success btn-block py-2 mb-4 mt-5" type="submit" value="Save changes">
+                                        Save
+                                        </button>
+                         
+                                    </div>
                                   </form>  
                             </div>
                         </div>
