@@ -42,6 +42,7 @@ def profile(request):
 def edit_details(request):
     if request.method == 'POST':
         userform = UserEditForm(instance=request.user, data=request.POST)
+        
         if userform.is_valid():
             userform.save()
     else:

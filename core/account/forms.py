@@ -21,7 +21,7 @@ class RegistrationForm(forms.ModelForm):
 
     class Meta:
         model = UserBase
-        fields = {'username', 'email',}
+        fields = {'username', 'email', 'country', 'city', 'address', 'phone_num', 'cap_code'}
 
     def clean_username(self):
         username = self.cleaned_data['username'].lower()
@@ -75,23 +75,24 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserEditForm(forms.ModelForm):
-    email = forms.EmailField(label='Account email cannot be changes', max_length=200, widget=forms.TextInput(
+    email       = forms.EmailField(label='Account email cannot be changes', max_length=200, widget=forms.TextInput(
                     attrs={'class': 'form-control mb-3', 'placeholder': 'email', 'id': 'form-email', 'readonly': 'readonly'}))
-    username = forms.CharField(label='Username', min_length=4, max_length=50, widget=forms.TextInput(
+    username    = forms.CharField(label='Username', min_length=4, max_length=50, widget=forms.TextInput(
                     attrs={'class': 'form-control mb-3', 'placeholder': 'username', 'id': 'form-firstname', 'readonly': 'readonly'}))
     
-    country = forms.CharField(label='Country', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Country'}))
-    city = forms.CharField(label='City name', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'City name'}))
-    address = forms.CharField(label='Address', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Address'}))
-    phone_num = forms.IntegerField(label='Phone number', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Phone number'}))
-    cap_code = forms.IntegerField(label='Postal code', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Postal code'}))
+    country     = forms.CharField(label='Country', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Country'}))
+    city        = forms.CharField(label='City name', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'City name'}))
+    address     = forms.CharField(label='Address', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Address'}))
+    phone_num   = forms.IntegerField(label='Phone number', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Phone number'}))
+    cap_code    = forms.IntegerField(label='Postal code', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Postal code'}))
 
     
     class Meta:
         model = UserBase
-        fields = ('email', 'username',)
+        fields = ('email', 'username', 'country', 'city', 'address', 'phone_num', 'cap_code')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].required = True
         self.fields['email'].required = True
+       
