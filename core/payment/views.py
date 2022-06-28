@@ -19,3 +19,7 @@ def CartView(request):
     return render(request, 'payment/home.html', context=ctx)
 
 
+def order_placed(request):
+    cart = Cart(request)
+    cart.clear()
+    return render(request, 'account/profile.html')

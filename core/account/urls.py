@@ -10,6 +10,7 @@ from . import views
 app_name = 'account'
 
 urlpatterns = [
+    path('profile/user_history/', views.user_history, name='user_history'),
     path('profile/confirmation/', TemplateView.as_view(template_name='account/confirmation.html'), name='confirmation'),
     path('profile/delete/', views.delete, name='delete'),
     path('profile/edit/', views.edit_details, name='edit_details'),

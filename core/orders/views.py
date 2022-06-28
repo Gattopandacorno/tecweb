@@ -18,10 +18,18 @@ def add(request):
         if Order.objects.filter(order_key=order_key).exists():
             pass
         else: 
-            order = Order.objects.create(user=user, tot_paid=carttot, order_key=order_key)
+            order = Order.objects.create(user=user, tot_paid=carttot, order_key=order_key, billing_status=True)
 
             for item in cart:
                 OrderItem.objects.create(order=order,product=item['product'], price=item['price'], qty=item['qty'])
-            
+        
+        cart.clear()
+        
         response = JsonResponse({ 'success': 'test' })
         return response
+
+def history(request):
+    user = request.user
+    orders = Order.objects.filter(user=user, billing_status=True)
+    
+    return orders
