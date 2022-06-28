@@ -9,20 +9,20 @@
                     <div class="container ">
                         <h3 class="text-center">Payment</h3>
                         <div class="row">
-                            <div class="col-12 col-lg-6 mx-auto" action="">                        
-                                <form  class="text-center" action="{% url "payment:confirm_pay" %}">
+                            <div id="payment-form" class="col-12 col-lg-6 mx-auto">                        
+                                <form class="text-center">
                                     
                                     {% csrf_token %}
 
                                     <label for="card-element">Credit or debit card</label>
                                     <input type="text" class="form-control"  placeholder="" required>
+                            
                                     <div>
-                                        <button class="btn btn-outline-success btn-block py-2 mb-4 mt-5" type="submit" value="Save changes">
-                                        Save
+                                        <button id="submit" class="btn btn-outline-success btn-block py-2 mb-4 mt-5" data-secret="{{ client_secret }}">
+                                        Pay
                                         </button>
-                         
                                     </div>
-                                  </form>  
+                                </form>  
                             </div>
                         </div>
                     </div>
@@ -30,4 +30,25 @@
             </div>
         </div>
     </div>
+
+    <script>
+        var form = document.getElementById('payment-form');
+
+        form.addEventListener('submit', function(e)
+        {
+            e.preventDefault();
+            var el = document.getElementById('submit');
+
+            $.ajax({ type: 'POST',    
+                url: '{% url "orders:add" %}',
+                data: { order_key: el.getAttribute('data-secret'),
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    action: 'post' },        
+                success: function (json){ 
+                    window.location.replace('{% url "payment:confirm_pay" %}')},
+                
+                error: function (xhr, errmsg, err){}
+                });
+        })
+    </script>
 {% endblock content %}

@@ -2,6 +2,9 @@ from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
+import random
+import string
+
 from .cart import Cart
 from store.models import  Product
 
@@ -56,4 +59,8 @@ def CartView(request):
     tot  = str(cart.get_tot_price())
     tot  = tot.replace('.', '')
     tot  = int(tot)
-    return render(request, 'payment/home.html')
+
+    key = ''.join(random.choice(string.ascii_lowercase) for i in range(20))
+
+    ctx = {'client_secret': key}
+    return render(request, 'payment/home.html', context=ctx )
