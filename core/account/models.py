@@ -35,9 +35,9 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     username        = models.CharField(max_length=150, unique=True)
     about           = models.TextField(_('about'), blank=True)
 
-    country         = CountryField()
-    phone_num       = models.CharField(max_length=15, blank=True)
-    cap_code        = models.CharField(max_length=12, blank=True)
+    country         = models.CharField(max_length=150 ,blank=True)
+    phone_num       = models.CharField(max_length=11, blank=True)
+    cap_code        = models.CharField(max_length=5, blank=True)
     address         = models.CharField(max_length=150, blank=True)
     city            = models.CharField(max_length=150, blank=True)
 

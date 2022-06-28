@@ -17,6 +17,13 @@ def registration(request):
             user = registerform.save(commit=False)
             user.email = registerform.cleaned_data['email']
             user.set_password(registerform.cleaned_data['password'])
+
+            user.country = registerform.cleaned_data['country']
+            user.city = registerform.cleaned_data['city']
+            user.address = registerform.cleaned_data['address']
+            user.phone_num = registerform.cleaned_data['phone_num']
+            user.cap_code = registerform.cleaned_data['cap_code']
+            
             user.is_active = True
             user.save()
             login(request, user)
