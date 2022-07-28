@@ -1,6 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
+from django.urls import reverse_lazy
 
 from .models import Category, Product
+from .forms import RateForm
+
 
 # Create your views here.
 
@@ -23,3 +26,25 @@ def category_list(request,slug):
     ctx = { 'category': category, 
             'products': products }
     return render(request, 'store/products/category.html', context=ctx)
+
+
+def rate(request, slug):
+    product = Product.objects.get(slug=slug)
+    user = request.user
+
+    if request.method == 'POST':
+        form = RateForm(request.POST)
+        if form.is_valid():
+            rate = form.save(commit=False)
+            rate.user = user
+            rate.product = product
+            rate.save()
+            return HttpResponseRedirect(reverse_lazy('store/products/rating.html'), args=[slug])
+        
+        else:
+            form = RateForm()
+        
+        ctx = { 'form': form,
+                'product': product}
+
+        return render(request, 'store/products/rating.html', context=ctx)

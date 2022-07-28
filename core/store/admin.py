@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Product
+from .models import Category, Product, Review
 
 # Register your models here.
 
@@ -16,3 +16,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['in_stock', 'is_active']
     list_editable = ['price', 'in_stock']
     prepopulated_fields = {'slug': ('title',)}
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['user', 'product', 'text', 'rate']
