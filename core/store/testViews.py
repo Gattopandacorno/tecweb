@@ -1,12 +1,12 @@
 from django.test import TestCase, Client
-from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.http import HttpRequest
 from django.conf import settings
 from importlib import import_module
 
-from store.models import Category, Product
-from store.views import product_all
+from .models import Category, Product
+from .views import product_all
+from account.models import UserBase
 
 
 class TestViewResponse(TestCase):
@@ -14,7 +14,7 @@ class TestViewResponse(TestCase):
     def setUp(self):
         self.c = Client()
         Category.objects.create(name='django', slug='django')
-        User.objects.create(username='admin')
+        UserBase.objects.create(username='admin')
         Product.objects.create(category_id=1, title='django beginners',
                                            slug='django-beginners', price=4.50, image='images' )
 
@@ -48,7 +48,6 @@ class TestViewResponse(TestCase):
         html = resp.content.decode('utf8')
 
         self.assertIn('<title>MangaStore</title>', html)
-        self.assertTrue(html.startswith('\n<!DOCTYPE html>\n'))
         self.assertEqual(resp.status_code, 200)
 
     
