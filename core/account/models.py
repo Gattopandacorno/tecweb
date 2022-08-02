@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, PermissionsMixin)
-from django_countries.fields import CountryField
 from django.utils.translation import gettext_lazy as _
 
 
@@ -43,6 +42,7 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
 
     is_active       = models.BooleanField(default=False)
     is_staff        = models.BooleanField(default=False)
+    is_seller       = models.BooleanField(default=False)
     created         = models.DateTimeField(auto_now_add=True)
     updated         = models.DateTimeField(auto_now=True)
 

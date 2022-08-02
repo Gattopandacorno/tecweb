@@ -65,3 +65,28 @@ def user_history(request):
     ctx = {'orders': orders}
 
     return render(request, 'account/user_history.html', context=ctx)
+
+@login_required
+def add_seller(request):
+    if request.method == 'POST':
+        registerform = RegistrationForm(request.POST)
+        
+        if registerform.is_valid():
+            usr = registerform.save(commit=False)
+            usr.email = registerform.cleaned_data['email']
+            usr.set_password(registerform.cleaned_data['password'])
+
+            usr.country = registerform.cleaned_data['country']
+            usr.city = registerform.cleaned_data['city']
+            usr.address = registerform.cleaned_data['address']
+            usr.phone_num = registerform.cleaned_data['phone_num']
+            usr.cap_code = registerform.cleaned_data['cap_code']
+            
+            usr.is_active = True
+            usr.is_seller = True
+            usr.save()
+            return redirect('/')
+    else:
+        registerform = RegistrationForm()
+  
+    return render(request, 'account/register.html', { 'form': registerform } )

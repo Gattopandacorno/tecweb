@@ -1,4 +1,3 @@
-from msilib.schema import Billboard
 from django.shortcuts import render
 from django.http.response import JsonResponse
 

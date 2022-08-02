@@ -34,7 +34,6 @@ class Product(models.Model):
     is_active   = models.BooleanField(default=True)
     created     = models.DateTimeField(auto_now_add=True) # TODO: remove
     updated     = models.DateTimeField(auto_now=True) # TODO: remove
-    created_by  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('-created',)
@@ -47,3 +46,19 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+
+
+RATE_CHOICES = [(1, '1 - Trash'), (2, '2 - Bad'), (3, '3 - Ok'), (4, '4 - Nice'), (5, '5 - Perfect')]
+
+class Review(models.Model):
+    user     = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product  = models.ForeignKey(Product, on_delete=models.CASCADE)
+    date     = models.DateTimeField(auto_now_add=True)
+    text     = models.TextField(blank=True)
+    rate     = models.PositiveIntegerField(choices=RATE_CHOICES, blank=True)
+    likes    = models.PositiveIntegerField(default=0)
+    dislikes = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.user.username
