@@ -20,3 +20,7 @@ USER CREDENTIALS
     email: user@us.com
     username: user1
     password: user1
+
+    email: seller@s.com
+    username: seller
+    password: seller
