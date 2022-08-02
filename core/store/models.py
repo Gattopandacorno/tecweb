@@ -34,7 +34,7 @@ class Product(models.Model):
     is_active   = models.BooleanField(default=True)
     created     = models.DateTimeField(auto_now_add=True) # TODO: remove
     updated     = models.DateTimeField(auto_now=True) # TODO: remove
-    created_by  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_by  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=0)
 
     class Meta:
         ordering = ('-created',)

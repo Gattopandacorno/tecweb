@@ -10,12 +10,36 @@
             <div class="col-12"><h1 class="h2">Your Dashboard</h1></div>
             <div class="col-12 d-flex justify-content-between">
                 <div>Manage your personal details</div>
-                <div><a href="{% url 'account:edit_details' %}">Change datail</a></div>
+                <div><a href="{% url 'account:edit_details' %}">Change detail</a></div>
             </div>
             <div class="col-12 d-flex justify-content-between">
                 <div>See all your orders</div>
                 <div><a href="{% url 'account:user_history' %}">Order history</a></div>
             </div>
+
+            {% if user.is_staff %}
+                <div class="col-12 d-flex justify-content-between">
+                    <div>Admin panel</div>
+                    <div><a href="http://127.0.0.1:8000/admin">Enter</a></div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-between">
+                    <div>Add new seller account</div>
+                    <div><a href="#">Add seller</a></div>
+                </div>
+            {% endif %}
+                
+            {% if user.is_seller or user.is_staff %}
+                <div class="col-12 d-flex justify-content-between">
+                    <div>Add a new product</div>
+                    <div><a href="{% url 'store:create_product' %}">Add product</a></div>
+                </div>
+                <div class="col-12 d-flex justify-content-between">
+                    <div>Add a new category</div>
+                    <div><a href="{% url 'store:create_category' %}">Add category</a></div>                 
+                </div>
+            {% endif %}
+
         </div>
     </main>
 {% endblock content %}

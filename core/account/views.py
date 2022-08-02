@@ -65,3 +65,4 @@ def user_history(request):
     ctx = {'orders': orders}
 
     return render(request, 'account/user_history.html', context=ctx)
+
