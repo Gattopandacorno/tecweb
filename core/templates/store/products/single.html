@@ -34,10 +34,12 @@
                                         </select>
                                     </div>
                                     
-                                    <div class="col text-end">
-                                        <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-outline-success" >Add to cart</button>                     
-                                        <button type="button" class="btn btn-outline-warning">Rate</button>                     
-                                    </div>
+                                    {% if not user.is_seller %}
+                                        <div class="col text-end">
+                                            <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-outline-success" >Add to cart</button>                     
+                                            <button type="button" class="btn btn-outline-warning">Rate</button>                     
+                                        </div>  
+                                    {% endif %}
                                 </div>
                             </div>
                             <p>{{ product.description|capfirst }}</p>       
