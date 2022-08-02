@@ -1,3 +1,5 @@
+import datetime
+from winreg import REG_QWORD
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
@@ -7,8 +9,8 @@ from braces.views import GroupRequiredMixin
 from django.contrib.auth.decorators import login_required
 import re
 
-from .models import Category, Product
-from .forms import AddProductForm, AddCategoryForm
+from .models import Category, Product, Review
+from .forms import AddProductForm, AddCategoryForm, AddReviewForm
 
 
 # Create your views here.
@@ -21,9 +23,18 @@ def product_all(request):
     ctx = { 'products': products }
     return render(request, template_name='store/home.html', context=ctx)
 
+def all_reviews(request, slug):
+    prod = Product.objects.get(slug=slug)
+    reviews = Review.objects.filter(product=prod)
+    
+    return reviews
+
+
 def product_detail(request, slug):
-    product = get_object_or_404(Product, slug=slug, in_stock=True)
-    ctx = { 'product': product }
+    product = get_object_or_404(Product, slug=slug)
+    rev = all_reviews(request,slug=slug)
+
+    ctx = { 'product': product, 'reviews': rev }
     return render(request, 'store/products/single.html', context=ctx)
 
 def category_list(request,slug):
@@ -64,3 +75,20 @@ def create_category(request):
         catform = AddCategoryForm()
   
     return render(request, 'store/products/createcat.html', { 'form': catform } )
+
+@login_required
+def create_review(request):
+    if request.user.is_staff or request.user.is_seller:
+       return redirect('/')
+
+    if request.method == 'POST':
+        rateform = AddProductForm(request.POST)
+        
+        if rateform.is_valid():
+            Review.objects.create(user=request.user, date=datetime.now() ,**rateform.cleaned_data)
+            
+            return redirect('/')
+    else:
+        rateform = AddReviewForm()
+  
+    return render(request, 'store/rating/home.html', { 'form': rateform } )

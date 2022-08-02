@@ -5,7 +5,7 @@ from django.conf import settings
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from .models import Category, Product
+from .models import Category, Product, Review, RATE_CHOICES
 
 class AddCategoryForm(forms.ModelForm):
     name = forms.CharField(label='Enter name', help_text='required', required=True)
@@ -46,3 +46,19 @@ class AddProductForm(forms.ModelForm):
         self.fields['author'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Author'})
         self.fields['available'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Available'})
         self.fields['price'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Price'})
+
+
+
+class AddReviewForm(forms.ModelForm):
+    text     = forms.Textarea()
+    rate     = forms.ChoiceField(choices=RATE_CHOICES, required=True)
+
+    class Meta:
+        model = Review
+        fields = {'text', 'rate'}
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['text'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Text'})
+        self.fields['rate'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Rate'})
