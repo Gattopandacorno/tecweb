@@ -39,23 +39,15 @@ def create_product(request):
         prodform = AddProductForm(request.POST)
         
         if prodform.is_valid():
-            product = prodform.save(commit=False)
-            product.category = Category.objects.get(name=prodform.cleaned_data['category'])
-            product.title = prodform.cleaned_data['title']
-            product.author = prodform.cleaned_data['author']
-            product.description = prodform.cleaned_data['description']
-            product.image = prodform.cleaned_data['image']
-            product.available = prodform.cleaned_data['available']
-            product.price = prodform.cleaned_data['price']
-            product.slug = re.sub('\W', '', product.title.lower())
-
-
-            product.save()
+            slug = re.sub('\W', '', prodform.cleaned_data['title'].lower())
+            Product.objects.create(slug=slug, **prodform.cleaned_data)
+            
             return redirect('/')
     else:
         prodform = AddProductForm()
   
     return render(request, 'store/products/createprod.html', { 'form': prodform } )
+
 
 def create_category(request):
     if request.method == 'POST':

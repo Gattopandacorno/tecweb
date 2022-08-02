@@ -30,6 +30,7 @@ class AddProductForm(forms.ModelForm):
     image        = forms.ImageField(initial="images/default.png")
     available    = forms.IntegerField(initial=1)
     price        = forms.DecimalField(max_digits=4, decimal_places=2, initial=4.50)
+
     
     
 
