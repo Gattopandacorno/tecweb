@@ -1,6 +1,5 @@
 from decimal import Decimal
 
-from . import cart
 from store.models import Product
 
 class Cart():

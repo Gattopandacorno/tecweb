@@ -1,7 +1,6 @@
 
 from django import forms
-from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm, SetPasswordForm)
-from django_countries.fields import CountryField
+from django.contrib.auth.forms import AuthenticationForm
 
 
 from .models import UserBase

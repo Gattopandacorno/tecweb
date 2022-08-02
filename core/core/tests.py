@@ -1,8 +1,8 @@
-from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.test import TestCase
 
 from store.models import Category, Product
+from account.models import UserBase
 
 # XHR  is an ajax request (X)
 
@@ -10,7 +10,7 @@ class TestCartView(TestCase):
     
     def setUp(self):
         Category.objects.create(name='django', slug='django')
-        User.objects.create(username='admin')
+        UserBase.objects.create(username='admin')
         Product.objects.create(category_id=1, title='django advanced',
                                            slug='django-advanced', price=4.50, image='images', available=3)
         Product.objects.create(category_id=1, title='django intermediate',

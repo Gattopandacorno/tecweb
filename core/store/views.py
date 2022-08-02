@@ -1,11 +1,6 @@
 from datetime import datetime
 from winreg import REG_QWORD
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
-from django.urls import reverse_lazy
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
-from braces.views import GroupRequiredMixin
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 import re
 

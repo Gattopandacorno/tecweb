@@ -1,3 +1,5 @@
+This are some of the account i used to test the project and the apps.
+
 ADMIN CREDENTIALS
 
     email: admin@a.com
@@ -13,13 +15,15 @@ USER CREDENTIALS
     username: user2
     password: user2
 
-    email: test@test.com
-    username: test
-    password: test
-
     email: user@us.com
     username: user1
     password: user1
+
+
+SELLER CREDENTIALS:
+    email: test@test.com
+    username: test
+    password: test
 
     email: seller@s.com
     username: seller

@@ -1,9 +1,4 @@
-from email.mime import image
-from random import choices
 from django import forms
-from django.conf import settings
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
 
 from .models import Category, Product, Review, RATE_CHOICES
 
