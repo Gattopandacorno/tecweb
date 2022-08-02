@@ -27,15 +27,16 @@ def product_all(request):
 def all_reviews(request, slug):
     prod = Product.objects.get(slug=slug)
     reviews = Review.objects.filter(product=prod)
-    
-    return reviews
+    usr = Review.objects.filter(product=prod, user=request.user).exists()
+    ctx = {'reviews': reviews, 'usr': usr}
+    return ctx
 
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
-    rev = all_reviews(request,slug=slug)
+    ctx = all_reviews(request=request,slug=slug)
 
-    ctx = { 'product': product, 'reviews': rev }
+    ctx.update({ 'product': product })
     return render(request, 'store/products/single.html', context=ctx)
 
 def category_list(request,slug):
