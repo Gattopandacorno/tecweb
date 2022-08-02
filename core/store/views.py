@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from winreg import REG_QWORD
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 from django.urls import reverse_lazy
@@ -9,9 +9,10 @@ from braces.views import GroupRequiredMixin
 from django.contrib.auth.decorators import login_required
 import re
 
+
 from .models import Category, Product, Review
 from .forms import AddProductForm, AddCategoryForm, AddReviewForm
-
+from account.models import UserBase
 
 # Create your views here.
 
@@ -44,7 +45,7 @@ def category_list(request,slug):
             'products': products }
     return render(request, 'store/products/category.html', context=ctx)
 
-    
+@login_required
 def create_product(request):    
     if request.method == 'POST':
         prodform = AddProductForm(request.POST)
@@ -59,7 +60,7 @@ def create_product(request):
   
     return render(request, 'store/products/createprod.html', { 'form': prodform } )
 
-
+@login_required
 def create_category(request):
     if request.method == 'POST':
         catform = AddCategoryForm(request.POST)
@@ -77,18 +78,20 @@ def create_category(request):
     return render(request, 'store/products/createcat.html', { 'form': catform } )
 
 @login_required
-def create_review(request):
+def create_review(request,slug):
     if request.user.is_staff or request.user.is_seller:
        return redirect('/')
 
     if request.method == 'POST':
-        rateform = AddProductForm(request.POST)
+        rateform = AddReviewForm(request.POST)
         
         if rateform.is_valid():
-            Review.objects.create(user=request.user, date=datetime.now() ,**rateform.cleaned_data)
+            product = Product.objects.get(slug=slug)
+            usr = UserBase.objects.get(username=request.user)
+            Review.objects.create(product=product, user=usr, date=datetime.now() ,**rateform.cleaned_data)
             
             return redirect('/')
     else:
         rateform = AddReviewForm()
   
-    return render(request, 'store/rating/home.html', { 'form': rateform } )
+    return render(request, 'store/rating/home.html', { 'form': rateform, 'slug': slug } )
