@@ -74,7 +74,7 @@ def create_category(request):
     return render(request, 'store/products/createcat.html', { 'form': catform } )
 
 @login_required
-def create_review(request,slug):
+def create_review(request, slug):
     if request.user.is_staff or request.user.is_seller:
        return redirect('/')
 

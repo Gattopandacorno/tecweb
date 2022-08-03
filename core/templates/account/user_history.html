@@ -38,10 +38,9 @@
                                                     </a>
                                                     Qty: {{ item.qty}}
                                                 </div>
-
                                                 <div class="mt-3 col-md-5 col-lg-4 order-md-last p-0 order-3">
                                                     <div class="d-grid gap-2 ">
-                                                        <button class="btn btn-warning" type="button">Leave a review</button>
+                                                        <a href="{% url 'store:create_review' item.product.slug %}" class="btn btn-warning" type="button">Leave a review</a>
                                                     </div>
                                                 </div>
                                             </div>
