@@ -22,7 +22,12 @@ def product_all(request):
 def all_reviews(request, slug):
     prod = Product.objects.get(slug=slug)
     reviews = Review.objects.filter(product=prod)
-    usr = Review.objects.filter(product=prod, user=request.user).exists()
+    
+    if request.user.is_authenticated:
+        usr = Review.objects.filter(product=prod, user=request.user).exists()
+    else:
+        usr = False
+
     ctx = {'reviews': reviews, 'usr': usr}
     return ctx
 
