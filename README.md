@@ -81,8 +81,6 @@ Inside the /core directory You can find all the project's files and directories 
     + **urls.py**, url for the app *payment* that begins with *payment/*
     + **views.py**, renders if the order is already been payed or not
 
-- **/static**, static file to render html
-
 - **/store**,
     + **/migrations**, contains the database migrations of the store
     + **admin.py**, register the Product, Category and Review objects
