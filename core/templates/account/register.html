@@ -15,14 +15,11 @@
                                     <h3 class="mb-4 py-5 text-center font-weight-bold">Create a new account</h3>
 
                                     {% if form.errors %}
-                                        <p>Please correct the following errors:</p>
-                                        {% for field in form %}
-                                            {% if field.errors %}
-                                                <div class="alert alert-primary" role="alert">
-                                                    {{ field.label }}: {{ field.errors|striptags }}
-                                                </div>
-                                            {% endif %}
-                                        {% endfor %}
+                                        <div class="alert alert-danger" role="alert">
+                                            One or more fields are not filled in properly.
+                                            <br>
+                                            Otherwise the username or the password are already taken. 
+                                       </div>
                                     {% endif %}
 
                                     <label>{{ form.username.label }}<span class="text-muted small"></span></label>

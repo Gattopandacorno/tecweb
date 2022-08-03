@@ -1,13 +1,11 @@
-from email.mime import image
-from random import choices
 from django import forms
-from django.conf import settings
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
 
-from .models import Category, Product
+from .models import Category, Product, Review, RATE_CHOICES
+
 
 class AddCategoryForm(forms.ModelForm):
+    """ Represents how it would be to add a new category in the list of categories. """
+
     name = forms.CharField(label='Enter name', help_text='required', required=True)
 
     class Meta:
@@ -21,8 +19,9 @@ class AddCategoryForm(forms.ModelForm):
 
 
 
-
 class AddProductForm(forms.ModelForm):
+    """ Represents how it would be to add a new product in the list of products. """
+
     category     = forms.ModelChoiceField(queryset=Category.objects.all())
     title        = forms.CharField(label='Enter title', max_length=255, help_text='Required')
     author       = forms.CharField(initial="Not found", max_length=255, required=False)
@@ -46,3 +45,21 @@ class AddProductForm(forms.ModelForm):
         self.fields['author'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Author'})
         self.fields['available'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Available'})
         self.fields['price'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Price'})
+
+
+
+class AddReviewForm(forms.ModelForm):
+    """ Represents how it would be to add a new review in the list of reviews. """
+
+    text     = forms.Textarea()
+    rate     = forms.ChoiceField(choices=RATE_CHOICES, required=True)
+
+    class Meta:
+        model = Review
+        fields = {'text', 'rate'}
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['text'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Text'})
+        self.fields['rate'].widget.attrs.update({ 'class': 'form-control form-control-lg', 'placeholder': 'Rate'})

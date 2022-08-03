@@ -1,12 +1,12 @@
-from django.shortcuts import render
 from django.http.response import JsonResponse
 
 from cart.cart import Cart
 from .models import Order, OrderItem
 
-# Create your views here.
 
 def add(request):
+    """ Creates the 'payed' order and clears the cart.  """
+
     cart = Cart(request)
     
     if request.POST.get('action') == 'post':
@@ -19,6 +19,7 @@ def add(request):
         else: 
             order = Order.objects.create(user=user, tot_paid=carttot, order_key=order_key, billing_status=True)
 
+            # It also creates the new items's order object
             for item in cart:
                 OrderItem.objects.create(order=order,product=item['product'], price=item['price'], qty=item['qty'])
         
@@ -28,6 +29,8 @@ def add(request):
         return response
 
 def history(request):
+    """ Returns the order history of the user requesting it. """
+    
     user = request.user
     orders = Order.objects.filter(user=user, billing_status=True)
     

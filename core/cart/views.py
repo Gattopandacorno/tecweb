@@ -1,6 +1,6 @@
-from django.shortcuts import get_object_or_404, render
-from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
 
 import random
 import string
@@ -10,14 +10,20 @@ from store.models import  Product
 
 
 def cart(request):
+    """ Returns the cart of the current session. """
+
     return {'cart': Cart(request)}
 
 def cart_summary(request):
+    """ Renders the list of the product in the cart. """
+
     cart = Cart(request)
     ctx = { 'cart': cart }
     return render(request, 'cart/summary.html', ctx)
 
 def cart_add(request):
+    """ Adds a new item in the cart. It changes the number of the cart logo. """
+
     cart = Cart(request)
     if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('productid'))
@@ -31,6 +37,8 @@ def cart_add(request):
 
 
 def cart_del(request):
+    """ Delete the selected item. It changes the number of the cart logo and subtotal. """
+
     cart = Cart(request)
     if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('productid'))
@@ -42,6 +50,8 @@ def cart_del(request):
         return response
 
 def cart_update(request):
+    """ After changing the quantity of a product it changes subtotal with the new price. """
+
     cart = Cart(request)
     if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('productid'))
@@ -55,6 +65,10 @@ def cart_update(request):
 
 @login_required
 def CartView(request):
+    """ If the user is logged in it can view the payment system.
+        Notice that the only logic in the payment system is to controll the input is a number.
+    """
+
     cart = Cart(request)
     tot  = str(cart.get_tot_price())
     tot  = tot.replace('.', '')

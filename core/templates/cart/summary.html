@@ -61,13 +61,12 @@
                 {% endwith %}
             {% endfor %}
             
-            <div class="col-9 text-end">
-                     
-                <div class="h3 fw-bold">Total price: <a id="subtotal">{{ cart.get_tot_price }}</a>€</div>
-
-                <a role="button" href="{% url "payment:cartview" %}" class="btn btn-outline-success fw-bold" type="button">Checkout</a>
-
-            </div>
+            {% if cart.get_tot_price %}
+                <div class="col-9 text-end">       
+                    <div class="h3 fw-bold">Total price: <a id="subtotal">{{ cart.get_tot_price }}</a>€</div>
+                    <a role="button" href="{% url "payment:cartview" %}" class="btn btn-outline-success fw-bold" type="button">Checkout</a>
+                </div>
+            {% endif %}          
         </div>
     </main>
 

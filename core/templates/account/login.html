@@ -16,15 +16,11 @@
                                     <h3 class="mb-4 py-5 text-center font-weight-bold">Login</h3>
 
                                     <!-- TODO: NOT FINISHED --></!-->
+                                    
                                     {% if form.errors %}
-                                        <p>Please correct the following errors:</p>
-                                        {% for field in form %}
-                                            {% if field.errors %}
-                                                <div class="alert alert-primary" role="alert">
-                                                    {{ field.label }}: {{ field.errors|striptags }}
-                                                </div>
-                                            {% endif %}
-                                        {% endfor %}
+                                        <div class="alert alert-danger" role="alert">
+                                         Email or password not correct
+                                        </div>
                                     {% endif %}
 
                                     <label>{{ form.username.label }}<span class="text-muted small"></span></label>

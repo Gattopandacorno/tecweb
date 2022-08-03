@@ -4,8 +4,11 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CustomUserManager(BaseUserManager):
+    """ Custom user creator. """
 
     def create_superuser(self, email, username, password, **other_fields):
+        """ Creates the superuser. Note that the superuser is different from the seller user."""
+
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
         other_fields.setdefault('is_active', True)
@@ -19,7 +22,9 @@ class CustomUserManager(BaseUserManager):
 
 
     def create_user(self, email, username, password, **other_fields):
-        if not email:
+        """ Creates a new user. The user will be a 'normal buyer'. """
+
+        if not email: # If the mail is not provided
             raise ValueError(_('You must provide email address'))
         
         email   = self.normalize_email(email)
@@ -30,6 +35,8 @@ class CustomUserManager(BaseUserManager):
 
 
 class UserBase(AbstractBaseUser, PermissionsMixin):
+    """ The common fields of all the users. Seller, Admin and common-buyer. """
+
     email           = models.EmailField(_('email address'), unique=True)
     username        = models.CharField(max_length=150, unique=True)
     about           = models.TextField(_('about'), blank=True)
@@ -42,7 +49,9 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
 
     is_active       = models.BooleanField(default=False)
     is_staff        = models.BooleanField(default=False)
-    is_seller       = models.BooleanField(default=False)
+    
+    # This fields is True when the admin creates a new seller account
+    is_seller       = models.BooleanField(default=False) 
     created         = models.DateTimeField(auto_now_add=True)
     updated         = models.DateTimeField(auto_now=True)
 

@@ -34,17 +34,31 @@
                                         </select>
                                     </div>
                                     
-                                    {% if not user.is_seller %}
-                                        <div class="col text-end">
-                                            <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-outline-success" >Add to cart</button>                     
-                                            <button type="button" class="btn btn-outline-warning">Rate</button>                     
-                                        </div>  
-                                    {% endif %}
+                                    <div class="col text-end">
+                                        {% if not user.is_seller and not user.is_staff %}
+                                            <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-outline-success" >Add to cart</button>   
+                                            {% if not usr %}             
+                                                <a href="{% url 'store:create_review' product.slug %}" type="button" class="btn btn-outline-warning">Rate</a>
+                                            {% endif %}                      
+                                        {% endif %} 
+                                    </div>  
                                 </div>
                             </div>
-                            <p>{{ product.description|capfirst }}</p>       
-                        </div>
+                            <p>{{ product.description|capfirst }}</p>      
+                        </div>                       
                     </div>
+                    
+                    <div class="my-5 pb-3 h4">Reviews</div>  
+                               
+                    {% for r in reviews %}
+                        <div class="alert alert-secondary">
+                            {{ r.user }}: {{ r.rate }}/5
+                            <br>
+                            {{ r.text }}
+                            <br>
+                            {{ r.date }}
+                        </div>                                
+                    {% endfor %}
                 </div>
             </main>
         </div>

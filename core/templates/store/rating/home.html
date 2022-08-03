@@ -1,0 +1,42 @@
+{% extends '../base.html' %}
+
+{% load static %}
+
+
+{% block title %}Reviews{% endblock title %}
+
+
+{% block content %}      
+<div class="container-fluid">
+    <div class="row no-gutter">
+        <div class="col-md-12">
+            <div class="login d-flex align-items-center py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-lg-7  mx-auto">
+                            <form class="account-form p-4 rounded col-lg-10 mx-auto" action="." method="post">
+                                {% csrf_token %}
+                                <h3 class="mb-4 py-5 text-center font-weight-bold">Rate it!</h3>
+
+                                <label>{{ form.rate.label }}<span class="text-muted small"></span></label>
+                                {{ form.rate }}
+                                
+                                <label>{{ form.text.label}}<span class="text-muted small"></span></label>
+                                {{ form.text }}
+                                
+                           <div class="text-center">
+                                    <button class="btn btn-outline-warning btn-block py-2 mb-1 mt-5 fw500 w-100" href="{% url 'store:create_review' slug %}">Submit</button>
+                                    <input type="hidden" name="next" value="{{ next }}"></input>
+                                </div>
+                            </form>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
