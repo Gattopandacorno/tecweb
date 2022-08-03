@@ -39,4 +39,4 @@ class TestCartView(TestCase):
 
     def test_cart_update(self):
         resp = self.client.post(reverse_lazy('cart:cart_add'), {"productid": 2, "productqty": 1, "action": "post" }, xhr=True )
-        self.assertEqual(resp.json(), { 'qty': 2 }) # TODO: It should return the subtotal too
+        self.assertEqual(resp.json(), { 'qty': 2 }) 

@@ -30,8 +30,8 @@ class Product(models.Model):
     price       = models.DecimalField(max_digits=4, decimal_places=2, default=4.50)
     in_stock    = models.BooleanField(default=True)
     is_active   = models.BooleanField(default=True)
-    created     = models.DateTimeField(auto_now_add=True) # TODO: remove
-    updated     = models.DateTimeField(auto_now=True) # TODO: remove
+    created     = models.DateTimeField(auto_now_add=True) 
+    updated     = models.DateTimeField(auto_now=True) 
 
     class Meta:
         ordering = ('-created',)
