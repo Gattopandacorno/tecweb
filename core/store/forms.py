@@ -2,7 +2,10 @@ from django import forms
 
 from .models import Category, Product, Review, RATE_CHOICES
 
+
 class AddCategoryForm(forms.ModelForm):
+    """ Represents how it would be to add a new category in the list of categories. """
+
     name = forms.CharField(label='Enter name', help_text='required', required=True)
 
     class Meta:
@@ -16,8 +19,9 @@ class AddCategoryForm(forms.ModelForm):
 
 
 
-
 class AddProductForm(forms.ModelForm):
+    """ Represents how it would be to add a new product in the list of products. """
+
     category     = forms.ModelChoiceField(queryset=Category.objects.all())
     title        = forms.CharField(label='Enter title', max_length=255, help_text='Required')
     author       = forms.CharField(initial="Not found", max_length=255, required=False)
@@ -45,6 +49,8 @@ class AddProductForm(forms.ModelForm):
 
 
 class AddReviewForm(forms.ModelForm):
+    """ Represents how it would be to add a new review in the list of reviews. """
+
     text     = forms.Textarea()
     rate     = forms.ChoiceField(choices=RATE_CHOICES, required=True)
 

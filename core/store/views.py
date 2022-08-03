@@ -1,28 +1,35 @@
 from datetime import datetime
-from winreg import REG_QWORD
-from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 import re
+from winreg import REG_QWORD
 
-
-from .models import Category, Product, Review
-from .forms import AddProductForm, AddCategoryForm, AddReviewForm
 from account.models import UserBase
+from .forms import AddProductForm, AddCategoryForm, AddReviewForm
+from .models import Category, Product, Review
 
-# Create your views here.
 
 def categories(request):
+    """ Returns all the categories created that are in the database. """
+
     return { 'categories': Category.objects.all() }
 
 def product_all(request): 
+    """ Returns all the products created that are in the database.
+        This will be displayed in the home page.
+    """
+
     products = Product.objects.all()
     ctx = { 'products': products }
     return render(request, template_name='store/home.html', context=ctx)
 
 def all_reviews(request, slug):
+    """ Returns all the reviews for a certain product. """
+
     prod = Product.objects.get(slug=slug)
     reviews = Review.objects.filter(product=prod)
     
+    # Used to know if the user has already done a review for this product
     if request.user.is_authenticated:
         usr = Review.objects.filter(product=prod, user=request.user).exists()
     else:
@@ -33,6 +40,8 @@ def all_reviews(request, slug):
 
 
 def product_detail(request, slug):
+    """ Returns the datail of a product. It will be showned reviews, price, quantity available, title,... """
+
     product = get_object_or_404(Product, slug=slug)
     ctx = all_reviews(request=request,slug=slug)
 
@@ -40,14 +49,21 @@ def product_detail(request, slug):
     return render(request, 'store/products/single.html', context=ctx)
 
 def category_list(request,slug):
+    """ Returns the list of the products that are of the selected category. """
+
     category = get_object_or_404(Category, slug=slug)
     products = Product.objects.filter(category=category)
-    ctx = { 'category': category, 
-            'products': products }
+
+    ctx = { 'category': category, 'products': products }
     return render(request, 'store/products/category.html', context=ctx)
 
 @login_required
-def create_product(request):    
+def create_product(request):
+    """ Create a new entry of a product. Only a staff or a seller member can perform this action. """  
+
+    if not (request.user.is_staff or request.user.is_seller):
+        return redirect('/')
+
     if request.method == 'POST':
         prodform = AddProductForm(request.POST)
         
@@ -63,6 +79,11 @@ def create_product(request):
 
 @login_required
 def create_category(request):
+    """ Create a new entry of a category. Only a staff or a seller member can perform this action. """
+
+    if not (request.user.is_staff or request.user.is_seller):
+        return redirect('/')
+
     if request.method == 'POST':
         catform = AddCategoryForm(request.POST)
         
@@ -80,6 +101,8 @@ def create_category(request):
 
 @login_required
 def create_review(request, slug):
+    """ Creates a review. Only a normal logged in user can perform this action. """
+        
     if request.user.is_staff or request.user.is_seller:
        return redirect('/')
 

@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
 
-    # OWN
+    # MY APPS
     'store',
     'cart',
     'account',
@@ -138,7 +138,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Custom user model
-AUTH_USER_MODEL = 'account.UserBase'
+AUTH_USER_MODEL = 'account.UserBase' # with this the User model is outdated and not recommended
 LOGIN_REDIRECT_URL = '/account/profile'
 LOGIN_URL = '/account/login'
 

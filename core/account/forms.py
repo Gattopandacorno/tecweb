@@ -6,6 +6,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import UserBase
 
 class RegistrationForm(forms.ModelForm):
+    """ Used to form the registration fields of a new user (seller or not). """
+
     username        = forms.CharField(label='Enter username', min_length=4, max_length=50, help_text='Required')
     email           = forms.EmailField(max_length=100, help_text='Required', error_messages={'required': 'You must provide an email.'})
     validation_pass = forms.CharField(label='Repeat Password', widget=forms.PasswordInput)
@@ -23,6 +25,10 @@ class RegistrationForm(forms.ModelForm):
         fields = {'username', 'email', 'country', 'city', 'address', 'phone_num', 'cap_code'}
 
     def clean_username(self):
+        """ The cleaned data returns if a username is already in use or not.
+            If it raises a ValidationError.
+        """
+
         username = self.cleaned_data['username'].lower()
         r = UserBase.objects.filter(username=username)
         
@@ -33,6 +39,10 @@ class RegistrationForm(forms.ModelForm):
 
 
     def clean_email(self):
+        """ Like the username's cleaned data, this returns if the email is already in use in another account.
+            If it is raises a ValidationError.
+        """
+
         email = self.cleaned_data['email']
 
         if UserBase.objects.filter(email=email).exists():
@@ -42,6 +52,10 @@ class RegistrationForm(forms.ModelForm):
 
         
     def clean_password(self):
+        """ If the two password are not equal the form is invalid and it raises a ValidationError.
+            This is used to be sure the user typed the first password correctly.
+        """
+
         cd = self.cleaned_data
 
         if cd['password'] != cd['validation_pass']:
@@ -66,6 +80,8 @@ class RegistrationForm(forms.ModelForm):
 
 
 class UserLoginForm(AuthenticationForm):
+    """  Used to form the login of the already created user. """
+
     username = forms.CharField(widget=forms.TextInput(
                     attrs={'class': 'form-control mb-3', 'placeholder': 'Username', 'id':'login-username'}))
     
@@ -74,6 +90,8 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserEditForm(forms.ModelForm):
+    """ Used to edit the user profile. The only two fields that are not editable are email and username. """
+    
     email       = forms.EmailField(label='Account email cannot be changes', max_length=200, widget=forms.TextInput(
                     attrs={'class': 'form-control mb-3', 'placeholder': 'email', 'id': 'form-email', 'readonly': 'readonly'}))
     username    = forms.CharField(label='Username', min_length=4, max_length=50, widget=forms.TextInput(
