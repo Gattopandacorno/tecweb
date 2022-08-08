@@ -67,4 +67,9 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+
+    def is_normal(self):
+        if self.is_staff or self.is_seller:
+            return False
+        return True
     

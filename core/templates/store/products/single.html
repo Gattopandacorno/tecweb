@@ -35,7 +35,7 @@
                                     </div>
                                     
                                     <div class="col text-end">
-                                        {% if not user.is_seller and not user.is_staff %}
+                                        {% if user.is_normal %}
                                             <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-outline-success" >Add to cart</button>   
                                             {% if not usr %}             
                                                 <a href="{% url 'store:create_review' product.slug %}" type="button" class="btn btn-outline-warning">Rate</a>
