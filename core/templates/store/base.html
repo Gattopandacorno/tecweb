@@ -16,7 +16,7 @@
     </head>
 
     <body>
-        <header>    <!-- Fixed navbar -->
+        <header> 
             <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="/">MS</a>
@@ -38,6 +38,13 @@
                         </ul>
                     </div>
                     
+                    <form class ="d-flex" >
+                        <div class="input-group">
+                            <input id="input" type="text" class="form-control" placeholder="Search" aria-label="Search">
+                            <button id="search" class="btn btn-light">S</button>
+                        </div>
+                    </form>
+                 
                     {% if user.is_authenticated %}
                         <a type="button" role="button" href="{% url "account:logout" %}" class="btn btn-outline-secondary border-0 basket-btn">
                             <div>
@@ -100,3 +107,21 @@
     </footer>
     </body>
 </html>
+
+
+<script>
+    $(document).on('click', 'search', function (e)
+    {
+        e.preventDefault();
+        $.ajax({
+                type: 'GET',
+                url: '{% url "store:search" %}',
+                data: { word: $('input').val(),
+                        action: 'GET' },
+                success: function (json){},
+                error: function (xhr, errmsg, err){}
+                });
+    })
+</script>
+
+

@@ -1,8 +1,8 @@
 from datetime import datetime
+from unicodedata import category
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 import re
-from winreg import REG_QWORD
 
 from account.models import UserBase
 from .forms import AddProductForm, AddCategoryForm, AddReviewForm
@@ -37,7 +37,6 @@ def all_reviews(request, slug):
 
     ctx = {'reviews': reviews, 'usr': usr}
     return ctx
-
 
 def product_detail(request, slug):
     """ Returns the datail of a product. It will be showned reviews, price, quantity available, title,... """
@@ -119,3 +118,18 @@ def create_review(request, slug):
         rateform = AddReviewForm()
   
     return render(request, 'store/rating/home.html', { 'form': rateform, 'slug': slug } )
+
+def search(request):
+    word = request.GET.get('word')
+    
+    prods = Product.objects.filter(slug__regex=r"(\w|\W)*" + str(word) + "(\w|\W)*")
+    cats = Category.objects.filter(slug__regex=r"(\w|\W)*" + str(word) + "(\w|\W)*")
+
+    for cat in cats:
+        prods |= Product.objects.filter(category=cat)
+
+    prods |= Product.objects.filter(author__regex=r"(\w|\W)*" + str(word) + "(\w|\W)*")
+    prods |= Product.objects.filter(description__regex=r"(\w|\W)*" + str(word) + "(\w|\W)*")
+
+    ctx = { 'category': "Searched: "+word, 'products': prods }
+    return render(request, 'store/products/category.html', context=ctx)
