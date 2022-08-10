@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.urls import reverse_lazy
+from django.core.validators import MinValueValidator
 
 
 class Category(models.Model):
@@ -28,10 +29,10 @@ class Product(models.Model):
     title       = models.CharField(max_length=255)
     author      = models.CharField(max_length=255, default='Not found')
     description = models.TextField(blank=True)
-    available   = models.IntegerField(default=1)
+    available   = models.PositiveIntegerField(default=1, validators=[MinValueValidator(0)])
     image       = models.ImageField(upload_to='images/', default='images/default.png') # stores the link to the db
     slug        = models.SlugField(max_length=255)
-    price       = models.DecimalField(max_digits=4, decimal_places=2, default=4.50)
+    price       = models.DecimalField(max_digits=4, decimal_places=2, default=4.50, validators=[MinValueValidator(1)])
     in_stock    = models.BooleanField(default=True)
     is_active   = models.BooleanField(default=True)
     created     = models.DateTimeField(auto_now_add=True) 
@@ -59,7 +60,7 @@ class Review(models.Model):
     product  = models.ForeignKey(Product, on_delete=models.CASCADE)
     date     = models.DateTimeField(auto_now_add=True)
     text     = models.TextField(blank=True)
-    rate     = models.IntegerField(choices=RATE_CHOICES)
+    rate     = models.PositiveIntegerField(choices=RATE_CHOICES)
    
    
     def __str__(self):
