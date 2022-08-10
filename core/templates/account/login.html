@@ -14,14 +14,16 @@
                                 <form class="account-form p-4 rounded col-lg-10 mx-auto" action="{% url 'account:login' %}" method="post">
                                     {% csrf_token %}
                                     <h3 class="mb-4 py-5 text-center font-weight-bold">Login</h3>
-
-                                    <!-- TODO: NOT FINISHED --></!-->
                                     
                                     {% if form.errors %}
-                                        <div class="alert alert-danger" role="alert">
-                                         Email or password not correct
-                                        </div>
+                                        {% for f in form %}
+                                            {% for error in f.errors %}
+                                                <div class="alert alert-danger" role="alert">{{f.label}}: {{error}}</div>
+                                            {% endfor %}
+                                        {% endfor %}
                                     {% endif %}
+                                    
+                                    {% csrf_token %}
 
                                     <label>{{ form.username.label }}<span class="text-muted small"></span></label>
                                     {{ form.username }}
