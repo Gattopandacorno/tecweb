@@ -15,28 +15,25 @@
                                     {% csrf_token %}
                                     <h3 class="mb-4 py-5 text-center font-weight-bold">Login</h3>
                                     
-                                    {% if form.errors %}
-                                        {% for f in form %}
-                                            {% for error in f.errors %}
-                                                <div class="alert alert-danger" role="alert">{{f.label}}: {{error}}</div>
-                                            {% endfor %}
-                                        {% endfor %}
+                                    {% if form.errors %}                                   
+                                        <div class="alert alert-danger" role="alert">{{form}}</div>
+                                    {% else %}
+                                        <label>{{ form.username.label }}<span class="text-muted small"></span></label>
+                                        {{ form.username }}
+                                        
+                                        <label>{{ form.password.label}}<span class="text-muted mb-4"></span></label>
+                                        {{ form.password }}                                                
                                     {% endif %}
                                     
                                     {% csrf_token %}
-
-                                    <label>{{ form.username.label }}<span class="text-muted small"></span></label>
-                                    {{ form.username }}
-                                    
-                                    <label>{{ form.password.label}}<span class="text-muted mb-4"></span></label>
-                                    {{ form.password }}
 
                                     <div class="text-center">
                                         <button class="btn btn-outline-success btn-block py-2 mb-1 mt-5 fw500 w-100" href="{% url 'account:login' %}">Login</button>
                                         <input type="hidden" name="next" value="{{ next }}"></input>
                                     </div>
-                                </form>
 
+                                </form>
+ 
                                 <form class="text-center account-form p-4 rounded col-lg-10 mx-auto">
                                     {% csrf_token %}
                                     <a href="{% url 'account:registration' %}">You dont have an account? Register here!</a>

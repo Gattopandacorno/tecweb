@@ -56,13 +56,13 @@ def edit_details(request):
 
     if request.method == 'POST':
         userform = UserEditForm(instance=request.user, data=request.POST)
-        
+
         if userform.is_valid():
             userform.save()
     else:
         userform = UserEditForm(instance=request.user)
     
-    return render(request, 'account/edit_details.html', {'userform': userform})
+    return render(request, 'account/edit_details.html', {'form': userform})
     
 @login_required
 def delete(request):
