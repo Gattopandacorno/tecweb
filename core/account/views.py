@@ -67,11 +67,13 @@ def edit_details(request):
 @login_required
 def delete(request):
     """ Use to delete a user account. This method fakes the deletion but 72 line can be de-commented. """
-
-    user = UserBase.objects.get(username=request.user)
-    #user.is_active = False  #TODO: ACTIVATE TO DELETE THE USER 
-    user.save()
-    logout(request)
+    
+    if not request.user.is_staff:
+        user = UserBase.objects.get(username=request.user)
+        #user.is_active = False  #TODO: ACTIVATE TO DELETE THE USER 
+        user.save()
+        logout(request)
+    
     return redirect('account:confirmation')
 
 @login_required
