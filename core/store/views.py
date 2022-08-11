@@ -1,7 +1,9 @@
 from datetime import datetime
+from itertools import product
 from unicodedata import category
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Avg
 import re
 
 from account.models import UserBase
@@ -20,7 +22,7 @@ def product_all(request):
     """
 
     products = Product.objects.all()
-    ctx = { 'products': products }
+    ctx = { 'products': products, 'recommend': recommend(request) }
     return render(request, template_name='store/home.html', context=ctx)
 
 def all_reviews(request, slug):
@@ -140,3 +142,16 @@ def search(request):
 
     ctx = { 'category': "Searched: "+word, 'products': prods }
     return render(request, 'store/products/category.html', context=ctx)
+
+def recommend(reqest):
+
+    products = list(Product.objects.all())
+    prods = []
+
+    for p in products:
+        if Review.objects.filter(product=p).exists():
+            if Review.objects.filter(product=p).aggregate(Avg('rate'))['rate__avg'] > 2:
+                prods.append(p)
+
+    
+    return { 'products': prods[:5] }

@@ -24,8 +24,27 @@
                             <div class="my-1 pt-5 h4 fw-bold">Recommended for you</div>
                         </div>
                     </div>
+
+                    
+                </section>
+                
+                <section class="container row row-cols-1 row-cols-sm-5 row-cols-md-6 g-3">
+                    {% for p in recommend.products  %}
+                        <div class="col">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        <a class="text-dark text-decoration-none" href="{{ p.get_absolute_url }}">{{ p.title|title }}</a>
+                                    </p>
+                                </div>
+                                <img href="{{ p.get_absolute_url }}" src="{{ p.image.url }}" class="featurette-image img-fluid mx-auto" alt="Responsive image" width="170px"  height="270px" preserveAspectRatio="xMidYMid slice" focusable="false"></img>
+
+                            </div>
+                        </div>     
+                    {% endfor %}  
                 </section> 
-            {% endif %}
+                
+                {% endif %}
 
         {% else %}
             <section class="py-5 text-center container">
