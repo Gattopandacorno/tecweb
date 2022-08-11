@@ -33,6 +33,7 @@ class TestOrderView(TestCase):
         order_item = OrderItem.objects.all().count()
         self.assertEqual(order_item, 0)
 
+
     def test_add(self):
 
         self.client.post(reverse_lazy('orders:add'), {'action': 'post'})
