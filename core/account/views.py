@@ -2,9 +2,12 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
+from store.views import all_reviews
 from .forms import RegistrationForm, UserEditForm
 from .models import UserBase
 from orders.views import history 
+from orders.models import OrderItem
+from store.models import Product, Review
 
 def registration(request):
     """ Used to register a user. 
@@ -79,6 +82,7 @@ def delete(request):
 @login_required
 def user_history(request):
     """ Returns a list of the user's orders to display in the history section. """
+   
     orders = history(request)
     ctx = {'orders': orders}
 

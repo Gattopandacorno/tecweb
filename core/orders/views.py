@@ -1,4 +1,3 @@
-from xml.dom import UserDataHandler
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404
 
@@ -25,6 +24,7 @@ def add(request):
             # It also creates the new items's order object
             for item in cart:
                 OrderItem.objects.create(order=order,product=item['product'], price=item['price'], qty=item['qty'])
+                # TODO: add deletion of a copy that is taken
         
         cart.clear()
         

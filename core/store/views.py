@@ -31,13 +31,8 @@ def all_reviews(request, slug):
     prod = Product.objects.get(slug=slug)
     reviews = Review.objects.filter(product=prod)
     
-    # Used to know if the user has already done a review for this product
-    if request.user.is_authenticated:
-        usr = Review.objects.filter(product=prod, user=request.user).exists()
-    else:
-        usr = False
-
-    ctx = {'reviews': reviews, 'usr': usr}
+    
+    ctx = {'reviews': reviews}
     return ctx
 
 def product_detail(request, slug):
@@ -137,7 +132,7 @@ def search(request):
     for cat in cats:
         prods |= Product.objects.filter(category=cat)
 
-    prods |= Product.objects.filter(author__regex=r"(\w|\W)*" + str(word) + "(\w|\W)*")
+    prods |= Product.objects.filter(author__regex=r"(\w|\W)*( )*" + str(word) + "(\w|\W)*( )*")
     prods |= Product.objects.filter(description__regex=r"(\w|\W)*" + str(word) + "(\w|\W)*")
 
     ctx = { 'category': "Searched: "+word, 'products': prods }
@@ -152,6 +147,6 @@ def recommend(reqest):
         if Review.objects.filter(product=p).exists():
             if Review.objects.filter(product=p).aggregate(Avg('rate'))['rate__avg'] > 2:
                 prods.append(p)
-
+    # TODO:add recommendation for similar things that user bought
     
     return { 'products': prods[:5] }
