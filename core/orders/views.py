@@ -1,6 +1,9 @@
+from xml.dom import UserDataHandler
 from django.http.response import JsonResponse
+from django.shortcuts import get_object_or_404
 
 from cart.cart import Cart
+from account.models import UserBase
 from .models import Order, OrderItem
 
 
@@ -10,7 +13,7 @@ def add(request):
     cart = Cart(request)
     
     if request.POST.get('action') == 'post':
-        user = request.user
+        user = get_object_or_404(UserBase, username=request.user)
         order_key = request.POST.get('order_key')
         carttot = cart.get_tot_price()
 

@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from account.models import UserBase
-from .models import Category, Product
+from .models import Category, Product, Review
 
 
 class TestCategoriesModel(TestCase):
@@ -11,7 +11,7 @@ class TestCategoriesModel(TestCase):
         """ Creates a new category to setup the test. """
         self.data = Category.objects.create(name='django', slug='django')
 
-    def test_category_model_entry(self):
+    def test_category_model_instance(self):
         """ Tests if the data is an istance of the model Category. """
 
         data = self.data
@@ -35,7 +35,7 @@ class TestProductModel(TestCase):
         self.data = Product.objects.create(category_id=1, title='django beginners',
                                            slug='django-beginners', price=4.50, image='images' )
     
-    def test_product_model_entry(self):
+    def test_product_model_instance(self):
         """ Test if the data is an istance of the model Product. """
         data = self.data
         self.assertTrue(isinstance(data, Product))
@@ -45,3 +45,25 @@ class TestProductModel(TestCase):
 
         data = self.data
         self.assertEqual(str(data), 'django beginners')
+
+
+class TestReviewModel(TestCase):
+    
+    def setUp(self):
+
+        Category.objects.create(name='django', slug='django')
+        UserBase.objects.create(username='admin')
+        Product.objects.create(category_id=1, title='django beginners',
+                                           slug='django-beginners', price=4.50, image='images' )
+        
+        self.data = Review.objects.create(user_id=1,product_id=1, text='this is a comment', rate=3)
+        
+
+    def test_review_model_instance(self):
+
+        data = self.data
+        self.assertIsInstance(data, Review)
+    
+    def test_review_model_entry(self):
+        data = self.data
+        self.assertEquals(str(data), 'this is a comment')
