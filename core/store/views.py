@@ -117,11 +117,8 @@ def create_review(request, slug):
     return render(request, 'store/rating/home.html', { 'form': rateform, 'slug': slug } )
 
 def search(request):
-    # word è none, perchè non hai dato un nome al relativo input
-    # gestisci in qualche modo il caso in cui word sia none
-    # poi vai nel template di prima e aggiungi `name="word"` agli attributi dell'`<input type="text">` così lo mette nell'url
+    
     word = request.GET.get('word')
-    # cambia file
 
     if not word:
         return redirect('/')
