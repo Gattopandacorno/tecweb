@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 
 from cart.cart import Cart
 from account.models import UserBase
+from store.models import Product
 from .models import Order, OrderItem
 
 
@@ -16,15 +17,20 @@ def add(request):
         order_key = request.POST.get('order_key')
         carttot = cart.get_tot_price()
 
-        if Order.objects.filter(order_key=order_key).exists():
-            pass
-        else: 
+        if not Order.objects.filter(order_key=order_key).exists():
+
             order = Order.objects.create(user=user, tot_paid=carttot, order_key=order_key, billing_status=True)
 
             # It also creates the new items's order object
             for item in cart:
                 OrderItem.objects.create(order=order,product=item['product'], price=item['price'], qty=item['qty'])
-                # TODO: add deletion of a copy that is taken
+                qty = Product.objects.get(slug=item['product'].slug).available - item['qty']
+
+                print(qty)
+                if qty <= 0:
+                    Product.objects.filter(slug=item['product'].slug).update(available=0, in_stock=False)
+                else:
+                    Product.objects.filter(slug=item['product'].slug).update(available=qty)
         
         cart.clear()
         
