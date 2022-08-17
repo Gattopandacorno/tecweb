@@ -31,8 +31,8 @@
                 
             {% if user.is_seller or user.is_staff %}
                 <div class="col-12 d-flex justify-content-between">
-                    <div>Add a new product</div>
-                    <div><a href="{% url 'store:create_product' %}">Add product</a></div>
+                    <div>Add or edit a product</div>
+                    <div><a href="{% url 'store:create_product' %}">Product</a></div>
                 </div>
                 <div class="col-12 d-flex justify-content-between">
                     <div>Add a new category</div>

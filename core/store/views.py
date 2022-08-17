@@ -65,8 +65,17 @@ def create_product(request):
         
         if prodform.is_valid():
             slug = re.sub('\W', '', prodform.cleaned_data['title'].lower())
-            Product.objects.create(slug=slug, **prodform.cleaned_data)
+
+            if not Product.objects.filter(slug=slug).exists():
+                Product.objects.create(slug=slug, **prodform.cleaned_data)
+
+            else:
             
+                Product.objects.filter(slug=slug).update(**prodform.cleaned_data)
+
+                if prodform.cleaned_data['available'] > 0:
+                    Product.objects.filter(slug=slug).update(in_stock=True)
+                        
             return redirect('/')
     else:
         prodform = AddProductForm()
@@ -84,11 +93,12 @@ def create_category(request):
         catform = AddCategoryForm(request.POST)
         
         if catform.is_valid():
-            category = catform.save(commit=False)
-            category.name = catform.cleaned_data['name']
-            category.slug = re.sub('\W', '', category.name.lower())
-
-            category.save()
+            name = catform.cleaned_data['name']
+            slug = re.sub('\W', '', name.lower())
+            
+            if not Category.objects.filter(slug=slug).exists():
+                Category.objects.create(slug=slug, name=name)
+            
             return redirect('/')
     else:
         catform = AddCategoryForm()

@@ -116,3 +116,8 @@ def add_seller(request):
         registerform = RegistrationForm()
   
     return render(request, 'account/register.html', { 'form': registerform } )
+
+@login_required
+def edit_product(request):
+    ctx = { 'products': Product.objects.all() }
+    return render(request, 'account/edit_product.html', context=ctx)
