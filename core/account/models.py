@@ -15,6 +15,7 @@ class CustomUserManager(BaseUserManager):
 
         if other_fields.get('is_staff') is not True:
             raise ValueError('SuperUser must be assigned to is_staff')
+            
         if other_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must be assigned to is_superuser')
 
@@ -37,31 +38,31 @@ class CustomUserManager(BaseUserManager):
 class UserBase(AbstractBaseUser, PermissionsMixin):
     """ Rappresenta qualsiasi utente: 'compratore', seller e superuser. """
 
-    email           = models.EmailField(_('email address'), unique=True)
-    username        = models.CharField(max_length=150, unique=True)
+    email     = models.EmailField(_('email address'), unique=True)
+    username  = models.CharField(max_length=150, unique=True)
 
-    country         = models.CharField(max_length=150 ,blank=True)
-    phone_num       = models.CharField(max_length=11, blank=True)
-    cap_code        = models.CharField(max_length=5, blank=True)
-    address         = models.CharField(max_length=150, blank=True)
-    city            = models.CharField(max_length=150, blank=True)
+    country   = models.CharField(max_length=150 ,blank=True)
+    phone_num = models.CharField(max_length=11, blank=True)
+    cap_code  = models.CharField(max_length=5, blank=True)
+    address   = models.CharField(max_length=150, blank=True)
+    city      = models.CharField(max_length=150, blank=True)
 
-    is_active       = models.BooleanField(default=True)
-    is_staff        = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff  = models.BooleanField(default=False)
     
     # True quando viene creato un nuovo venditore dal superuser
-    is_seller       = models.BooleanField(default=False) 
-    created         = models.DateTimeField(auto_now_add=True)
-    updated         = models.DateTimeField(auto_now=True)
+    is_seller = models.BooleanField(default=False) 
+    created   = models.DateTimeField(auto_now_add=True)
+    updated   = models.DateTimeField(auto_now=True)
 
-    objects         = CustomUserManager()
+    objects   = CustomUserManager()
     
     USERNAME_FIELD  = 'email'
     REQUIRED_FIELDS = ['username', 'country', 'city', 'address', 'phone_num', 'cap_code']
 
 
     class Meta:
-        verbose_name = "Account"
+        verbose_name        = "Account"
         verbose_name_plural = "Accounts"
 
     def __str__(self):
