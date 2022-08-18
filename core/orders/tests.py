@@ -13,14 +13,14 @@ class TestOrderView(TestCase):
         """
 
         Category.objects.create(name='django', slug='django')
-        UserBase.objects.create(username='user')
+        self.user = UserBase.objects.create(username='user', email='a@a.com', password='user', is_active=True)
         Product.objects.create(category_id=1, title='django advanced',
                                            slug='django-advanced', price=4.50, image='images', available=3)
         Product.objects.create(category_id=1, title='django intermediate',
                                            slug='django-intermediate', price=4.50, image='images', available=3 )
         Product.objects.create(category_id=1, title='django beginners',
                                            slug='django-beginners', price=4.50, image='images', available=3 )
-
+        
         self.client.post( reverse_lazy('cart:cart_add'), {"productid": 1, "productqty": 1, "action": "post" }, xhr=True)
         self.client.post( reverse_lazy('cart:cart_add'), {"productid": 2, "productqty": 2, "action": "post" }, xhr=True)
 
@@ -34,12 +34,9 @@ class TestOrderView(TestCase):
         self.assertEqual(order_item, 0)
 
 
+    # TODO: do this
     def test_add(self):
+        login = self.client.login(email=self.user.email, password='user')
 
         self.client.post(reverse_lazy('orders:add'), {'action': 'post'})
-
-        order = Order.objects.all()
-        self.assertIsNotNone(order)
-        
-        order_item = OrderItem.objects.all()
-        self.assertIsNotNone(order_item)
+      
