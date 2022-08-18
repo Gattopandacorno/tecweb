@@ -156,7 +156,7 @@ def search(request):
         return redirect('/')
 
     prods = Product.objects.filter(slug__regex=r"(\w|\W)*" + str(word) + "(\w|\W)*")
-    cats = Category.objects.filter(slug__regex=r"(\w|\W)*" + str(word) + "(\w|\W)*")
+    cats  = Category.objects.filter(slug__regex=r"(\w|\W)*" + str(word) + "(\w|\W)*")
 
     for cat in cats:
         prods |= Product.objects.filter(category=cat)

@@ -60,11 +60,11 @@ RATE_CHOICES = [(1, '1 - Trash'), (2, '2 - Bad'), (3, '3 - Ok'), (4, '4 - Nice')
 class Review(models.Model):
     """ Rappresenta una revisione. """
     
-    user     = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    product  = models.ForeignKey(Product, on_delete=models.CASCADE)
-    date     = models.DateTimeField(auto_now_add=True)
-    text     = models.TextField(blank=True)
-    rate     = models.PositiveIntegerField(choices=RATE_CHOICES)
+    user    = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    date    = models.DateTimeField(auto_now_add=True)
+    text    = models.TextField(blank=True)
+    rate    = models.PositiveIntegerField(choices=RATE_CHOICES)
    
    
     def __str__(self):

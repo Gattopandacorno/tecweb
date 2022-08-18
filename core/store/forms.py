@@ -22,14 +22,13 @@ class AddCategoryForm(forms.ModelForm):
 class AddProductForm(forms.ModelForm):
     """ Rappresenta i campi da riempire per un Product. """
 
-    category     = forms.ModelChoiceField(queryset=Category.objects.all())
-    title        = forms.CharField(label='Enter title', max_length=255, help_text='Required')
-    author       = forms.CharField(initial="Not found", max_length=255, required=False)
-    description  = forms.Textarea()
-    image        = forms.ImageField(initial="images/default.png")
-    available    = forms.IntegerField(initial=1)
-    price        = forms.DecimalField(max_digits=4, decimal_places=2, initial=4.50)
-
+    category    = forms.ModelChoiceField(queryset=Category.objects.all())
+    title       = forms.CharField(label='Enter title', max_length=255, help_text='Required')
+    author      = forms.CharField(initial="Not found", max_length=255, required=False)
+    description = forms.Textarea()
+    image       = forms.ImageField(initial="images/default.png")
+    available   = forms.IntegerField(initial=1)
+    price       = forms.DecimalField(max_digits=4, decimal_places=2, initial=4.50)
     
     
 

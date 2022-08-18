@@ -15,7 +15,7 @@ def add(request):
     if request.POST.get('action') == 'post':
         user = get_object_or_404(UserBase, username=request.user)
         order_key = request.POST.get('order_key')
-        carttot = cart.get_tot_price()
+        carttot   = cart.get_tot_price()
 
         if not Order.objects.filter(order_key=order_key).exists():
             order = Order.objects.create(user=user, tot_paid=carttot, order_key=order_key, billing_status=True)

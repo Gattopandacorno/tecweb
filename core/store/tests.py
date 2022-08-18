@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.urls import reverse_lazy
 
 from account.models import UserBase
 from .models import Category, Product, Review

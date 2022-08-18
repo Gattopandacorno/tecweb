@@ -18,7 +18,7 @@ def cart_summary(request):
     """ Rendera la lista dei prodotti nel carrello corrente. """
 
     cart = Cart(request)
-    ctx = { 'cart': cart }
+    ctx  = { 'cart': cart }
     return render(request, 'cart/summary.html', ctx)
 
 def cart_add(request):

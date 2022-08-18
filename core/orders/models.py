@@ -9,12 +9,12 @@ class Order(models.Model):
         Dopo essere creato si può vedere negli ordini passati nella sezione del profilo 'order history'.
     """
 
-    user            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    tot_paid        = models.DecimalField(max_digits=5, decimal_places=2)
-    order_key       = models.CharField(max_length=200)
-    created         = models.DateTimeField(auto_now_add=True)
-    updated         = models.DateTimeField(auto_now=True)
-    billing_status  = models.BooleanField(default=False)
+    user           = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    tot_paid       = models.DecimalField(max_digits=5, decimal_places=2)
+    order_key      = models.CharField(max_length=200)
+    created        = models.DateTimeField(auto_now_add=True)
+    updated        = models.DateTimeField(auto_now=True)
+    billing_status = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('-created',)
