@@ -1,10 +1,12 @@
 from datetime import datetime
+from urllib import request
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Avg
 import re
 
 from account.models import UserBase
+from orders.models import Order, OrderItem
 from .forms import AddProductForm, AddCategoryForm, AddReviewForm
 from .models import Category, Product, Review
 
@@ -169,19 +171,33 @@ def search(request):
     ctx = { 'category': "Searched: "+word, 'products': prods }
     return render(request, 'store/products/category.html', context=ctx)
 
-def recommend(reqest):
+def recommend(request):
     """
         The displayed recommendation in the homepage of a one logged user.
         First it searches all the products with more than 2 stars (avg).
+        Secondly it search category's products bought by the user to recommend manga not bought 
+        for the same category.
     """
 
-    products = list(Product.objects.all())
-    prods = []
+    products = list(Product.objects.filter(in_stock=True))
+    prods = set()
 
-    for p in products:
-        if Review.objects.filter(product=p).exists():
-            if Review.objects.filter(product=p).aggregate(Avg('rate'))['rate__avg'] > 2:
-                prods.append(p)
-    # TODO:add recommendation for similar things that user bought
-    
-    return { 'products': prods[:5] }
+    for product in products:
+        if Review.objects.filter(product=product).exists():
+            if Review.objects.filter(product=product).aggregate(Avg('rate'))['rate__avg'] > 2:
+                prods.add(product)
+
+    if request.user.is_authenticated :
+        for order in Order.objects.filter(user=request.user):
+
+            for oi in OrderItem.objects.filter(order=order) :
+                p = Product.objects.get(title=oi.product)
+                
+                for product in Product.objects.filter(category=p.category):
+                    prods.add(product)
+
+            for oi in OrderItem.objects.filter(order=order) :
+                    prods.discard(oi.product)
+
+    prods.discard(None)
+    return { 'products': list(prods)[:6] }
