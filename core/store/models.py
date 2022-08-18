@@ -30,7 +30,7 @@ class Product(models.Model):
     author      = models.CharField(max_length=255, default='Not found')
     description = models.TextField(blank=True)
     available   = models.PositiveIntegerField(default=1, validators=[MinValueValidator(0)])
-    image       = models.ImageField(upload_to='images/', default='images/default.png') # salva il link nel database
+    image       = models.ImageField(upload_to='images/', default='default.png') # salva il link nel database
     slug        = models.SlugField(max_length=255)
     price       = models.DecimalField(max_digits=4, decimal_places=2, default=4.50, validators=[MinValueValidator(1)])
     in_stock    = models.BooleanField(default=True)

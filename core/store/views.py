@@ -69,7 +69,7 @@ def create_product(request):
         return redirect('/')
 
     if request.method == 'POST':
-        prodform = AddProductForm(request.POST)
+        prodform = AddProductForm(request.POST, request.FILES)
         
         if prodform.is_valid():
             slug = re.sub('\W', '', prodform.cleaned_data['title'].lower())
