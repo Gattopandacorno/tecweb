@@ -3,7 +3,7 @@ from decimal import Decimal
 from store.models import Product
 
 class Cart():
-    """ The cart is the collection of products buyed by a customer. """
+    """ Carrello dei prodotti di un utente. """
     
     def __init__(self, request):
         self.session = request.session
@@ -11,25 +11,25 @@ class Cart():
         
         # If the key of the session doesn't exist it creates it
         if 'skey' not in request.session: 
-            cart = self.session['skey'] = {} 
+            cart  = self.session['skey'] = {} 
 
         self.cart = cart
         
     def add(self, product, qty):
-        """ Adds the selected quantity of a product in the cart. """
+        """ Aggiunge un prodotto nel carrello. """
 
         product_id = str(product.id)
 
-        # If the product is already in the cart it only changes the quantity
+        # Cambia la quantità se il prodotto è gia nel carrello
         if product_id in self.cart: 
             self.cart[product_id]['qty'] = qty
         else:   
             self.cart[product_id] = {'price': str(product.price), 'qty': int(qty) }
         
-        self.session.modified = True # Tells django that we changed the session
+        self.session.modified = True # Dice a django che è cambiata la sessione
 
     def delete(self, product):
-        """ Deletes a product from the list in the cart. """
+        """ Cancella un prodotto dal carrello. """
 
         product_id = str(product)
 
@@ -38,7 +38,7 @@ class Cart():
             self.session.modified = True
 
     def update(self, product, qty):
-        """ Updates the quantity of the selected product. """
+        """ Fa l'update dei prodotti se cambia la quantità di uno. """
 
         product_id = str(product)
 
@@ -48,13 +48,13 @@ class Cart():
         self.session.modified = True
 
     def clear(self):
-        """ Clear cart of the current session. """
+        """ Cancella tutto quello che c'è nel carrello per la sessione corrente. """
 
         del self.session['skey']
         self.session.modified = True
 
     def __iter__(self):
-        """ Iterates over the products of the cart. """
+        """ Itera per tutti i prodotti nel carrello. """
 
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
@@ -69,11 +69,11 @@ class Cart():
             yield item
 
     def __len__(self): 
-        """ Counts the qty of the items in the cart. """
+        """ Conta la quantità totale di tutti i prodotti nel carrello. """
 
         return sum(item['qty'] for item in self.cart.values())
 
     def get_tot_price(self):
-        """ Returns the sum to pay. """
+        """ Ritorna la somma da pagare. """
         return sum(item['qty']*Decimal(item['price']) for item in self.cart.values())
         

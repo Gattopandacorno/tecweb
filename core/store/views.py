@@ -1,5 +1,4 @@
 from datetime import datetime
-from urllib import request
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Avg
@@ -12,14 +11,14 @@ from .models import Category, Product, Review
 
 
 def categories(request):
-    """ Returns all the categories created that are in the database. """
+    """ Ritorna tutte le categorie nel database. """
 
     return { 'categories': Category.objects.all() }
 
 def product_all(request): 
     """ 
-        Returns all the products created that are in the database.
-        This will be displayed in the home page.
+        Ritorna tutti i prodotti nel database.
+        Serve per la home page.
     """
 
     products = Product.objects.all()
@@ -27,7 +26,7 @@ def product_all(request):
     return render(request, template_name='store/home.html', context=ctx)
 
 def all_reviews(request, slug):
-    """ Returns all the reviews for a certain product. """
+    """ Ritorna le review per un certo prodotto """
 
     prod = Product.objects.get(slug=slug)
     reviews = Review.objects.filter(product=prod)
@@ -38,8 +37,8 @@ def all_reviews(request, slug):
 
 def product_detail(request, slug):
     """ 
-        Returns the datail of a product. 
-        It will be showned reviews, price, quantity available, title,... 
+        Ritorna in dettaglio un singolo prodotto.
+        Oltre agli attributi di Product vengono passate le review di quel prodotto. 
     """
 
     product = get_object_or_404(Product, slug=slug)
@@ -49,7 +48,7 @@ def product_detail(request, slug):
     return render(request, 'store/products/single.html', context=ctx)
 
 def category_list(request,slug):
-    """ Returns the list of the products that are of the selected category. """
+    """ Ritorna la lista di prodotti appartenenti a quella categoria. """
 
     category = get_object_or_404(Category, slug=slug)
     products = Product.objects.filter(category=category)
@@ -60,9 +59,10 @@ def category_list(request,slug):
 @login_required
 def create_product(request):
     """ 
-        Create a new entry of a product.  
-        If the product already exists then it will be edited instead.
-        Only a staff or a seller member can perform this action. 
+        Crea un nuovo prodotto.
+        Se invece il titolo è di un prodotto gia esistente allora ne cambia i dati.
+        Solo un membro dello staff o dei venditori(seller) possono farlo.
+        Se l'utente non appartiene ad uno dei due tipi di membro viene mandato alla home page.
     """  
 
     if not (request.user.is_staff or request.user.is_seller):
@@ -74,8 +74,6 @@ def create_product(request):
         if prodform.is_valid():
             slug = re.sub('\W', '', prodform.cleaned_data['title'].lower())
             
-            print(prodform.cleaned_data)
-
             if not Product.objects.filter(slug=slug).exists():
                 Product.objects.create(slug=slug, **prodform.cleaned_data)
 
@@ -86,8 +84,6 @@ def create_product(request):
                 Product.objects.filter(slug=slug).update(in_stock=True)
             else:
                 Product.objects.filter(slug=slug).update(in_stock=False)
-
-
                         
             return redirect('/')
     else:
@@ -98,9 +94,9 @@ def create_product(request):
 @login_required
 def create_category(request):
     """ 
-        Create a new entry of a category. 
-        If the category already exists it redirects the user in the homepage.
-        Only a staff or a seller member can perform this action. 
+        Crea una nuova categoria.
+        Se esiste gia una categoria con quel nome allora redirecta l'utente alla home page.
+        Come per create_product, solo un membro dello staff o un seller può creare nuove categorie.
     """
 
     if not (request.user.is_staff or request.user.is_seller):
@@ -125,9 +121,9 @@ def create_category(request):
 @login_required
 def create_review(request, slug):
     """ 
-        Creates a review. 
-        Only a normal logged in user can perform this action. 
-        If a staff or seller member try to do a review it will be redirected in the homepage.
+        Crea una nuova revisione.
+        Solo un utente normalmente loggato può lasciare una review.
+        Se un membro dello staff o un seller provano a farne una allora verranno redirezionati nella home page.
     """
         
     if request.user.is_staff or request.user.is_seller:
@@ -149,9 +145,9 @@ def create_review(request, slug):
 
 def search(request):
     """
-        Given the word it performs a search in title, author, description of all the products
-        and in the name of all the category.
-        If nothing is searched it will redirects in the homepage.
+        Viene fatta una ricerca della parola data in titolo, autore e descrizione per ogni prodotto.
+        Viene inoltre cercato se la parola è all'interno del nome della categoria.
+        Se non viene passato nulla allora si viene redirezionati nella homepage.
     """
     
     word = request.GET.get('word')
@@ -168,15 +164,16 @@ def search(request):
     prods |= Product.objects.filter(author__regex=r"(\w|\W)*( )*" + str(word) + "(\w|\W)*( )*")
     prods |= Product.objects.filter(description__regex=r"(\w|\W)*" + str(word) + "(\w|\W)*")
 
-    ctx = { 'category': "Searched: "+word, 'products': prods }
+    ctx = { 'category': "Searched: " + word, 'products': prods }
     return render(request, 'store/products/category.html', context=ctx)
 
+@login_required
 def recommend(request):
     """
-        The displayed recommendation in the homepage of a one logged user.
-        First it searches all the products with more than 2 stars (avg).
-        Secondly it search category's products bought by the user to recommend manga not bought 
-        for the same category.
+        La raccomandazione viene fatta vedere solo da utenti loggati.
+        Per prima cosa vengono cercati tutti i prodotti con una media di piu di 2 stelle.
+        Poi viene fatta una ricerca di tutti i prodotti comprati per capirne la categoria preferita
+        e passare quindi i prodotti con quella categoria non ancora comprati.
     """
 
     products = list(Product.objects.filter(in_stock=True))
@@ -187,17 +184,16 @@ def recommend(request):
             if Review.objects.filter(product=product).aggregate(Avg('rate'))['rate__avg'] > 2:
                 prods.add(product)
 
-    if request.user.is_authenticated :
-        for order in Order.objects.filter(user=request.user):
+    for order in Order.objects.filter(user=request.user):
 
-            for oi in OrderItem.objects.filter(order=order) :
-                p = Product.objects.get(title=oi.product)
+        for oi in OrderItem.objects.filter(order=order) :
+            p = Product.objects.get(title=oi.product)
                 
-                for product in Product.objects.filter(category=p.category):
-                    prods.add(product)
+            for product in Product.objects.filter(category=p.category):
+                prods.add(product)
 
-            for oi in OrderItem.objects.filter(order=order) :
-                    prods.discard(oi.product)
+        for oi in OrderItem.objects.filter(order=order) :
+            prods.discard(oi.product)
 
     prods.discard(None)
     return { 'products': list(prods)[:6] }

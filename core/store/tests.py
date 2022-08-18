@@ -6,55 +6,55 @@ from .models import Category, Product, Review
 
 
 class TestCategoriesModel(TestCase):
-    """ Test for the categories. """
+    """ Test per le istanze di Category. """
     
     def setUp(self):
-        """ Creates a new category to setup the test. """
+        """ Crea una nuova istanza di Category per testarla. """
 
         self.data = Category.objects.create(name='django', slug='django')
 
 
     def test_category_model_instance(self):
-        """ Tests if the data is an istance of the model Category. """
+        """ Testa se i dati passati sono istanza di Category. """
 
         data = self.data
         self.assertTrue(isinstance(data, Category))
 
     def test_category_model_entry(self):
-        """ Test if the __str__ method in the Category model is correct. """
+        """ Testa il metodo __str__ per Category. """
         data = self.data
         self.assertEqual(str(data), 'django')
 
 
 
 class TestProductModel(TestCase):
-    """ Test for products. """
+    """ Test per le istanze di Product. """
 
     def setUp(self):
-        """ It creates a product with a new Category and a new User to setup the test. """
+        """ Crea Category per creare una nuova istanza di Product. """
 
         Category.objects.create(name='django', slug='django')
-        UserBase.objects.create(username='admin')
         self.data = Product.objects.create(category_id=1, title='django beginners',
                                            slug='django-beginners', price=4.50, image='images' )
     
     def test_product_model_instance(self):
-        """ Test if the data is an istance of the model Product. """
+        """ Testa se i dati passati sono istanza di Product. """
 
         data = self.data
         self.assertTrue(isinstance(data, Product))
 
     def test_product_model_entry(self):
-        """ Test if the __str__ method in the Product model is correct. """
+        """ Testa il metodo  __str__ per Product. """
 
         data = self.data
         self.assertEqual(str(data), 'django beginners')
 
 
 class TestReviewModel(TestCase):
+    """ Test per le istanze di Review. """
     
     def setUp(self):
-        """ Creates new entries of Category, Product and UserBase to setUp the tests. """
+        """ Crea una nuova categoria, user e prodotto per creare un istanza di Review. """
 
         Category.objects.create(name='django', slug='django')
         UserBase.objects.create(username='admin')
@@ -65,13 +65,13 @@ class TestReviewModel(TestCase):
         
 
     def test_review_model_instance(self):
-        """ It tests if the self.data passed is an instance of the Review class. """
+        """ Testa se i dati passati sono istanza di Review. """
 
         data = self.data
         self.assertIsInstance(data, Review)
     
     def test_review_model_entry(self):
-        """ It tests if the __str__ method in Review is correct. """
+        """ Testa il metodo __str__ per Review. """
 
         data = self.data
         self.assertEquals(str(data), 'this is a comment')

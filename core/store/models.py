@@ -5,10 +5,7 @@ from django.core.validators import MinValueValidator
 
 
 class Category(models.Model):
-    """ 
-        Represents the category of a product. Exemples of anime/manga's category can be found
-        on wikipedia.  
-    """
+    """ Rappresenta la categoria di un certo prodotto. """
 
     name = models.CharField(max_length=255, db_index=True)
     slug = models.SlugField(max_length=255, unique=True)
@@ -17,7 +14,7 @@ class Category(models.Model):
         verbose_name_plural = 'categories' 
 
     def get_absolute_url(self):
-        """ Returns the list of products with a certain category's slug. """
+        """ Ritorna la lista dei prodotti per una certa categoria. """
 
         return reverse_lazy('store:category_list', args=[self.slug])
 
@@ -26,14 +23,14 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    """ Represents a product. A product can only be a book(manga) or a cartoon(anime). """
+    """ Rappresenta un prodotto vendibile sull'e-commerce. """
 
     category    = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE)
     title       = models.CharField(max_length=255)
     author      = models.CharField(max_length=255, default='Not found')
     description = models.TextField(blank=True)
     available   = models.PositiveIntegerField(default=1, validators=[MinValueValidator(0)])
-    image       = models.ImageField(upload_to='images/', default='images/default.png') # stores the link to the db
+    image       = models.ImageField(upload_to='images/', default='images/default.png') # salva il link nel database
     slug        = models.SlugField(max_length=255)
     price       = models.DecimalField(max_digits=4, decimal_places=2, default=4.50, validators=[MinValueValidator(1)])
     in_stock    = models.BooleanField(default=True)
@@ -45,12 +42,13 @@ class Product(models.Model):
         ordering = ('-created',)
 
     def get_qty(self):
-        """ It returns the available quantity of this book. """
+        """ Ritorna la quantita disponibile di un prodotto.  """
 
         return range(self.available)
 
     def get_absolute_url(self):
-        """ It returns the right page that displays a certain product. """
+        """ Ritorna l'url del dettaglio di un prodotto. """
+
         return reverse_lazy('store:product_detail', args=[self.slug])
 
     def __str__(self):
@@ -60,7 +58,7 @@ class Product(models.Model):
 RATE_CHOICES = [(1, '1 - Trash'), (2, '2 - Bad'), (3, '3 - Ok'), (4, '4 - Nice'), (5, '5 - Perfect')]
 
 class Review(models.Model):
-    """ Represents the single review of a product. """
+    """ Rappresenta una revisione. """
     
     user     = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product  = models.ForeignKey(Product, on_delete=models.CASCADE)

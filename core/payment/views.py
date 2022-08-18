@@ -7,20 +7,24 @@ from cart.cart import Cart
 
 @login_required
 def CartView(request):
-    """ When a user want to checkout the order, it will be redirected to the payment system. """
+    """ 
+        Quando un utente vuole fare il checkout 
+        viene redirezionato con i giusti dati nella pagina per il pagamento. 
+    """
 
     cart = Cart(request)
-    tot = str(cart.get_tot_price())
-    tot = int(tot.replace('.', ''))
-    key = ''.join(random.choice(string.printable) for _ in range(20)) # Creates the order key
-    ctx = {'client_secret': key,}
+    tot  = str(cart.get_tot_price())
+    tot  = int(tot.replace('.', ''))
+    key  = ''.join(random.choice(string.printable) for _ in range(20)) # Creates the order key
+    ctx  = {'client_secret': key,}
 
     return render(request, 'payment/home.html', context=ctx)
 
 
 def order_placed(request):
-    """ After the payment is done it clears the cart. """
+    """ Dopo ogni pagamento viene pulito il carrello. """
     
     cart = Cart(request)
     cart.clear()
+
     return render(request, 'account/profile.html')

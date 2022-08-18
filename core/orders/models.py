@@ -5,8 +5,8 @@ from store.models import Product
 
 class Order(models.Model):
     """ 
-        Represents an order. An order is done by doing the checkout('paying') of the cart. 
-        After the order is done, it can be seen in the profile sectio called 'order history'.
+        Rappresenta un ordine, viene creato dopo un pagamento(falso).
+        Dopo essere creato si può vedere negli ordini passati nella sezione del profilo 'order history'.
     """
 
     user            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -25,7 +25,7 @@ class Order(models.Model):
  
 
 class OrderItem(models.Model):
-    """ Represents the single ordered items in a certain order. """
+    """ Rappresenta un certo prodotto preso per un ordine. """
     
     order   = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')

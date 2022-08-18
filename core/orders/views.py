@@ -8,7 +8,7 @@ from .models import Order, OrderItem
 
 
 def add(request):
-    """ Creates the 'payed' order and clears the cart.  """
+    """ Dopo il pagamento viene creato l'ordine dei prodotti. """
 
     cart = Cart(request)
     
@@ -35,9 +35,9 @@ def add(request):
         return response
 
 def history(request):
-    """ Returns the order history of the user requesting it. """
+    """ Ritorna la storia degli ordini passati di un utente. """
     
-    user = request.user
+    user   = request.user
     orders = Order.objects.filter(user=user, billing_status=True)
     
     return orders

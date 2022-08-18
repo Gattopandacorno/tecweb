@@ -4,10 +4,10 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CustomUserManager(BaseUserManager):
-    """ Custom user creator. """
+    """ Creazione custom per l'utente. """
 
     def create_superuser(self, email, username, password, **other_fields):
-        """ Creates the superuser. Note that the superuser is different from the seller user."""
+        """ Crea un superuser."""
 
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
@@ -22,9 +22,9 @@ class CustomUserManager(BaseUserManager):
 
 
     def create_user(self, email, username, password, **other_fields):
-        """ Creates a new user. The user will be a 'normal buyer'. """
+        """ Crea un nuovo utente. """
 
-        if not email: # If the mail is not provided
+        if not email: # Se non viene data la mail
             raise ValueError(_('You must provide email address'))
         
         email   = self.normalize_email(email)
@@ -35,7 +35,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class UserBase(AbstractBaseUser, PermissionsMixin):
-    """ The common fields of all the users. Seller, Admin and common-buyer. """
+    """ Rappresenta qualsiasi utente: 'compratore', seller e superuser. """
 
     email           = models.EmailField(_('email address'), unique=True)
     username        = models.CharField(max_length=150, unique=True)
@@ -49,7 +49,7 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     is_active       = models.BooleanField(default=True)
     is_staff        = models.BooleanField(default=False)
     
-    # This fields is True when the admin creates a new seller account
+    # True quando viene creato un nuovo venditore dal superuser
     is_seller       = models.BooleanField(default=False) 
     created         = models.DateTimeField(auto_now_add=True)
     updated         = models.DateTimeField(auto_now=True)
