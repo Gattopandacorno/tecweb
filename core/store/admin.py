@@ -2,8 +2,9 @@ from django.contrib import admin
 
 from .models import Category, Product, Review
 
-""" All the models registered in this section can be edited and seen as described below 
-    if the user is the admin(superuser)
+""" 
+    All the models registered in this section can be edited and seen as described below 
+    if the user is the admin(superuser).
 """
 
 @admin.register(Category)

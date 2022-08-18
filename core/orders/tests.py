@@ -9,7 +9,7 @@ from .models import Order, OrderItem
 class TestOrderView(TestCase):
     
     def setUp(self):
-        """ Setup of the test. 
+        """ Setup of the test creating new entry in Category, Product and User. 
         """
 
         Category.objects.create(name='django', slug='django')
@@ -26,6 +26,10 @@ class TestOrderView(TestCase):
 
 
     def test_no_order(self):
+        """
+            It tests when the user have not already done the checkout.
+            There shouldn't be entry in the Order or OrderItem table.
+        """
         
         order = Order.objects.all().count()
         self.assertEqual(order, 0)

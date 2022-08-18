@@ -4,8 +4,9 @@ from django.db import models
 from store.models import Product
 
 class Order(models.Model):
-    """ Represents an order. An order is done by doing the checkout('paying') of the cart. 
-        After the order is done, it can be seen in the profile sectio  called 'order history'.
+    """ 
+        Represents an order. An order is done by doing the checkout('paying') of the cart. 
+        After the order is done, it can be seen in the profile sectio called 'order history'.
     """
 
     user            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

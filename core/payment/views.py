@@ -12,7 +12,7 @@ def CartView(request):
     cart = Cart(request)
     tot = str(cart.get_tot_price())
     tot = int(tot.replace('.', ''))
-    key = ''.join(random.choice(string.printable) for i in range(20))
+    key = ''.join(random.choice(string.printable) for _ in range(20)) # Creates the order key
     ctx = {'client_secret': key,}
 
     return render(request, 'payment/home.html', context=ctx)

@@ -10,7 +10,9 @@ class TestCategoriesModel(TestCase):
     
     def setUp(self):
         """ Creates a new category to setup the test. """
+
         self.data = Category.objects.create(name='django', slug='django')
+
 
     def test_category_model_instance(self):
         """ Tests if the data is an istance of the model Category. """
@@ -38,6 +40,7 @@ class TestProductModel(TestCase):
     
     def test_product_model_instance(self):
         """ Test if the data is an istance of the model Product. """
+
         data = self.data
         self.assertTrue(isinstance(data, Product))
 
@@ -51,6 +54,7 @@ class TestProductModel(TestCase):
 class TestReviewModel(TestCase):
     
     def setUp(self):
+        """ Creates new entries of Category, Product and UserBase to setUp the tests. """
 
         Category.objects.create(name='django', slug='django')
         UserBase.objects.create(username='admin')
@@ -61,10 +65,13 @@ class TestReviewModel(TestCase):
         
 
     def test_review_model_instance(self):
+        """ It tests if the self.data passed is an instance of the Review class. """
 
         data = self.data
         self.assertIsInstance(data, Review)
     
     def test_review_model_entry(self):
+        """ It tests if the __str__ method in Review is correct. """
+
         data = self.data
         self.assertEquals(str(data), 'this is a comment')

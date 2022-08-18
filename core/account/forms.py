@@ -25,7 +25,8 @@ class RegistrationForm(forms.ModelForm):
         fields = {'username', 'email', 'country', 'city', 'address', 'phone_num', 'cap_code'}
 
     def clean_username(self):
-        """ The cleaned data returns if a username is already in use or not.
+        """ 
+            The cleaned data returns if a username is already in use or not.
             If it raises a ValidationError.
         """
 
@@ -39,7 +40,8 @@ class RegistrationForm(forms.ModelForm):
 
 
     def clean_email(self):
-        """ Like the username's cleaned data, this returns if the email is already in use in another account.
+        """ 
+            Like the username's cleaned data, this returns if the email is already in use in another account.
             If it is raises a ValidationError.
         """
 
@@ -52,7 +54,8 @@ class RegistrationForm(forms.ModelForm):
 
         
     def clean_password(self):
-        """ If the two password are not equal the form is invalid and it raises a ValidationError.
+        """ 
+            If the two password are not equal the form is invalid and it raises a ValidationError.
             This is used to be sure the user typed the first password correctly.
         """
 
@@ -105,11 +108,11 @@ class UserEditForm(forms.ModelForm):
 
     
     class Meta:
-        model = UserBase
+        model  = UserBase
         fields = ('email', 'username', 'country', 'city', 'address', 'phone_num', 'cap_code')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].required = True
-        self.fields['email'].required = True
+        self.fields['email'].required    = True
        

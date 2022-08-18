@@ -18,15 +18,12 @@ def add(request):
         carttot = cart.get_tot_price()
 
         if not Order.objects.filter(order_key=order_key).exists():
-
             order = Order.objects.create(user=user, tot_paid=carttot, order_key=order_key, billing_status=True)
 
-            # It also creates the new items's order object
             for item in cart:
                 OrderItem.objects.create(order=order,product=item['product'], price=item['price'], qty=item['qty'])
                 qty = Product.objects.get(slug=item['product'].slug).available - item['qty']
 
-                print(qty)
                 if qty <= 0:
                     Product.objects.filter(slug=item['product'].slug).update(available=0, in_stock=False)
                 else:

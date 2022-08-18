@@ -1,7 +1,4 @@
 from datetime import datetime
-from email.mime import image
-from itertools import product
-from unicodedata import category
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Avg
@@ -18,7 +15,8 @@ def categories(request):
     return { 'categories': Category.objects.all() }
 
 def product_all(request): 
-    """ Returns all the products created that are in the database.
+    """ 
+        Returns all the products created that are in the database.
         This will be displayed in the home page.
     """
 
@@ -37,7 +35,10 @@ def all_reviews(request, slug):
     return ctx
 
 def product_detail(request, slug):
-    """ Returns the datail of a product. It will be showned reviews, price, quantity available, title,... """
+    """ 
+        Returns the datail of a product. 
+        It will be showned reviews, price, quantity available, title,... 
+    """
 
     product = get_object_or_404(Product, slug=slug)
     ctx = all_reviews(request=request,slug=slug)
@@ -56,7 +57,11 @@ def category_list(request,slug):
 
 @login_required
 def create_product(request):
-    """ Create a new entry of a product. Only a staff or a seller member can perform this action. """  
+    """ 
+        Create a new entry of a product.  
+        If the product already exists then it will be edited instead.
+        Only a staff or a seller member can perform this action. 
+    """  
 
     if not (request.user.is_staff or request.user.is_seller):
         return redirect('/')
@@ -90,7 +95,11 @@ def create_product(request):
 
 @login_required
 def create_category(request):
-    """ Create a new entry of a category. Only a staff or a seller member can perform this action. """
+    """ 
+        Create a new entry of a category. 
+        If the category already exists it redirects the user in the homepage.
+        Only a staff or a seller member can perform this action. 
+    """
 
     if not (request.user.is_staff or request.user.is_seller):
         return redirect('/')
@@ -113,7 +122,11 @@ def create_category(request):
 
 @login_required
 def create_review(request, slug):
-    """ Creates a review. Only a normal logged in user can perform this action. """
+    """ 
+        Creates a review. 
+        Only a normal logged in user can perform this action. 
+        If a staff or seller member try to do a review it will be redirected in the homepage.
+    """
         
     if request.user.is_staff or request.user.is_seller:
        return redirect('/')
@@ -133,10 +146,15 @@ def create_review(request, slug):
     return render(request, 'store/rating/home.html', { 'form': rateform, 'slug': slug } )
 
 def search(request):
+    """
+        Given the word it performs a search in title, author, description of all the products
+        and in the name of all the category.
+        If nothing is searched it will redirects in the homepage.
+    """
     
     word = request.GET.get('word')
 
-    if not word:
+    if not word :
         return redirect('/')
 
     prods = Product.objects.filter(slug__regex=r"(\w|\W)*" + str(word) + "(\w|\W)*")
@@ -152,6 +170,10 @@ def search(request):
     return render(request, 'store/products/category.html', context=ctx)
 
 def recommend(reqest):
+    """
+        The displayed recommendation in the homepage of a one logged user.
+        First it searches all the products with more than 2 stars (avg).
+    """
 
     products = list(Product.objects.all())
     prods = []

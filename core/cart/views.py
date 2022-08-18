@@ -25,6 +25,7 @@ def cart_add(request):
     """ Adds a new item in the cart. It changes the number of the cart logo. """
 
     cart = Cart(request)
+
     if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('productid'))
         product_qty = int(request.POST.get('productqty'))
@@ -65,7 +66,8 @@ def cart_update(request):
 
 @login_required
 def CartView(request):
-    """ If the user is logged in it can view the payment system.
+    """ 
+        If the user is logged in it can view the payment system.
         Notice that the only logic in the payment system is to controll the input is a number.
     """
 

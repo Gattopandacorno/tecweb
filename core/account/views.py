@@ -8,9 +8,10 @@ from orders.views import history
 from store.models import Product
 
 def registration(request):
-    """ Used to register a user. 
+    """ 
+        Used to register a user. 
         If it is already registered it will only be redirected in the home page.
-        """
+    """
     
     if request.user.is_authenticated:
         return redirect('/')
@@ -32,16 +33,17 @@ def registration(request):
             user.is_active = True
             user.save()
             login(request, user)
+            
             return redirect('/')
     else:
         registerform = RegistrationForm()
   
     return render(request, 'account/register.html', { 'form': registerform } )
 
-
 @login_required
 def profile(request):
-    """ Redirects the user in the profile action. Every user can do a set of actions that depends on the 
+    """ 
+        Redirects the user in the profile action. Every user can do a set of actions that depends on the 
         type of the account.
         Only those who are logged can be allowed in this section.
     """
@@ -50,7 +52,8 @@ def profile(request):
 
 @login_required
 def edit_details(request):
-    """ Redirects the user in the account settings. In this section a logged user can edit some details like
+    """ 
+        Redirects the user in the account settings. In this section a logged user can edit some details like
         the country name or the cap code.
         Note that username and email cannot be edited.
     """
@@ -67,11 +70,11 @@ def edit_details(request):
     
 @login_required
 def delete(request):
-    """ Use to delete a user account. This method fakes the deletion but 72 line can be de-commented. """
+    """ Use to delete a user account. This method fakes the deletion. """
     
     if not request.user.is_staff:
         user = UserBase.objects.get(username=request.user)
-        #user.is_active = False  #TODO: ACTIVATE TO DELETE THE USER 
+        user.is_active = False  # ACTIVATE TO DELETE THE USER 
         user.save()
         logout(request)
     
@@ -88,7 +91,9 @@ def user_history(request):
 
 @login_required
 def add_seller(request):
-    """ This section is admin only, this is due to security reasons. This method register a new  seller account.
+    """ 
+        This section is admin only, this is due to security reasons. 
+        This method register a new  seller account.
         To do so sets user.is_seller to True.
     """
     
@@ -114,8 +119,3 @@ def add_seller(request):
         registerform = RegistrationForm()
   
     return render(request, 'account/register.html', { 'form': registerform } )
-
-@login_required
-def edit_product(request):
-    ctx = { 'products': Product.objects.all() }
-    return render(request, 'account/edit_product.html', context=ctx)

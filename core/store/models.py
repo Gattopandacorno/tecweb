@@ -5,7 +5,8 @@ from django.core.validators import MinValueValidator
 
 
 class Category(models.Model):
-    """ Represents the category of a product. Exemples of anime/manga's category can be found
+    """ 
+        Represents the category of a product. Exemples of anime/manga's category can be found
         on wikipedia.  
     """
 
@@ -16,7 +17,9 @@ class Category(models.Model):
         verbose_name_plural = 'categories' 
 
     def get_absolute_url(self):
-       return reverse_lazy('store:category_list', args=[self.slug])
+        """ Returns the list of products with a certain category's slug. """
+
+        return reverse_lazy('store:category_list', args=[self.slug])
 
     def __str__(self):
         return self.name
@@ -42,9 +45,12 @@ class Product(models.Model):
         ordering = ('-created',)
 
     def get_qty(self):
+        """ It returns the available quantity of this book. """
+
         return range(self.available)
 
     def get_absolute_url(self):
+        """ It returns the right page that displays a certain product. """
         return reverse_lazy('store:product_detail', args=[self.slug])
 
     def __str__(self):

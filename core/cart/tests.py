@@ -9,7 +9,8 @@ from store.models import Category, Product
 class TestCartView(TestCase):
     
     def setUp(self):
-        """ Setup of the test. 
+        """ 
+            Setup of the test. 
             It creates instances of User, Category and Product.
             Then it adds the products in the cart of the created user.
         """
