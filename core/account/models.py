@@ -46,7 +46,7 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     address         = models.CharField(max_length=150, blank=True)
     city            = models.CharField(max_length=150, blank=True)
 
-    is_active       = models.BooleanField(default=False)
+    is_active       = models.BooleanField(default=True)
     is_staff        = models.BooleanField(default=False)
     
     # This fields is True when the admin creates a new seller account
@@ -66,4 +66,3 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
-    

@@ -1,4 +1,5 @@
 from datetime import datetime
+from email.mime import image
 from itertools import product
 from unicodedata import category
 from django.contrib.auth.decorators import login_required
@@ -65,16 +66,21 @@ def create_product(request):
         
         if prodform.is_valid():
             slug = re.sub('\W', '', prodform.cleaned_data['title'].lower())
+            
+            print(prodform.cleaned_data)
 
             if not Product.objects.filter(slug=slug).exists():
                 Product.objects.create(slug=slug, **prodform.cleaned_data)
 
             else:
-            
                 Product.objects.filter(slug=slug).update(**prodform.cleaned_data)
 
-                if prodform.cleaned_data['available'] > 0:
-                    Product.objects.filter(slug=slug).update(in_stock=True)
+            if prodform.cleaned_data['available'] > 0:
+                Product.objects.filter(slug=slug).update(in_stock=True)
+            else:
+                Product.objects.filter(slug=slug).update(in_stock=False)
+
+
                         
             return redirect('/')
     else:
