@@ -1,6 +1,5 @@
-from multiprocessing.connection import Client
 from django.test import TestCase
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 
 from .models import UserBase
 
@@ -25,20 +24,29 @@ class TestUserView(TestCase):
     def setUp(self):
         """ Crea un nuovo utente per i test sugli utenti. """
 
-        self.user = UserBase.objects.create(username='user', email='a@a.com', password='user', is_active=True)
+        self.user = UserBase.objects.create_user(username='user', email='a@a.com', password='user', is_active=True)
+        self.credentials = {'username': 'a@a.com', 'password': 'user'}
+
 
 
     def test_login(self):
         """ Testa se viene usato il giusto template per il login. """
 
-        resp = self.client.get(reverse_lazy('account:login'))
+        resp = self.client.get(reverse_lazy('account:login'), **self.credentials)
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'account/login.html')
+        self.assertFalse(resp.context['user'].is_authenticated)
+
+        u = UserBase.objects.get(username='user')
+        self.client.force_login(u)
+        resp = self.client.get(reverse_lazy('account:login'), **self.credentials)
+        self.assertTrue(resp.context['user'].is_authenticated)
+        
 
     def test_registration(self):
         """ Testa se viene usato template per la registrazione """
 
-        resp = self.client.post(reverse_lazy('account:registration'), {'action': 'post'})
+        resp = self.client.post(reverse_lazy('account:registration'))
         self.assertTemplateUsed(resp, 'account/register.html')
 
     def test_addseller(self):
@@ -64,7 +72,6 @@ class TestUserView(TestCase):
 
         resp = self.client.post(reverse_lazy('account:edit_details'))
         self.assertEqual(resp.status_code, 302)
-
 
     def test_logout(self):
         """ Testa che dopo il logout l'utente venga mandato alla home page. """

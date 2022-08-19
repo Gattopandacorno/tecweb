@@ -136,8 +136,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
 # Custom user model
-AUTH_USER_MODEL = 'account.UserBase' # with this the User model is outdated and not recommended
+AUTH_USER_MODEL = 'account.UserBase' # Uso UserBase come utente base e non piu User
 LOGIN_REDIRECT_URL = '/account/profile'
 LOGIN_URL = '/account/login'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
