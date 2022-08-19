@@ -81,6 +81,9 @@ def user_history(request):
 def add_seller(request):
     """ Viene aggiunto un nuovo membro di venditori. Solo un membro dello staff potrà farlo. """
     
+    if not request.user.is_staff and request.method == 'POST':
+        return redirect('/')
+
     if request.user.is_staff and request.method == 'POST':
         registerform = RegistrationForm(request.POST)
         
