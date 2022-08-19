@@ -27,8 +27,6 @@ class TestUserView(TestCase):
         self.user = UserBase.objects.create_user(username='user', email='a@a.com', password='user', is_active=True)
         self.credentials = {'username': 'a@a.com', 'password': 'user'}
 
-
-
     def test_login(self):
         """ Testa se viene usato il giusto template per il login. """
 
@@ -42,12 +40,16 @@ class TestUserView(TestCase):
         resp = self.client.get(reverse_lazy('account:login'), **self.credentials)
         self.assertTrue(resp.context['user'].is_authenticated)
         
-
     def test_registration(self):
         """ Testa se viene usato template per la registrazione """
 
         resp = self.client.post(reverse_lazy('account:registration'))
         self.assertTemplateUsed(resp, 'account/register.html')
+
+        u = UserBase.objects.get(username='user')
+        self.client.force_login(u)
+        resp = self.client.post(reverse_lazy('account:registration'))
+        self.assertRedirects(resp, '/')
 
     def test_addseller(self):
         """ Testa se viene richiesto il login se un utente non loggato prova ad aggiungere un membro seller. """
@@ -55,6 +57,21 @@ class TestUserView(TestCase):
         resp = self.client.post(reverse_lazy('account:add_seller'))
         self.assertEqual(resp.status_code, 302)
 
+        # Se l'utente è normale
+        u = UserBase.objects.get(username='user')
+        self.client.force_login(u)
+        resp = self.client.post(reverse_lazy('account:add_seller'))
+        self.assertEqual(resp.status_code, 302)
+        self.assertRedirects(resp, '/')
+
+        # Se l'utente è un admin
+        u = UserBase.objects.create_user(username='admin', email='admin@a.com', is_staff=True, password='admin')
+        self.client.force_login(u)
+        resp = self.client.post(reverse_lazy('account:add_seller'))
+        self.assertTrue(resp.context['user'].is_authenticated)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'account/register.html')
+        
     def test_profile(self):
         """ Testa se viene richiesto il login se si cercano i dettagli di profilo per un utente non loggato. """
 
@@ -72,6 +89,27 @@ class TestUserView(TestCase):
 
         resp = self.client.post(reverse_lazy('account:edit_details'))
         self.assertEqual(resp.status_code, 302)
+
+
+        # Se l'utente è registrato
+        u = UserBase.objects.get(username='user')
+        self.client.force_login(u)
+
+        resp = self.client.post(reverse_lazy('account:profile'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.context['user'].is_authenticated)
+        
+        resp = self.client.post(reverse_lazy('account:user_history'))
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.post(reverse_lazy('account:edit_details'))
+        self.assertEqual(resp.status_code, 200)
+        
+        resp = self.client.post(reverse_lazy('account:delete'))
+        self.assertEqual(resp.status_code, 302)
+
+        resp = self.client.post(reverse_lazy('account:confirmation'))
+        self.assertEqual(resp.status_code, 405)
 
     def test_logout(self):
         """ Testa che dopo il logout l'utente venga mandato alla home page. """
