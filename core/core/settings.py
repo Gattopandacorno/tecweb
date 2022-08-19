@@ -132,8 +132,8 @@ STATIC_FILES_DIRS = [ os.path.join(BASE_DIR, 'static'), ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/images/')
-MEDIA_URL = '/media/images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
 
 # Custom user model
 AUTH_USER_MODEL = 'account.UserBase' # with this the User model is outdated and not recommended
