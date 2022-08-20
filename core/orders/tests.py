@@ -1,7 +1,5 @@
 from django.test import TestCase
 from django.urls import reverse_lazy
-from django.contrib.auth import login
-from django.contrib.auth import authenticate
 
 from account.models import UserBase
 from store.models import Category, Product
@@ -49,5 +47,5 @@ class TestOrderView(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'payment/home.html')
         self.assertTrue(resp.context['user'].is_authenticated)
-       
+
         # TODO: aggiungere test che prova che l'ordine è stato aggiunto

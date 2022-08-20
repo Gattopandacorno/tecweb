@@ -24,7 +24,8 @@ class TestUserView(TestCase):
     def setUp(self):
         """ Crea un nuovo utente per i test sugli utenti. """
 
-        self.user = UserBase.objects.create_user(username='user', email='a@a.com', password='user', is_active=True)
+        UserBase.objects.create_user(username='user', email='a@a.com', password='user')
+        UserBase.objects.create_user(username='admin', email='admin@a.com', is_staff=True, password='admin')
         self.credentials = {'username': 'a@a.com', 'password': 'user'}
 
     def test_login(self):
@@ -65,7 +66,7 @@ class TestUserView(TestCase):
         self.assertRedirects(resp, '/')
 
         # Se l'utente è un admin
-        u = UserBase.objects.create_user(username='admin', email='admin@a.com', is_staff=True, password='admin')
+        u = UserBase.objects.get(username='admin')
         self.client.force_login(u)
         resp = self.client.post(reverse_lazy('account:add_seller'))
         self.assertTrue(resp.context['user'].is_authenticated)
@@ -80,15 +81,31 @@ class TestUserView(TestCase):
         
         resp = self.client.post(reverse_lazy('account:user_history'))
         self.assertEqual(resp.status_code, 302)
-        
-        resp = self.client.post(reverse_lazy('account:confirmation'))
-        self.assertEqual(resp.status_code, 405)
-
-        resp = self.client.post(reverse_lazy('account:delete'))
-        self.assertEqual(resp.status_code, 302)
 
         resp = self.client.post(reverse_lazy('account:edit_details'))
         self.assertEqual(resp.status_code, 302)
+        
+        resp = self.client.post(reverse_lazy('account:delete'))
+        self.assertEqual(resp.status_code, 302)
+
+        
+        # Se l'utente è registrato come admin
+        u = UserBase.objects.get(username='admin')
+        self.client.force_login(u)
+
+        resp = self.client.post(reverse_lazy('account:profile'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.context['user'].is_authenticated)
+        
+        resp = self.client.post(reverse_lazy('account:user_history'))
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.post(reverse_lazy('account:edit_details'))
+        self.assertEqual(resp.status_code, 200)
+        
+        resp = self.client.post(reverse_lazy('account:delete'))
+        self.assertEqual(resp.status_code, 302)
+        self.assertRedirects(resp, '/account/profile/confirmation/')
 
 
         # Se l'utente è registrato
@@ -107,9 +124,7 @@ class TestUserView(TestCase):
         
         resp = self.client.post(reverse_lazy('account:delete'))
         self.assertEqual(resp.status_code, 302)
-
-        resp = self.client.post(reverse_lazy('account:confirmation'))
-        self.assertEqual(resp.status_code, 405)
+        self.assertRedirects(resp, '/account/profile/confirmation/')
 
     def test_logout(self):
         """ Testa che dopo il logout l'utente venga mandato alla home page. """
