@@ -7,7 +7,7 @@ from .models import UserBase
 class TestUserModel(TestCase):
     
     def setUp(self):
-        self.data = UserBase.objects.create(username='admin')        
+        self.data = UserBase.objects.create_user(username='admin', email='admin@a.com', password='admin')        
 
     def test_review_model_instance(self):
 

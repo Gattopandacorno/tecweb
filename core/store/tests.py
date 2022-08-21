@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.urls import reverse_lazy
 
 from account.models import UserBase
 from .models import Category, Product, Review
@@ -13,17 +14,16 @@ class TestCategoriesModel(TestCase):
         self.data = Category.objects.create(name='django', slug='django')
 
 
-    def test_category_model_instance(self):
+    def test_category_instance(self):
         """ Testa se i dati passati sono istanza di Category. """
 
         data = self.data
         self.assertTrue(isinstance(data, Category))
 
-    def test_category_model_entry(self):
+    def test_category_entry(self):
         """ Testa il metodo __str__ per Category. """
         data = self.data
         self.assertEqual(str(data), 'django')
-
 
 
 class TestProductModel(TestCase):
@@ -36,13 +36,13 @@ class TestProductModel(TestCase):
         self.data = Product.objects.create(category_id=1, title='django beginners',
                                            slug='django-beginners', price=4.50, image='images' )
     
-    def test_product_model_instance(self):
+    def test_product_instance(self):
         """ Testa se i dati passati sono istanza di Product. """
 
         data = self.data
         self.assertTrue(isinstance(data, Product))
 
-    def test_product_model_entry(self):
+    def test_product_entry(self):
         """ Testa il metodo  __str__ per Product. """
 
         data = self.data
@@ -56,21 +56,172 @@ class TestReviewModel(TestCase):
         """ Crea una nuova categoria, user e prodotto per creare un istanza di Review. """
 
         Category.objects.create(name='django', slug='django')
-        UserBase.objects.create(username='admin')
+        UserBase.objects.create_user(username='admin', email='admin@a.com', password='admin')
         Product.objects.create(category_id=1, title='django beginners',
                                            slug='django-beginners', price=4.50, image='images' )
         
         self.data = Review.objects.create(user_id=1,product_id=1, text='this is a comment', rate=3)
         
 
-    def test_review_model_instance(self):
+    def test_review_instance(self):
         """ Testa se i dati passati sono istanza di Review. """
 
         data = self.data
         self.assertIsInstance(data, Review)
     
-    def test_review_model_entry(self):
+    def test_review_entry(self):
         """ Testa il metodo __str__ per Review. """
 
         data = self.data
         self.assertEquals(str(data), 'this is a comment')
+
+
+class TestStoreView(TestCase):
+
+    def setUp(self):
+        """ Crea una nuova categoria, user e prodotto. """
+
+        Category.objects.create(name='django', slug='django')
+        UserBase.objects.create_user(username='user', email='a@a.com', password='user', is_active=True)
+        Product.objects.create(category_id=1, title='django beginners',
+                                           slug='django-beginners', price=4.50, image='images' )
+        self.credentials = {'username': 'a@a.com', 'password': 'user'}
+
+    def test_product_detail(self):
+
+        resp = self.client.post('/django-beginners/') 
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'store/products/single.html')
+        self.assertEqual(list(resp.context['reviews']), [])
+        self.assertIsNotNone(resp.context['product'])
+
+
+        Review.objects.create(user_id=1,product_id=1, text='this is a comment', rate=3)
+        resp = self.client.post('/django-beginners/')
+        self.assertNotEqual(list(resp.context['reviews']), [])
+
+    def test_category(self):
+
+        resp = self.client.post('/shop/django/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'store/products/category.html')
+       
+        self.assertNotEqual(list(resp.context['products']), [])
+        self.assertEqual(len(list(resp.context['products'])), 1)
+        
+        self.assertIsNotNone(resp.context['category'], )
+
+    def test_product_all(self):
+
+        resp = self.client.post('/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'store/home.html')
+        self.assertNotEqual(list(resp.context['products']), [])
+        self.assertEqual(len(list(resp.context['products'])), 1)
+
+    def test_create_product(self):
+
+        resp = self.client.post(reverse_lazy('store:create_product'))
+        self.assertEqual(resp.status_code, 302)
+        self.assertTemplateNotUsed(resp, '/')
+
+
+        u = UserBase.objects.create_user(username='user1', email='user@us.com', password='user1')
+        self.client.force_login(u)        
+        resp = self.client.post(reverse_lazy('store:create_product'))
+        self.assertEqual(resp.status_code, 302)
+        self.assertRedirects(resp, '/')
+
+
+        u = UserBase.objects.create_user(username='admin', email='admin@a.com', password='admin', is_staff=True)
+        self.client.force_login(u)
+        resp = self.client.post(reverse_lazy('store:create_product'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'store/products/createprod.html')
+        self.assertEqual(str(resp.context['user']), 'admin')
+        self.assertTrue(resp.context['user'].is_authenticated)
+
+
+        u = UserBase.objects.create_user(username='seller', email='seller@s.com', password='seller', is_seller=True)
+        self.client.force_login(u)
+        resp = self.client.post(reverse_lazy('store:create_product'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'store/products/createprod.html')
+        self.assertEqual(str(resp.context['user']), 'seller')
+        self.assertTrue(resp.context['user'].is_authenticated)
+
+    def test_create_category(self):
+        
+        resp = self.client.post(reverse_lazy('store:create_category'))
+        self.assertEqual(resp.status_code, 302)
+        self.assertTemplateNotUsed(resp, '/')
+
+
+        u = UserBase.objects.create_user(username='user1', email='user@us.com', password='user1')
+        self.client.force_login(u)        
+        resp = self.client.post(reverse_lazy('store:create_category'))
+        self.assertEqual(resp.status_code, 302)
+        self.assertRedirects(resp, '/')
+
+
+        u = UserBase.objects.create_user(username='admin', email='admin@a.com', password='admin', is_staff=True)
+        self.client.force_login(u)
+        resp = self.client.post(reverse_lazy('store:create_category'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'store/products/createcat.html')
+        self.assertEqual(str(resp.context['user']), 'admin')
+        self.assertTrue(resp.context['user'].is_authenticated)
+
+
+        u = UserBase.objects.create_user(username='seller', email='seller@s.com', password='seller', is_seller=True)
+        self.client.force_login(u)
+        resp = self.client.post(reverse_lazy('store:create_category'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'store/products/createcat.html')
+        self.assertEqual(str(resp.context['user']), 'seller')
+        self.assertTrue(resp.context['user'].is_authenticated)
+
+    def test_search(self):
+        
+        resp = self.client.get(reverse_lazy('store:search'), {})
+        self.assertEqual(resp.status_code, 302)
+        self.assertRedirects(resp, '/')
+
+        resp = self.client.get(reverse_lazy('store:search'), {'word': 'django'})
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'store/products/category.html')
+        self.assertEqual(str(resp.context['category']), 'Searched: django')
+        self.assertEqual(len(list(resp.context['products'])), 1)
+
+        resp = self.client.get(reverse_lazy('store:search'), {'word': 'django2'})
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'store/products/category.html')
+        self.assertEqual(str(resp.context['category']), 'Searched: django2')
+        self.assertEqual(len(list(resp.context['products'])), 0)
+
+    def test_create_review(self):
+
+        resp = self.client.post(reverse_lazy('store:create_review', kwargs={'slug': 'django-beginners'}), follow=True)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'account/login.html')
+
+
+        u = UserBase.objects.create_user(username='user1', email='user@us.com', password='user1')
+        self.client.force_login(u)        
+        resp = self.client.post(reverse_lazy('store:create_review', kwargs={'slug': 'django-beginners'}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'store/rating/home.html')
+
+
+        u = UserBase.objects.create_user(username='admin', email='admin@a.com', password='admin', is_staff=True)
+        self.client.force_login(u)
+        resp = self.client.post(reverse_lazy('store:create_review', kwargs={'slug': 'django-beginners'}))
+        self.assertEqual(resp.status_code, 302)
+        self.assertRedirects(resp, '/')
+
+
+        u = UserBase.objects.create_user(username='seller', email='seller@s.com', password='seller', is_seller=True)
+        self.client.force_login(u)
+        resp = self.client.post(reverse_lazy('store:create_review', kwargs={'slug': 'django-beginners'}))
+        self.assertEqual(resp.status_code, 302)
+        self.assertRedirects(resp, '/')
