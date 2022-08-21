@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse_lazy
 
 from account.models import UserBase
+from cart.cart import Cart
 from store.models import Category, Product
 from .models import Order, OrderItem
 
@@ -48,4 +49,13 @@ class TestOrderView(TestCase):
         self.assertTemplateUsed(resp, 'payment/home.html')
         self.assertTrue(resp.context['user'].is_authenticated)
 
-        # TODO: aggiungere test che prova che l'ordine è stato aggiunto
+        
+        resp = self.client.post(reverse_lazy('orders:add'), 
+                               {'action': 'post', 'csrfmiddlewaretoken': resp.context['csrf_token'], 'order_key': resp.context['client_secret']})
+
+        self.assertEqual(resp.status_code, 200)
+        
+        o = Order.objects.all()
+        self.assertIsNotNone(list(o))
+        o = OrderItem.objects.all()
+        self.assertIsNotNone(list(o))
