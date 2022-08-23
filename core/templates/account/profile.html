@@ -12,10 +12,13 @@
                 <div>Manage your personal details</div>
                 <div><a href="{% url 'account:edit_details' %}">Change detail</a></div>
             </div>
-            <div class="col-12 d-flex justify-content-between">
-                <div>See all your orders</div>
-                <div><a href="{% url 'account:user_history' %}">Order history</a></div>
-            </div>
+
+            {% if  not user.is_seller and not user.is_staff %}
+                <div class="col-12 d-flex justify-content-between">
+                    <div>See all your orders</div>
+                    <div><a href="{% url 'account:user_history' %}">Order history</a></div>
+                </div>
+            {% endif %}
 
             {% if user.is_staff %}
                 <div class="col-12 d-flex justify-content-between">

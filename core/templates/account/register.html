@@ -12,7 +12,12 @@
                             <div class="col-12 col-lg-7  mx-auto">
                                 <form class="account-form p-4 rounded col-lg-10 mx-auto" action="." method="post">
                                     {% csrf_token %}
-                                    <h3 class="mb-4 py-5 text-center font-weight-bold">Create a new account</h3>
+
+                                    {% if user.is_staff %}
+                                        <h3 class="mb-4 py-5 text-center font-weight-bold">Create a new seller</h3>
+                                    {% else %}
+                                        <h3 class="mb-4 py-5 text-center font-weight-bold">Create a new account</h3>
+                                    {% endif %}
 
                                     {% if form.errors %}
                                         {% for f in form %}
@@ -57,7 +62,10 @@
 
                                 <form class="text-center account-form p-4 rounded col-lg-10 mx-auto">
                                     {% csrf_token %}
-                                    <a href="{% url 'account:login' %}">You already have one? Login here!</a>                                
+
+                                    {% if not user.is_staff %}
+                                        <a href="{% url 'account:login' %}">You already have one? Login here!</a>                                
+                                    {% endif %}
                                 </form>
                             </div>
                         </div>
