@@ -13,7 +13,6 @@ class Order(models.Model):
     tot_paid       = models.DecimalField(max_digits=5, decimal_places=2)
     order_key      = models.CharField(max_length=200)
     created        = models.DateTimeField(auto_now_add=True)
-    updated        = models.DateTimeField(auto_now=True)
     billing_status = models.BooleanField(default=False)
 
     class Meta:
