@@ -101,7 +101,9 @@ def add_seller(request):
             user.is_active = True
             user.is_seller = True
             user.save()
-            return redirect('/')
+            logout(request)
+            
+            return redirect('/account/login/')
     else:
         registerform = RegistrationForm()
   

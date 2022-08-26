@@ -64,11 +64,13 @@
                                     {% endif %}
                                 </form>
                                 
+                                {% if not user.is_staff %}
                                 <form class="text-center account-form px-4" action="{% url "account:delete" %}" method="post">
                                     {% csrf_token %}
                                     <p class="h2 pt-4 font-weight-bold">Want to delete your account?</p>
                                     <button type="submit" role="button" class="btn btn-outline-danger btn-block">Delete</button>
                                 </form>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

@@ -137,7 +137,7 @@ def create_review(request, slug):
             usr = UserBase.objects.get(username=request.user)
             Review.objects.create(product=product, user=usr, date=datetime.now() ,**rateform.cleaned_data)
             
-            return redirect('/')
+            return redirect(f'/{slug}/')
     else:
         rateform = AddReviewForm()
   
@@ -189,11 +189,14 @@ def recommend(request):
         for oi in OrderItem.objects.filter(order=order) :
             p = Product.objects.get(title=oi.product)
                 
-            for product in Product.objects.filter(category=p.category):
+            for product in Product.objects.filter(category=p.category, in_stock=True):
                 prods.add(product)
 
         for oi in OrderItem.objects.filter(order=order) :
             prods.discard(oi.product)
 
     prods.discard(None)
+    if not prods:
+        prods = Product.objects.filter(in_stock=True).order_by('price')
+        
     return { 'products': list(prods)[:6] }
