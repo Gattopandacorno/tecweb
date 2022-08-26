@@ -17,7 +17,7 @@ class TestOrderView(TestCase):
         self.credentials = {'username': 'a@a.com', 'password': 'user'}
 
         Product.objects.create(category_id=1, title='django advanced',
-                                           slug='django-advanced', price=4.50, image='images', available=3)
+                                           slug='django-advanced', price=4.50, image='images', available=1)
         Product.objects.create(category_id=1, title='django intermediate',
                                            slug='django-intermediate', price=4.50, image='images', available=3 )
         Product.objects.create(category_id=1, title='django beginners',
@@ -59,3 +59,6 @@ class TestOrderView(TestCase):
         self.assertIsNotNone(list(o))
         o = OrderItem.objects.all()
         self.assertIsNotNone(list(o))
+
+        p = Product.objects.get(title='django advanced')
+        self.assertFalse(p.in_stock)
