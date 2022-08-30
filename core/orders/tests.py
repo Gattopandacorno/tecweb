@@ -38,6 +38,7 @@ class TestOrderView(TestCase):
 
 
     def test_add(self):
+        """ Testa se un ordine effettuato da utente compratore viene aggiunto nel database. """
 
         resp = self.client.post(reverse_lazy('payment:cartview'))
         self.assertEqual(resp.status_code, 302)
@@ -51,7 +52,7 @@ class TestOrderView(TestCase):
 
         
         resp = self.client.post(reverse_lazy('orders:add'), 
-                               {'action': 'post', 'csrfmiddlewaretoken': resp.context['csrf_token'], 'order_key': resp.context['client_secret']})
+                {'action': 'post', 'csrfmiddlewaretoken': resp.context['csrf_token'], 'order_key': resp.context['client_secret']})
 
         self.assertEqual(resp.status_code, 200)
         
