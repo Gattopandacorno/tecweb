@@ -4,7 +4,7 @@ from .models import Category, Product, Review, RATE_CHOICES
 
 
 class AddCategoryForm(forms.ModelForm):
-    """ Reppresenta i campi da riempire per una Category """
+    """ Reppresenta i campi da riempire per  creare una nuova Category """
 
     name = forms.CharField(label='Enter name', help_text='required', required=True)
 
@@ -20,7 +20,7 @@ class AddCategoryForm(forms.ModelForm):
 
 
 class AddProductForm(forms.ModelForm):
-    """ Rappresenta i campi da riempire per un Product. """
+    """ Rappresenta i campi da riempire per aggiungere un Product. """
 
     category    = forms.ModelChoiceField(queryset=Category.objects.all())
     title       = forms.CharField(label='Enter title', max_length=255, help_text='Required')
@@ -48,7 +48,7 @@ class AddProductForm(forms.ModelForm):
 
 
 class AddReviewForm(forms.ModelForm):
-    """ Rappresenta come compilare i campi per una Review. """
+    """ Rappresenta come compilare i campi per creare una Review. """
 
     text = forms.Textarea()
     rate = forms.ChoiceField(choices=RATE_CHOICES, required=True)

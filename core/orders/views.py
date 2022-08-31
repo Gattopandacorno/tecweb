@@ -23,7 +23,8 @@ def add(request):
             for item in cart:
                 OrderItem.objects.create(order=order,product=item['product'], price=item['price'], qty=item['qty'])
                 qty = Product.objects.get(slug=item['product'].slug).available - item['qty']
-
+                
+                # Logica per calare la qty di prodotto disponibile
                 if qty <= 0:
                     Product.objects.filter(slug=item['product'].slug).update(available=0, in_stock=False)
                 else:

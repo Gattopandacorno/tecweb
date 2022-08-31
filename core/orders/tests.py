@@ -2,15 +2,15 @@ from django.test import TestCase
 from django.urls import reverse_lazy
 
 from account.models import UserBase
-from cart.cart import Cart
 from store.models import Category, Product
 from .models import Order, OrderItem
 
 
 class TestOrderView(TestCase):
-    
+    """ Set di test sulle view degli ordini. """
+
     def setUp(self):
-        """ Crea categoria, user e prodotti per i test sul carrello. """
+        """ Crea categoria, user e prodotti. """
 
         Category.objects.create(name='django', slug='django')
         UserBase.objects.create_user(username='user', email='a@a.com', password='user', is_active=True)

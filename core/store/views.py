@@ -60,7 +60,7 @@ def category_list(request,slug):
 def create_product(request):
     """ 
         Crea un nuovo prodotto.
-        Se invece il titolo è di un prodotto gia esistente allora ne cambia i dati.
+        Se invece il titolo è di un prodotto gia' esistente allora ne cambia i dati.
         Solo un membro dello staff o dei venditori(seller) possono farlo.
         Se l'utente non appartiene ad uno dei due tipi di membro viene mandato alla home page.
     """  

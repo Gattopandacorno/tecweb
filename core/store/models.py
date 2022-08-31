@@ -47,7 +47,7 @@ class Product(models.Model):
         return range(self.available)
 
     def get_absolute_url(self):
-        """ Ritorna l'url del dettaglio di un prodotto. """
+        """ Ritorna l'url di un prodotto per vederne il dettaglio. """
 
         return reverse_lazy('store:product_detail', args=[self.slug])
 

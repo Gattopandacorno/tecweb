@@ -6,23 +6,23 @@ import random
 import string
 
 from .cart import Cart
-from store.models import  Product
+from store.models import Product
 
 
 def cart(request):
-    """ Ritorna il carrello per una certa sessione """
+    """ Ritorna il carrello di una certa sessione. """
 
     return {'cart': Cart(request)}
 
 def cart_summary(request):
-    """ Rendera la lista dei prodotti nel carrello corrente. """
+    """ Rendera la lista corrente dei prodotti nel carrello. """
 
     cart = Cart(request)
     ctx  = { 'cart': cart }
     return render(request, 'cart/summary.html', ctx)
 
 def cart_add(request):
-    """ Aggiunge un prodotto nel carrello, cambiando cosi anche alcune parti nel sito. """
+    """ Aggiunge un prodotto nel carrello. """
 
     cart = Cart(request)
 
@@ -38,7 +38,7 @@ def cart_add(request):
 
 
 def cart_del(request):
-    """ Cancella un prodotto dal carrello, cambiando cosi alcune parti nel sito. """
+    """ Cancella un prodotto dal carrello. """
 
     cart = Cart(request)
     if request.POST.get('action') == 'post':
@@ -51,7 +51,7 @@ def cart_del(request):
         return response
 
 def cart_update(request):
-    """ Cambia la quantità presa di un prodotto nel carrello. """
+    """ Cambia la quantita' di un prodotto nel carrello. """
 
     cart = Cart(request)
     if request.POST.get('action') == 'post':
@@ -66,7 +66,7 @@ def cart_update(request):
 
 @login_required
 def CartView(request):
-    """ Il pagamento avviene tramite l'immisione del numero della carta(falso). """
+    """ Il pagamento avviene tramite l'immisione del numero della carta. """
 
     cart = Cart(request)
     tot  = str(cart.get_tot_price())

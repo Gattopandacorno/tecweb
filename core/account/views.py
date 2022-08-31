@@ -7,7 +7,10 @@ from .models import UserBase
 from orders.views import history 
 
 def registration(request):
-    """  Registra l'utente, se è gia loggato allora verrà redirezionato alla home page. """
+    """  
+        Registra un nuovo utente compratore.
+        Se e' gia' loggato allora verra' redirezionato alla home page. 
+    """
     
     if request.user.is_authenticated:
         return redirect('/')
@@ -38,7 +41,7 @@ def registration(request):
 
 @login_required
 def profile(request):
-    """ Ritorna la pagina col profilo dell'utente. Se non è loggato chiede di fare il login. """
+    """ Ritorna la pagina col profilo dell'utente. Se non e' loggato chiede di fare il login. """
 
     return render(request, 'account/profile.html')
 
@@ -58,11 +61,14 @@ def edit_details(request):
     
 @login_required
 def delete(request):
-    """ Cancella l'utente, per motivi di sicurezza possono solo gli utenti non staff. """
+    """ 
+        Cancella l'utente, gli utenti staff non possono.
+        La cancellazione viene fatta mettendo semplicemnte a False il parametro is_active. 
+    """
     
     if not request.user.is_staff:
         user = UserBase.objects.get(username=request.user)
-        user.is_active = False  # ACTIVATE TO DELETE THE USER 
+        user.is_active = False  # Per cancellare un utente 
         user.save()
         logout(request)
     
@@ -79,7 +85,7 @@ def user_history(request):
 
 @login_required
 def add_seller(request):
-    """ Viene aggiunto un nuovo membro di venditori. Solo un membro dello staff potrà farlo. """
+    """ Viene aggiunto un nuovo membro venditore. Solo un membro dello staff potra' aggiungerlo. """
     
     if not request.user.is_staff:
         return redirect('/')
@@ -88,7 +94,7 @@ def add_seller(request):
         registerform = RegistrationForm(request.POST)
         
         if registerform.is_valid():
-            user = registerform.save(commit=False)
+            user       = registerform.save(commit=False)
             user.email = registerform.cleaned_data['email']
             user.set_password(registerform.cleaned_data['password'])
 

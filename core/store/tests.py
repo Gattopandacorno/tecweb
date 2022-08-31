@@ -6,10 +6,10 @@ from .models import Category, Product, Review
 
 
 class TestCategoriesModel(TestCase):
-    """ Test per le istanze di Category. """
+    """ Set di test per le istanze di Category. """
     
     def setUp(self):
-        """ Crea una nuova istanza di Category per testarla. """
+        """ Crea una categoria. """
 
         self.data = Category.objects.create(name='django', slug='django')
 
@@ -27,10 +27,10 @@ class TestCategoriesModel(TestCase):
 
 
 class TestProductModel(TestCase):
-    """ Test per le istanze di Product. """
+    """ Set di test per le istanze di Product. """
 
     def setUp(self):
-        """ Crea Category per creare una nuova istanza di Product. """
+        """ Crea categoria e prodotto. """
 
         Category.objects.create(name='django', slug='django')
         self.data = Product.objects.create(category_id=1, title='django beginners',
@@ -50,10 +50,10 @@ class TestProductModel(TestCase):
 
 
 class TestReviewModel(TestCase):
-    """ Test per le istanze di Review. """
+    """ Set di test per le istanze di Review. """
     
     def setUp(self):
-        """ Crea una nuova categoria, user e prodotto per creare un istanza di Review. """
+        """ Crea nuova categoria, user e prodotto. """
 
         Category.objects.create(name='django', slug='django')
         UserBase.objects.create_user(username='admin', email='admin@a.com', password='admin')
@@ -77,6 +77,7 @@ class TestReviewModel(TestCase):
 
 
 class TestStoreView(TestCase):
+    """ Set di test per Category, Review e Product. """
 
     def setUp(self):
         """ Crea una nuova categoria, user e prodotto. """
@@ -88,7 +89,10 @@ class TestStoreView(TestCase):
         self.credentials = {'username': 'a@a.com', 'password': 'user'}
 
     def test_product_detail(self):
-        """ Controlla che vengano visti tutti i dettagli di un prodotto nella pagina. """
+        """ 
+            Controlla che vengano visti tutti i dettagli di un prodotto nella pagina. 
+            L'utente non viene loggato in quanto i dettagli sono visibili anche per anonimi.
+        """
 
         resp = self.client.post('/django-beginners/') 
         self.assertEqual(resp.status_code, 200)
@@ -102,7 +106,10 @@ class TestStoreView(TestCase):
         self.assertNotEqual(list(resp.context['reviews']), [])
 
     def test_category(self):
-        """ Testa che vengano correttamente passati tutti i prodotti di una certa categoria. """
+        """ 
+            Testa che vengano correttamente passati tutti i prodotti di una certa categoria. 
+            L'utente non viene loggato in quanto la pagina e' visibile anche per anonimi.
+        """
 
         resp = self.client.post('/shop/django/')
         self.assertEqual(resp.status_code, 200)
@@ -114,7 +121,10 @@ class TestStoreView(TestCase):
         self.assertIsNotNone(resp.context['category'], )
 
     def test_product_all(self):
-        """ Testa che vengano correttamente passati tutti i prodotti nel database alla homepage. """
+        """ 
+            Testa che vengano correttamente passati tutti i prodotti nel database alla homepage. 
+            L'utente non viene loggato in quanto la pagina e' visibile anche per anonimi.
+        """
 
         resp = self.client.post('/')
         self.assertEqual(resp.status_code, 200)
@@ -123,7 +133,10 @@ class TestStoreView(TestCase):
         self.assertEqual(len(list(resp.context['products'])), 1)
 
     def test_create_product(self):
-        """ Testa che venga correttamente salvata l'istanza di un nuovo prodotto e che non sia accessibile a tutti gli utenti."""
+        """ 
+            Testa che venga correttamente salvata l'istanza di un nuovo prodotto.
+            Inoltre controlla che questa azione può essere fatta solo dagli utenti staff e seller.
+        """
 
         # Prova con utente anonimo
         resp = self.client.post(reverse_lazy('store:create_product'))
@@ -202,16 +215,19 @@ class TestStoreView(TestCase):
             essendo un azione disponibile a tutti i tipi di utente non vi è alcun login.
         """
 
+        # Se viene performata una ricerca senza parole
         resp = self.client.get(reverse_lazy('store:search'), {})
         self.assertEqual(resp.status_code, 302)
         self.assertRedirects(resp, '/')
 
+        # Se viene performata una ricerca con il nome di un prodotto esistente
         resp = self.client.get(reverse_lazy('store:search'), {'word': 'django'})
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'store/products/category.html')
         self.assertEqual(str(resp.context['category']), 'Searched: django')
         self.assertEqual(len(list(resp.context['products'])), 1)
 
+        # Se viene performata una ricerca con il nome di un prodotto non esistente
         resp = self.client.get(reverse_lazy('store:search'), {'word': 'django2'})
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'store/products/category.html')
@@ -219,11 +235,11 @@ class TestStoreView(TestCase):
         self.assertEqual(len(list(resp.context['products'])), 0)
 
     def test_create_review(self):
-        """ Prova per ogni utente, tranne il compratore, che non si possa creare una recensione. """
+        """ Testa che per ogni utente, a parte admin e seller, sia possibile fare una recensione. """
 
         # Prova senza login, con utente anonimo
         resp = self.client.post(reverse_lazy('store:create_review', kwargs={'slug': 'django-beginners'}), follow=True)
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 200) 
         self.assertTemplateUsed(resp, 'account/login.html')
 
         # Prova con utente  admin

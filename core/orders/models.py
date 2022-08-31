@@ -5,8 +5,8 @@ from store.models import Product
 
 class Order(models.Model):
     """ 
-        Rappresenta un ordine, viene creato dopo un pagamento(falso).
-        Dopo essere creato si può vedere negli ordini passati nella sezione del profilo 'order history'.
+        Rappresenta un ordine, viene creato dopo un pagamento.
+        Dopo essere creato si puo' vedere negli ordini passati nella sezione del profilo 'order history'.
     """
 
     user           = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

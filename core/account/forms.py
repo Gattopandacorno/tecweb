@@ -1,12 +1,10 @@
-
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-
 
 from .models import UserBase
 
 class RegistrationForm(forms.ModelForm):
-    """ Usata per la registrazione di un utente nuovo (seller o normale utente). """
+    """ Form usato per la registrazione di un utente nuovo (seller o normale/compratore). """
 
     username        = forms.CharField(label='Enter username', min_length=4, max_length=50, help_text='Required')
     email           = forms.EmailField(max_length=100, help_text='Required', error_messages={'required': 'You must provide an email.'})
@@ -25,7 +23,7 @@ class RegistrationForm(forms.ModelForm):
         fields = {'username', 'email', 'country', 'city', 'address', 'phone_num', 'cap_code'}
 
     def clean_username(self):
-        """ Cleaned data, ritorna se uno username è gia usato o meno. """
+        """ Cleaned data, ritorna se uno username e' gia' usato o meno. """
 
         username = self.cleaned_data['username'].lower()
         r = UserBase.objects.filter(username=username)
@@ -37,7 +35,7 @@ class RegistrationForm(forms.ModelForm):
 
 
     def clean_email(self):
-        """ Ritorna se la mail è gia in uso o meno. """
+        """ Cleaned data, ritorna se la mail e' gia' in uso o meno. """
 
         email = self.cleaned_data['email']
 
@@ -48,7 +46,7 @@ class RegistrationForm(forms.ModelForm):
 
         
     def clean_password(self):
-        """ Verifica che le due password inserite durante la registrazione siano uguali. """
+        """ Cleaned data, verifica che le password inserite durante la registrazione siano uguali. """
 
         cd = self.cleaned_data
 
@@ -74,7 +72,7 @@ class RegistrationForm(forms.ModelForm):
 
 
 class UserLoginForm(AuthenticationForm):
-    """ Usato per il login di un utente gia registrato, vengono chieste solo mail e password. """
+    """ Form usato per il login di un utente gia' registrato, vengono chieste solo mail e password. """
 
     username = forms.CharField(widget=forms.TextInput(
                     attrs={'class': 'form-control mb-3', 'placeholder': 'Username', 'id':'login-username'}))
@@ -84,7 +82,7 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserEditForm(forms.ModelForm):
-    """ Usato per cambiare alcuni parametri del profilo, username e mail non possono essere cambiati. """
+    """ Form usato per cambiare alcuni parametri del profilo, username e mail non possono essere cambiati. """
     
     email     = forms.EmailField(label='Account email cannot be changes', max_length=200, widget=forms.TextInput(
                     attrs={'class': 'form-control mb-3', 'placeholder': 'email', 'id': 'form-email', 'readonly': 'readonly'}))
