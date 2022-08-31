@@ -1,33 +1,32 @@
 
 # Scopo del progetto
 
-Questo è un progetto universitario.
+Questo e' un progetto universitario.
 Ho fatto una piattaforma e-commerce dove vengono venduti manga e anime (l'ho chiamata MangaStore).
 
 
 # Dipendenze
 
-Per questo progetto è stato usato poetry come venv (v 1.1.14) ma non era obbligatorio, infatti ho cominciato con pipenv.
+Per questo progetto e' stato usato poetry come venv (v 1.1.14) ma non era obbligatorio, infatti ho cominciato con pipenv.
 Nel file pyproject.tml vengono elencate tutte le dipendenze usate con anche le versioni.
 Se non si sa usare poetry consiglio di seguire la [documentazione officiale](https://python-poetry.org/docs/).
-Dopo aver installato poetry si può inizializzare il nuovo ambiente con:
-`py -m poetry init`, init del progetto
-`py -m poetry install`, installa e crea le dipendenze ed, infine, l'ambiente virtuale
+Dopo aver installato poetry si puo' inizializzare il nuovo ambiente con:
++ `py -m poetry init`, init del progetto
++ `py -m poetry install`, installa e crea le dipendenze ed, infine, l'ambiente virtuale
 
 
 # Run del progetto
 
-Dopo aver installato le dipendenze si può fare il run del progetto.
-Si può fare con:
-`cd core`, ci porta nella cartella con il file *manage.py*
-`py -m poetry run py -m manage runserver`, comando che serve per fare il run del server
+Dopo aver installato le dipendenze si puo' fare il run del progetto con:
++ `cd core`, ci porta nella cartella con il file *manage.py*
++ `py -m poetry run py -m manage runserver`, comando che serve per fare il run del server
 
-Se non si vuole usare ogni volta py -m poetry run si può entrare nell'ambiente virtuale con py -m poetry shell e,
-finchè non ne usciamo, saremo all'interno del venv. Dopodichè potremmo usare semplicemente py -m manage runserver.
-NB: py -m manage può essere usato al posto di py manage.py, per vederne le differenze si può guardare nella [documentazione python](https://docs.python.org/3/using/cmdline.html).
+Se non si vuole usare ogni volta py -m poetry run si puo' entrare nell'ambiente virtuale con py -m poetry shell e, finche' non ne usciamo, saremo all'interno del venv. 
+Dopodiche' potremmo usare semplicemente py -m manage runserver.
+NB: py -m manage puo' essere usato al posto di py manage.py, per vederne le differenze si puo' guardare nella [documentazione python](https://docs.python.org/3/using/cmdline.html).
 
-A questo punto si può riuscire a vedere il website alla [pagina](http://127.0.0.1:8000/).
-Se il database non è stato cancellato si possono trovare vari utenti gia fatti nel file account.txt.
+A questo punto si puo' riuscire a vedere il website alla [pagina](http://127.0.0.1:8000/).
+Se il database non e' stato cancellato si possono trovare vari utenti gia fatti nel file account.txt.
 
 
 
@@ -48,7 +47,7 @@ Se il database non è stato cancellato si possono trovare vari utenti gia fatti 
 
 - **/store**, Cartella con funzioni e modelli per i prodotti e le loro categorie
 
-- **/templates**, Template di tutte le viste usate 
+- **/templates**, Tamplate usati 
 
 - **manage.py**, File usato per lo start del programma.
 

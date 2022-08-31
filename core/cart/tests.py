@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from account.models import UserBase
 from store.models import Category, Product
 
-# XHR è usato per ajax requests (X)
+# XHR e' usato per ajax requests (X)
 
 class TestCartView(TestCase):
     """ Set di test sulle view del carrello. """
@@ -27,7 +27,7 @@ class TestCartView(TestCase):
 
     def test_cart(self):
         """ 
-            Testa se un cliente può vedere il carrello. 
+            Testa se un cliente puo' vedere il carrello. 
             Non importa che l'utente sia loggato poiche' anche un anonimo puo' vederlo. 
         """
 

@@ -135,7 +135,7 @@ class TestStoreView(TestCase):
     def test_create_product(self):
         """ 
             Testa che venga correttamente salvata l'istanza di un nuovo prodotto.
-            Inoltre controlla che questa azione può essere fatta solo dagli utenti staff e seller.
+            Inoltre controlla che questa azione puo' essere fatta solo dagli utenti staff e seller.
         """
 
         # Prova con utente anonimo
@@ -212,7 +212,7 @@ class TestStoreView(TestCase):
     def test_search(self):
         """ 
             Test che prova la funzione di ricerca dei prodotti, 
-            essendo un azione disponibile a tutti i tipi di utente non vi è alcun login.
+            essendo un azione disponibile a tutti i tipi di utente non vi e' alcun login.
         """
 
         # Se viene performata una ricerca senza parole

@@ -60,7 +60,7 @@ def category_list(request,slug):
 def create_product(request):
     """ 
         Crea un nuovo prodotto.
-        Se invece il titolo è di un prodotto gia' esistente allora ne cambia i dati.
+        Se invece il titolo e' di un prodotto gia' esistente allora ne cambia i dati.
         Solo un membro dello staff o dei venditori(seller) possono farlo.
         Se l'utente non appartiene ad uno dei due tipi di membro viene mandato alla home page.
     """  
@@ -96,7 +96,7 @@ def create_category(request):
     """ 
         Crea una nuova categoria.
         Se esiste gia una categoria con quel nome allora redirecta l'utente alla home page.
-        Come per create_product, solo un membro dello staff o un seller può creare nuove categorie.
+        Come per create_product, solo un membro dello staff o un seller puo' creare nuove categorie.
     """
 
     if not (request.user.is_staff or request.user.is_seller):
@@ -122,7 +122,7 @@ def create_category(request):
 def create_review(request, slug):
     """ 
         Crea una nuova revisione.
-        Solo un utente normalmente loggato può lasciare una review.
+        Solo un utente normalmente loggato puo' lasciare una review.
         Se un membro dello staff o un seller provano a farne una allora verranno redirezionati nella home page.
     """
         
@@ -146,7 +146,7 @@ def create_review(request, slug):
 def search(request):
     """
         Viene fatta una ricerca della parola data in titolo, autore e descrizione per ogni prodotto.
-        Viene inoltre cercato se la parola è all'interno del nome della categoria.
+        Viene inoltre cercato se la parola e' all'interno del nome della categoria.
         Se non viene passato nulla allora si viene redirezionati nella homepage.
     """
     

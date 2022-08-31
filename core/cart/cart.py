@@ -20,7 +20,7 @@ class Cart():
 
         product_id = str(product.id)
 
-        # Cambia la quantità se il prodotto e' gia' nel carrello
+        # Cambia la quantita' se il prodotto e' gia' nel carrello
         if product_id in self.cart: 
             self.cart[product_id]['qty'] = qty
         else:   
