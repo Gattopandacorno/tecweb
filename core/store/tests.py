@@ -1,4 +1,3 @@
-from unicodedata import category
 from django.test import TestCase
 from django.urls import reverse_lazy
 
@@ -220,6 +219,7 @@ class TestStoreView(TestCase):
         self.assertEqual(len(list(resp.context['products'])), 0)
 
     def test_create_review(self):
+        """ Prova per ogni utente, tranne il compratore, che non si possa creare una recensione. """
 
         # Prova senza login, con utente anonimo
         resp = self.client.post(reverse_lazy('store:create_review', kwargs={'slug': 'django-beginners'}), follow=True)
