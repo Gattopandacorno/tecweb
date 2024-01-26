@@ -58,4 +58,7 @@ Nel caso fossero problemi dovuti alle dipendenze, prima di aprire un issue, chie
 su altri forum dove possono gia essere stati riscontrati quei problemi (es: stackoverflow,...)
 
 **Ringrazio in anticipo tutti coloro che scaricheranno o riporteranno dei bug o semplicemente lo usano ^-^**
+**Ringrazio inoltre https://www.youtube.com/@veryacademy in quanto ho preso fortemente spunto dal suo progetto,
+  consiglio di andare a guardare anche il suo tutorial sul Django Ecommerce https://www.youtube.com/watch?v=UqSJCVePEWU
+  da cui ho preso spunto!**
 
