@@ -2,7 +2,7 @@
 # Scopo del progetto
 
 Questo e' un progetto universitario.
-Ho fatto una piattaforma e-commerce dove vengono venduti manga e anime (l'ho chiamata MangaStore).
+Ho fatto una piattaforma e-commerce dove vengono venduti e recensiti manga e anime (l'ho chiamata MangaStore).
 
 
 # Dipendenze
