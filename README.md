@@ -2,7 +2,7 @@
 # Scopo del progetto
 
 Questo e' un progetto universitario.
-Ho fatto una piattaforma e-commerce dove vengono venduti e recensiti manga e anime (l'ho chiamata MangaStore).
+Ho fatto una piattaforma e-commerce dove vengono venduti e recensiti manga e anime (MangaStore).
 
 
 # Dipendenze
@@ -10,28 +10,28 @@ Ho fatto una piattaforma e-commerce dove vengono venduti e recensiti manga e ani
 Per questo progetto e' stato usato poetry come venv (v 1.1.14) ma non era obbligatorio, infatti ho cominciato con pipenv.
 Nel file pyproject.tml vengono elencate tutte le dipendenze usate con anche le versioni.
 Se non si sa usare poetry consiglio di seguire la [documentazione officiale](https://python-poetry.org/docs/).
-Dopo aver installato poetry si puo' inizializzare il nuovo ambiente con:
-+ `py -m poetry init`, init del progetto
-+ `py -m poetry install`, installa e crea le dipendenze ed, infine, l'ambiente virtuale
+Dopo aver installato poetry si puo' inizializzare il nuovo ambiente e installare le dipendenze con:
++ `poetry install`
 
 
 # Run del progetto
 
 Dopo aver installato le dipendenze si puo' fare il run del progetto con:
 + `cd core`, ci porta nella cartella con il file *manage.py*
-+ `py -m poetry run py -m manage runserver`, comando che serve per fare il run del server
++ `poetry run py -m manage runserver`, comando che serve per fare il run del server
 
-Se non si vuole usare ogni volta py -m poetry run si puo' entrare nell'ambiente virtuale con py -m poetry shell e, finche' non ne usciamo, saremo all'interno del venv. 
-Dopodiche' potremmo usare semplicemente py -m manage runserver.
+Si puo' entrare nell'ambiente virtuale con py -m poetry shell e, finche' non ne usciamo, saremo all'interno del venv. 
+
 NB: py -m manage puo' essere usato al posto di py manage.py, per vederne le differenze si puo' guardare nella [documentazione python](https://docs.python.org/3/using/cmdline.html).
+NB: Ho ripreso in mano questo progetto e mi sono accorta che py non mi funziona piu come comando e sono ora 'costretta' ad usare `python`. In linea di massima basta usare un qualunque comando python/py/python3/etc...
 
 A questo punto si puo' riuscire a vedere il website alla [pagina](http://127.0.0.1:8000/).
-Se il database non e' stato cancellato si possono trovare vari utenti gia fatti nel file account.txt.
+Se il database non e' stato cancellato si possono trovare vari utenti gia prefatti come esempio. 
+Le loro credenziali sono nel file account.txt.
 
 
 
 # Directory e  File
-
 
 - **/account**, Cartella con tutte le funzioni e modelli per gli account degli utenti
     
@@ -54,11 +54,8 @@ Se il database non e' stato cancellato si possono trovare vari utenti gia fatti 
 
 # Altro 
 Se ci sono problemi di qualunque natura potete scrivere nelle issue di questo progetto.
-Nel caso fossero problemi dovuti alle dipendenze, prima di aprire un issue, chiedo di controllare 
-su altri forum dove possono gia essere stati riscontrati quei problemi (es: stackoverflow,...)
+Nel caso fossero problemi dovuti alle dipendenze, prima di aprire un issue, chiedo di controllare su altri forum dove possono gia essere stati riscontrati quei problemi (es: stackoverflow,...)
 
 **Ringrazio in anticipo tutti coloro che scaricheranno o riporteranno dei bug o semplicemente lo usano ^-^**
-**Ringrazio inoltre [veryacademy](https://www.youtube.com/@veryacademy) in quanto ho preso fortemente spunto dal suo progetto,
-  consiglio di andare a guardare anche il suo tutorial sul [Django Ecommerce](https://www.youtube.com/watch?v=UqSJCVePEWU)
-  da cui ho preso spunto!**
+**Ringrazio inoltre [veryacademy](https://www.youtube.com/@veryacademy) in quanto ho preso fortemente spunto dal suo progetto, consiglio di andare a guardare anche il suo tutorial su [Django Ecommerce](https://www.youtube.com/watch?v=UqSJCVePEWU) da cui ho preso spunto!
 
