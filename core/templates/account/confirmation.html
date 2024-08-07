@@ -11,10 +11,17 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-12 col-lg-6 mx-auto">
-                                <div class="text-center alert alert-warning" role="alert">
-                                    <h3 class="mb-4">Account deleted</h3>
-                                    <p>Thank you</p>
-                                </div>       
+                                {% if user.is_staff %}
+                                    <div class="text-center alert alert-danger" role="alert">
+                                        <h3 class="mb-4">We are sorry but for security reasons admin account can't be deleted.</h3>
+                                        <p>Thank you</p>
+                                    </div>
+                                {% else %}
+                                    <div class="text-center alert alert-warning" role="alert">
+                                        <h3 class="mb-4">Account deleted</h3>
+                                        <p>Thank you</p>
+                                    </div> 
+                                {% endif %}                                     
                             </div>
                         </div>
                     </div>

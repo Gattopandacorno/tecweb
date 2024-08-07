@@ -4,10 +4,10 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CustomUserManager(BaseUserManager):
-    """ Custom user creator. """
+    """ Creazione custom per creare un utente. """
 
     def create_superuser(self, email, username, password, **other_fields):
-        """ Creates the superuser. Note that the superuser is different from the seller user."""
+        """ Crea un superuser/admin."""
 
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
@@ -15,6 +15,7 @@ class CustomUserManager(BaseUserManager):
 
         if other_fields.get('is_staff') is not True:
             raise ValueError('SuperUser must be assigned to is_staff')
+            
         if other_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must be assigned to is_superuser')
 
@@ -22,49 +23,50 @@ class CustomUserManager(BaseUserManager):
 
 
     def create_user(self, email, username, password, **other_fields):
-        """ Creates a new user. The user will be a 'normal buyer'. """
+        """ Crea un nuovo utente. """
 
-        if not email: # If the mail is not provided
+        if not email: # Se non viene fornita la mail
             raise ValueError(_('You must provide email address'))
         
-        email   = self.normalize_email(email)
-        user    = self.model(email=email, username=username,**other_fields)
+        email = self.normalize_email(email)
+        user  = self.model(email=email, username=username,**other_fields)
         user.set_password(password)
         user.save()
         return user
 
 
 class UserBase(AbstractBaseUser, PermissionsMixin):
-    """ The common fields of all the users. Seller, Admin and common-buyer. """
+    """ 
+        Rappresenta gli utenti registrati (admin, seller e normale/compratore).
+        Non rappresenta invece quelli anonimi.  
+    """
 
-    email           = models.EmailField(_('email address'), unique=True)
-    username        = models.CharField(max_length=150, unique=True)
-    about           = models.TextField(_('about'), blank=True)
+    email     = models.EmailField(_('email address'), unique=True)
+    username  = models.CharField(max_length=150, unique=True)
 
-    country         = models.CharField(max_length=150 ,blank=True)
-    phone_num       = models.CharField(max_length=11, blank=True)
-    cap_code        = models.CharField(max_length=5, blank=True)
-    address         = models.CharField(max_length=150, blank=True)
-    city            = models.CharField(max_length=150, blank=True)
+    country   = models.CharField(max_length=150 ,blank=True)
+    phone_num = models.CharField(max_length=11, blank=True)
+    cap_code  = models.CharField(max_length=5, blank=True)
+    address   = models.CharField(max_length=150, blank=True)
+    city      = models.CharField(max_length=150, blank=True)
 
-    is_active       = models.BooleanField(default=False)
-    is_staff        = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff  = models.BooleanField(default=False)
     
-    # This fields is True when the admin creates a new seller account
-    is_seller       = models.BooleanField(default=False) 
-    created         = models.DateTimeField(auto_now_add=True)
-    updated         = models.DateTimeField(auto_now=True)
+    # True quando viene creato un nuovo venditore dall'admin
+    is_seller = models.BooleanField(default=False) 
+    created   = models.DateTimeField(auto_now_add=True)
+    updated   = models.DateTimeField(auto_now=True)
 
-    objects         = CustomUserManager()
+    objects   = CustomUserManager()
     
     USERNAME_FIELD  = 'email'
     REQUIRED_FIELDS = ['username', 'country', 'city', 'address', 'phone_num', 'cap_code']
 
 
     class Meta:
-        verbose_name = "Account"
+        verbose_name        = "Account"
         verbose_name_plural = "Accounts"
 
     def __str__(self):
         return self.username
-    

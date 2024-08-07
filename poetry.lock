@@ -223,9 +223,12 @@ files = [
 [package.extras]
 docs = ["furo", "olefile", "sphinx (>=2.4)", "sphinx-copybutton", "sphinx-inline-tabs", "sphinx-removed-in", "sphinxext-opengraph"]
 tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "packaging", "pyroma", "pytest", "pytest-cov", "pytest-timeout"]
+typing = ["typing-extensions"]
+xmp = ["defusedxml"]
 
 [[package]]
 name = "sqlparse"
+
 version = "0.5.1"
 description = "A non-validating SQL parser."
 optional = false

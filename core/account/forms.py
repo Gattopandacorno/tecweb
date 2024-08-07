@@ -1,12 +1,10 @@
-
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-
 
 from .models import UserBase
 
 class RegistrationForm(forms.ModelForm):
-    """ Used to form the registration fields of a new user (seller or not). """
+    """ Form usato per la registrazione di un utente nuovo (seller o normale/compratore). """
 
     username        = forms.CharField(label='Enter username', min_length=4, max_length=50, help_text='Required')
     email           = forms.EmailField(max_length=100, help_text='Required', error_messages={'required': 'You must provide an email.'})
@@ -21,13 +19,11 @@ class RegistrationForm(forms.ModelForm):
     
 
     class Meta:
-        model = UserBase
+        model  = UserBase
         fields = {'username', 'email', 'country', 'city', 'address', 'phone_num', 'cap_code'}
 
     def clean_username(self):
-        """ The cleaned data returns if a username is already in use or not.
-            If it raises a ValidationError.
-        """
+        """ Cleaned data, ritorna se uno username e' gia' usato o meno. """
 
         username = self.cleaned_data['username'].lower()
         r = UserBase.objects.filter(username=username)
@@ -39,9 +35,7 @@ class RegistrationForm(forms.ModelForm):
 
 
     def clean_email(self):
-        """ Like the username's cleaned data, this returns if the email is already in use in another account.
-            If it is raises a ValidationError.
-        """
+        """ Cleaned data, ritorna se la mail e' gia' in uso o meno. """
 
         email = self.cleaned_data['email']
 
@@ -52,9 +46,7 @@ class RegistrationForm(forms.ModelForm):
 
         
     def clean_password(self):
-        """ If the two password are not equal the form is invalid and it raises a ValidationError.
-            This is used to be sure the user typed the first password correctly.
-        """
+        """ Cleaned data, verifica che le password inserite durante la registrazione siano uguali. """
 
         cd = self.cleaned_data
 
@@ -80,7 +72,7 @@ class RegistrationForm(forms.ModelForm):
 
 
 class UserLoginForm(AuthenticationForm):
-    """  Used to form the login of the already created user. """
+    """ Form usato per il login di un utente gia' registrato, vengono chieste solo mail e password. """
 
     username = forms.CharField(widget=forms.TextInput(
                     attrs={'class': 'form-control mb-3', 'placeholder': 'Username', 'id':'login-username'}))
@@ -90,26 +82,26 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserEditForm(forms.ModelForm):
-    """ Used to edit the user profile. The only two fields that are not editable are email and username. """
+    """ Form usato per cambiare alcuni parametri del profilo, username e mail non possono essere cambiati. """
     
-    email       = forms.EmailField(label='Account email cannot be changes', max_length=200, widget=forms.TextInput(
+    email     = forms.EmailField(label='Account email cannot be changes', max_length=200, widget=forms.TextInput(
                     attrs={'class': 'form-control mb-3', 'placeholder': 'email', 'id': 'form-email', 'readonly': 'readonly'}))
-    username    = forms.CharField(label='Username', min_length=4, max_length=50, widget=forms.TextInput(
+    username  = forms.CharField(label='Username', min_length=4, max_length=50, widget=forms.TextInput(
                     attrs={'class': 'form-control mb-3', 'placeholder': 'username', 'id': 'form-firstname', 'readonly': 'readonly'}))
     
-    country     = forms.CharField(label='Country', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Country'}))
-    city        = forms.CharField(label='City name', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'City name'}))
-    address     = forms.CharField(label='Address', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Address'}))
-    phone_num   = forms.IntegerField(label='Phone number', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Phone number'}))
-    cap_code    = forms.IntegerField(label='Postal code', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Postal code'}))
+    country   = forms.CharField(label='Country', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Country'}))
+    city      = forms.CharField(label='City name', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'City name'}))
+    address   = forms.CharField(label='Address', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Address'}))
+    phone_num = forms.IntegerField(label='Phone number', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Phone number'}))
+    cap_code  = forms.IntegerField(label='Postal code', widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Postal code'}))
 
     
     class Meta:
-        model = UserBase
+        model  = UserBase
         fields = ('email', 'username', 'country', 'city', 'address', 'phone_num', 'cap_code')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].required = True
-        self.fields['email'].required = True
+        self.fields['email'].required    = True
        

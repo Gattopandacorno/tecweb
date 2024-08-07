@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0ho+-0)c(c7%vz*7%te(wcr!gjlvb-hgp5l(!(x-xjh)s3cmfq'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = [ '127.0.0.1' ]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", os.environ.get('HOST_IP')]
 
 # Application definition
 
@@ -126,7 +126,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL        = 'static/'
 STATIC_FILES_DIRS = [ os.path.join(BASE_DIR, 'static'), ]
 
 # Default primary key field type
@@ -134,12 +134,13 @@ STATIC_FILES_DIRS = [ os.path.join(BASE_DIR, 'static'), ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL  = '/media/'
 
 # Custom user model
-AUTH_USER_MODEL = 'account.UserBase' # with this the User model is outdated and not recommended
+AUTH_USER_MODEL    = 'account.UserBase' # Uso UserBase come utente base e non piu User
 LOGIN_REDIRECT_URL = '/account/profile'
-LOGIN_URL = '/account/login'
+LOGIN_URL          = '/account/login'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+

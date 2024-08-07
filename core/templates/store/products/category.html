@@ -2,9 +2,8 @@
 {% load static %}
 
 {% block title %}
-    {% if category %} {{category.name}}
-    {% else %} Products
-    {% endif %}
+     {{category}}
+    
 {% endblock title %}
 
 
@@ -12,7 +11,7 @@
 <main>
     <div class="album py-5 bg-ligth">
         <div class="container">
-            <div class="my-5 pb-5 h4">{{ category.name|title }}</div>
+            <div class="my-5 pb-5 h4">{{ category|capfirst }}</div>
             <div class="row row-cols-1 row-cols-sm-5 row-cols-md-6 g-3">
                 {% for p in products %}
                     <div class="col">
@@ -21,6 +20,12 @@
                             <div class="card-body">
                                 <p class="card-text">
                                     <a class="text-dark text-decoration-none" href="{{ p.get_absolute_url }}">{{ p.title|title }}</a>
+                                    {% if not p.in_stock %} 
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                                        </svg>
+                                    {% endif %}
                                 </p>
                             </div>
                             <img class="img-fluid mx-auto" alt="Responsive image" src="{{ p.image.url }}"  width="170px"  height="270px"></img>

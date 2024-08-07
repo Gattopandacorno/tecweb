@@ -4,12 +4,12 @@ from .models import Category, Product, Review, RATE_CHOICES
 
 
 class AddCategoryForm(forms.ModelForm):
-    """ Represents how it would be to add a new category in the list of categories. """
+    """ Reppresenta i campi da riempire per  creare una nuova Category """
 
     name = forms.CharField(label='Enter name', help_text='required', required=True)
 
     class Meta:
-        model = Category
+        model  = Category
         fields = {'name'}
 
 
@@ -20,21 +20,20 @@ class AddCategoryForm(forms.ModelForm):
 
 
 class AddProductForm(forms.ModelForm):
-    """ Represents how it would be to add a new product in the list of products. """
+    """ Rappresenta i campi da riempire per aggiungere un Product. """
 
-    category     = forms.ModelChoiceField(queryset=Category.objects.all())
-    title        = forms.CharField(label='Enter title', max_length=255, help_text='Required')
-    author       = forms.CharField(initial="Not found", max_length=255, required=False)
-    description  = forms.Textarea()
-    image        = forms.ImageField(initial="images/default.png")
-    available    = forms.IntegerField(initial=1)
-    price        = forms.DecimalField(max_digits=4, decimal_places=2, initial=4.50)
-
+    category    = forms.ModelChoiceField(queryset=Category.objects.all())
+    title       = forms.CharField(label='Enter title', max_length=255, help_text='Required')
+    author      = forms.CharField(initial="Not found", max_length=255, required=False)
+    description = forms.Textarea()
+    image       = forms.ImageField(initial="images/default.png")
+    available   = forms.IntegerField(initial=1)
+    price       = forms.DecimalField(max_digits=4, decimal_places=2, initial=4.50)
     
     
 
     class Meta:
-        model = Product
+        model  = Product
         fields = {'category', 'title', 'author', 'description', 'image', 'available', 'price'}
 
 
@@ -49,13 +48,13 @@ class AddProductForm(forms.ModelForm):
 
 
 class AddReviewForm(forms.ModelForm):
-    """ Represents how it would be to add a new review in the list of reviews. """
+    """ Rappresenta come compilare i campi per creare una Review. """
 
-    text     = forms.Textarea()
-    rate     = forms.ChoiceField(choices=RATE_CHOICES, required=True)
+    text = forms.Textarea()
+    rate = forms.ChoiceField(choices=RATE_CHOICES, required=True)
 
     class Meta:
-        model = Review
+        model  = Review
         fields = {'text', 'rate'}
 
 

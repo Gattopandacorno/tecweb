@@ -4,16 +4,16 @@ from django.db import models
 from store.models import Product
 
 class Order(models.Model):
-    """ Represents an order. An order is done by doing the checkout('paying') of the cart. 
-        After the order is done, it can be seen in the profile sectio  called 'order history'.
+    """ 
+        Rappresenta un ordine, viene creato dopo un pagamento.
+        Dopo essere creato si puo' vedere negli ordini passati nella sezione del profilo 'order history'.
     """
 
-    user            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    tot_paid        = models.DecimalField(max_digits=5, decimal_places=2)
-    order_key       = models.CharField(max_length=200)
-    created         = models.DateTimeField(auto_now_add=True)
-    updated         = models.DateTimeField(auto_now=True)
-    billing_status  = models.BooleanField(default=False)
+    user           = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    tot_paid       = models.DecimalField(max_digits=5, decimal_places=2)
+    order_key      = models.CharField(max_length=200)
+    created        = models.DateTimeField(auto_now_add=True)
+    billing_status = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('-created',)
@@ -24,7 +24,7 @@ class Order(models.Model):
  
 
 class OrderItem(models.Model):
-    """ Represents the single ordered items in a certain order. """
+    """ Rappresenta un certo prodotto preso per un ordine. """
     
     order   = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')

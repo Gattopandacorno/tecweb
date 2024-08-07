@@ -10,11 +10,19 @@
                     </div>
                     
                     <div class="col-md-4 col-lg-7 ps-md-5 ps-lg-5">
-                        <h1 class="mb-0 h4">{{ product.title|title }}</h1>
-                        <p>
-                            Author:
-                            <span class="lead">{{ product.author }}</span>
-                        </p>
+                        <h1 class="mb-0 h4">{{ product.title|capfirst }}</h1>
+                        <div class="row">
+                            <div class="col-sm">
+                                Author:
+                                <span class="lead">{{ product.author|title }}</span>
+                            </div>
+                            <div class="col-sm">
+        
+                                Category:
+                                <span class="lead">{{ product.category|capfirst }}</span>
+                            </div>
+                        </div>
+                            
                         <div class="border">
                             <div class="col border-bottom">
                                 <div class="row p-3">
@@ -22,30 +30,36 @@
                                     <div class="col-6 text-end"><span class="h4 fw-bold">{{ product.price }}€</span></div>
                                 </div>
                             </div>
-
-                            <div class="col">
-                                <div class="row p-3">
-                                    <div class="col-6">
-                                        <label for="select">Qty</label>
-                                        <select id="select">
-                                            {% for i in product.get_qty %}
-                                                <option value="">{{ i|add:1 }}</option>
-                                            {% endfor %}  
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="col text-end">
-                                        {% if not user.is_seller and not user.is_staff %}
-                                            <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-outline-success" >Add to cart</button>   
-                                            {% if not usr %}             
+                            
+                            {% if  product.in_stock %}
+                                <div class="col">
+                                    <div class="row p-3">
+                                        <div class="col-6">
+                                            <label for="select">Qty</label>
+                                            <select id="select">
+                                                {% for i in product.get_qty %}
+                                                    <option value="">{{ i|add:1 }}</option>
+                                                {% endfor %}  
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="col text-end">
+                                            {% if not user.is_staff and not user.is_seller %}
+                                                <button type="button" id="add-button" value="{{ product.id }}" class="btn btn-outline-success" >Add to cart</button>                 
                                                 <a href="{% url 'store:create_review' product.slug %}" type="button" class="btn btn-outline-warning">Rate</a>
-                                            {% endif %}                      
-                                        {% endif %} 
-                                    </div>  
+                                                                    
+                                            {% endif %} 
+                                        </div>  
+                                    </div>
                                 </div>
-                            </div>
+                            {% else %}
+                                <div class="alert alert-danger" role="alert">
+                                    This product is not available now
+                                </div>
+                            {% endif %}
+                            
                             <p>{{ product.description|capfirst }}</p>      
-                        </div>                       
+                        </div>       
                     </div>
                     
                     <div class="my-5 pb-3 h4">Reviews</div>  
